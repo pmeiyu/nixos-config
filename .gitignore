@@ -1,0 +1,6 @@
+local/
+private/
+
+local.nix
+private.nix
+signing-key.*
