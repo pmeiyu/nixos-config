@@ -49,6 +49,11 @@
   hardware.pulseaudio.systemWide = true;
   hardware.usbWwan.enable = true;
 
+  # Rename LTE modem
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="net", DRIVERS=="?*", ATTR{address}=="0c:5b:8f:27:9a:64", NAME="wwan0"
+  '';
+
   ## Environment
 
   networking.hostName = "pi";
