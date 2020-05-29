@@ -29,12 +29,12 @@ in {
       enable = true;
       proxyResolveWhileRunning = true;
       commonHttpConfig = ''
-        # cache for guix mirror files
-        proxy_cache_path /srv/cache/guix
-                levels=2
-                inactive=60d             # inactive keys removed after 60d
-                keys_zone=guix-cache:8m  # meta data: ~64K keys
-                max_size=50g;            # total cache data size max
+        # cache for guix mirror
+        proxy_cache_path /srv/cache/guix-mirror
+            levels=2
+            inactive=30d              # remove inactive keys after this period
+            keys_zone=guix-mirror:8m  # about 8 thousand keys per megabyte
+            max_size=50g;             # total cache data size
       '';
       upstreams = {
         guix-upstream = {
@@ -50,28 +50,29 @@ in {
             proxy_ssl_name guix-mirror.pengmeiyu.com;
             proxy_set_header Host guix-mirror.pengmeiyu.com;
 
-            proxy_cache guix-cache;
-            proxy_cache_valid 200 30d;
+            proxy_cache guix-mirror;
+            proxy_cache_valid 200 60d;
             proxy_cache_valid any 3m;
+            proxy_connect_timeout 60s;
             proxy_ignore_client_abort on;
 
             client_body_buffer_size 256k;
-            proxy_connect_timeout 60s;
 
-            proxy_hide_header    Set-Cookie;
+            proxy_hide_header Set-Cookie;
             proxy_ignore_headers Set-Cookie;
 
             gzip off;
           '';
         };
         extraConfig = ''
-          access_log  /var/log/nginx/${cfg.domain}.access.log;
-          error_log  /var/log/nginx/${cfg.domain}.error.log;
+          access_log /var/log/nginx/${cfg.domain}.access.log;
+          error_log /var/log/nginx/${cfg.domain}.error.log;
         '';
       };
     };
     system.activationScripts.my-nginx = ''
-      mkdir -p /srv/cache/guix && chown -R nginx:nginx /srv/cache/guix
+      mkdir -p /srv/cache/guix-mirror && \
+      chown -R nginx:nginx /srv/cache/guix-mirror
     '';
   };
 }
