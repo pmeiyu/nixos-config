@@ -28,8 +28,8 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
-      compton
       nitrogen
+      picom
       polybar
       scrot
       xclip
