@@ -13,10 +13,6 @@
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
-  my.snapper = {
-    enable = true;
-    enable-store = true;
-  };
   my.weechat.enable = true;
 
   ## Boot loader
