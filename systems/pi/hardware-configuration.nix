@@ -29,14 +29,8 @@
     options = [ "noatime" ];
   };
 
-  boot.initrd.luks.devices."store" = {
-    device = "/dev/disk/by-uuid/494a9e6b-fbce-4c02-a9ca-6b3ece6840e4";
-    fallbackToPassword = true;
-    keyFile = "/dev/disk/by-partuuid/4627f9ec-03";
-    keyFileSize = 32;
-  };
   fileSystems."/srv/store" = {
-    device = "/dev/mapper/store";
+    device = "/dev/disk/by-label/archive";
     fsType = "btrfs";
     options = [ "noatime" ];
   };
