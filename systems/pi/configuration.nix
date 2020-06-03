@@ -10,6 +10,11 @@
 
   my.deluge.enable = true;
   my.desktop.enable = true;
+  my.hotspot = {
+    enable= true;
+    interface = "wlan0";
+    ssid = "Pi";
+  };
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
@@ -81,7 +86,7 @@
 
   ## Programs
 
-  environment.systemPackages = with pkgs; [ raspberrypi-tools ];
+  environment.systemPackages = with pkgs; [ iw raspberrypi-tools ];
 
   ## Services
 

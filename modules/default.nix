@@ -13,6 +13,7 @@
     ./gnome-flashback.nix
     ./gotify.nix
     ./guix
+    ./hotspot.nix
     ./monitor.nix
     ./network.nix
     ./nginx.nix
