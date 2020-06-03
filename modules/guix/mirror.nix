@@ -16,6 +16,11 @@ in {
         default = "mirror.lan";
         description = "Domain name.";
       };
+      upstream = mkOption {
+        type = types.str;
+        default = "ci.guix.gnu.org";
+        description = "Upstream substitute server.";
+      };
     };
   };
 
@@ -36,19 +41,14 @@ in {
             keys_zone=guix-mirror:8m  # about 8 thousand keys per megabyte
             max_size=50g;             # total cache data size
       '';
-      upstreams = {
-        guix-upstream = {
-          servers = { "guix-mirror.pengmeiyu.com:443" = { }; };
-        };
-      };
 
       virtualHosts."${cfg.domain}" = {
         locations."/guix/" = {
           extraConfig = ''
-            proxy_pass https://guix-upstream/;
+            proxy_pass https://${cfg.upstream}/;
             proxy_ssl_server_name on;
-            proxy_ssl_name guix-mirror.pengmeiyu.com;
-            proxy_set_header Host guix-mirror.pengmeiyu.com;
+            proxy_ssl_name ${cfg.upstream};
+            proxy_set_header Host ${cfg.upstream};
 
             proxy_cache guix-mirror;
             proxy_cache_valid 200 60d;
