@@ -67,7 +67,7 @@
 
   services.guix = {
     enable = true;
-    substitute-urls = "https://guix-mirror.pengmeiyu.com";
+    substitute-urls = "https://mirror.guix.org.cn";
   };
 
   services.syncthing = {

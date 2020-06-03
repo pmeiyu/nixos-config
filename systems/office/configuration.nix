@@ -140,6 +140,7 @@
     enable = true;
     publish.enable = true;
     mirror.enable = true;
+    mirror.upstream = "mirror.guix.org.cn";
     signing-key.pub = ../../local/guix/signing-key.pub;
     signing-key.sec = ../../local/guix/signing-key.sec;
   };
