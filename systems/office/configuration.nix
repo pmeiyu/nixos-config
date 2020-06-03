@@ -29,10 +29,9 @@
 
   system.autoUpgrade.enable = true;
 
-  # HTTP is faster than HTTPS in my office.
   nix.binaryCaches = lib.mkForce [
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-    "http://cache.nixos.org/"
+    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
+    "https://cache.nixos.org/"
   ];
 
   nix.maxJobs = 8;

@@ -15,6 +15,13 @@
   my.samba.enable = true;
   my.weechat.enable = true;
 
+  ## Nix
+
+  nix.binaryCaches = lib.mkForce [
+    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
+    "https://cache.nixos.org/"
+  ];
+
   ## Boot loader
 
   boot.loader.grub.enable = false;
