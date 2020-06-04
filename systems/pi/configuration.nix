@@ -75,11 +75,13 @@
     extraCommands = ''
       ip6tables -I INPUT -p esp -j ACCEPT
 
+      iptables -I INPUT -p tcp -m tcp -d 10.10.0.0/24 --dport 445 -j ACCEPT
       iptables -I INPUT -p tcp -m tcp -d 192.168.1.0/24 --dport 445 -j ACCEPT
     '';
     extraStopCommands = ''
       ip6tables -D INPUT -p esp -j ACCEPT
 
+      iptables -D INPUT -p tcp -m tcp -d 10.10.0.0/24 --dport 445 -j ACCEPT
       iptables -D INPUT -p tcp -m tcp -d 192.168.1.0/24 --dport 445 -j ACCEPT
     '';
   };
