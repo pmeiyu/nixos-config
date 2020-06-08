@@ -13,7 +13,6 @@
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
   my.gnome-flashback.enable = true;
-  my.monitor.enable = true;
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
