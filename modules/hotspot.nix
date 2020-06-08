@@ -49,8 +49,6 @@ in {
       '';
     };
 
-    networking.firewall.allowedUDPPorts = [ 67 ];
-
     services.dhcpd4 = {
       enable = true;
       interfaces = [ "wlan0" ];
