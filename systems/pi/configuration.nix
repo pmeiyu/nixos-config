@@ -92,6 +92,10 @@
 
   ## Services
 
+  services.dnsmasq.extraConfig = ''
+    conf-dir=/etc/dnsmasq.d/,*.conf
+  '';
+
   services.samba = {
     shares = {
       store = {
