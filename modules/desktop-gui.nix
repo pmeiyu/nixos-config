@@ -39,6 +39,7 @@ in {
       brightnessctl
       nixfmt
 
+      alacritty
       evince
       firefox-esr
       grim
