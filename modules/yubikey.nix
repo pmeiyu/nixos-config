@@ -6,7 +6,6 @@ in {
   options = { my.yubikey = { enable = mkEnableOption "Enable YubiKey."; }; };
 
   config = mkIf cfg.enable {
-    hardware.u2f.enable = true;
     services.udev.packages = with pkgs; [ yubikey-personalization ];
 
     # Smart card
