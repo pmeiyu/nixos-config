@@ -15,9 +15,7 @@ in {
   config = mkIf cfg.enable {
     ## Nix
 
-    nix.binaryCachePublicKeys = [
-      "office:faZHeCGjwozEgyKqVyuIs7E6DpKDRHPRW/bCtIYfOJk="
-    ];
+    nix.binaryCachePublicKeys = [ ];
 
     ## Boot
 
