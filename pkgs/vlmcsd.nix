@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "vlmcsd";
-  version = "1112";
+  version = "1113";
 
   src = fetchFromGitHub {
     owner = "Wind4";
     repo = "vlmcsd";
     rev = "svn${version}";
-    sha256 = "07ky22hac6a0h17y00aam4m0fnd29w8y6aqy7f7vra62h82lp3jd";
+    sha256 = "19qfw4l4b5vi03vmv9g5i7j32nifvz8sfada04mxqkrqdqxarb1q";
   };
 
   installPhase = ''
