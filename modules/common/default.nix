@@ -105,6 +105,8 @@ in {
       SystemMaxUse=1G
     '';
 
+    services.fail2ban.enable = true;
+
     services.openssh = {
       enable = true;
       passwordAuthentication = false;
