@@ -8,10 +8,17 @@
     ../..
   ];
 
+  my.raspberry-pi = {
+    enable = true;
+    audio.enable = true;
+    gpu.enable = true;
+    hdmi.force-hot-plug = true;
+  };
+
   my.deluge.enable = true;
   my.desktop.enable = true;
   my.hotspot = {
-    enable= true;
+    enable = true;
     interface = "wlan0";
     ssid = "Pi";
   };
@@ -22,23 +29,13 @@
 
   ## Nix
 
-  nix.binaryCaches = lib.mkForce [
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
-    "https://cache.nixos.org/"
-  ];
+  nix.binaryCaches =
+    [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/" ];
 
   ## Boot loader
 
-  boot.loader.grub.enable = false;
   boot.loader.raspberryPi = {
-    enable = true;
-    version = 4;
     firmwareConfig = ''
-      # Enable audio
-      dtparam=audio=on
-
-      # HDMI
-      hdmi_force_hotplug=1
       # # Enable HDMI audio
       # hdmi_drive=2
       # # DMT
@@ -54,7 +51,6 @@
 
   ## Hardware
 
-  hardware.pulseaudio.systemWide = true;
   hardware.usbWwan.enable = true;
 
   # Rename LTE modem
