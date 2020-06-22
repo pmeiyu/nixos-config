@@ -2,12 +2,12 @@
 
 with lib;
 let
-  cfg = config.my.pi-fan-control;
+  cfg = config.my.raspberry-pi.fan-control;
   python = pkgs.python3.withPackages
     (python-packages: with python-packages; [ python-periphery ]);
 in {
   options = {
-    my.pi-fan-control = {
+    my.raspberry-pi.fan-control = {
       enable = mkEnableOption "Enable fan control for Raspberry Pi.";
       gpio-pin = mkOption {
         type = types.int;

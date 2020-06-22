@@ -17,7 +17,7 @@
     ./monitor.nix
     ./network.nix
     ./nginx.nix
-    ./pi-fan-control
+    ./raspberry-pi
     ./samba.nix
     ./server.nix
     ./snapper.nix
