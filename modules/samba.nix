@@ -16,6 +16,10 @@ in {
           browseable = false;
           writable = true;
         };
+        # Hide "guest" folder
+        guest = {
+          browseable = false;
+        };
         public = {
           path = "/srv/public";
           browseable = true;
