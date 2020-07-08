@@ -46,6 +46,7 @@ in {
     users.users = {
       root = {
         # Generate hashed password: `mkpasswd -m sha-512`
+        hashedPassword = null;
         passwordFile = "/etc/password";
 
         shell = pkgs.zsh;
@@ -67,6 +68,7 @@ in {
           "wheel"
         ];
         password = config.users.users.root.password;
+        hashedPassword = config.users.users.root.hashedPassword;
         passwordFile = config.users.users.root.passwordFile;
         shell = pkgs.zsh;
         openssh.authorizedKeys.keys = authorizedKeys;
