@@ -12,7 +12,7 @@ in {
 
     systemd.services.cloudflared = {
       description = "cloudflared";
-      after = [ "network.target" ];
+      after = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStart = "${pkgs.cloudflared}/bin/cloudflared"
