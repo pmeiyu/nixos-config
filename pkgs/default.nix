@@ -5,6 +5,7 @@ in {
   ibus-engines.rime = pkgs.callPackage ./ibus-rime.nix { };
   kcptun = pkgs.callPackage ./kcptun.nix { };
   steven-black-hosts = pkgs.callPackage ./steven-black-hosts.nix { };
+  udpspeeder = pkgs.callPackage ./udpspeeder.nix { };
   v2ray-plugin = pkgs.callPackage ./v2ray-plugin.nix { };
   vlmcsd = pkgs.callPackage ./vlmcsd.nix { };
 }
