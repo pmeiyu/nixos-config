@@ -2,6 +2,7 @@ let pkgs = import <nixpkgs> { };
 in {
   dnsmasq-china-list = pkgs.callPackage ./dnsmasq-china-list.nix { };
   go-shadowsocks2 = pkgs.callPackage ./go-shadowsocks2.nix { };
+  gost = pkgs.callPackage ./gost.nix { };
   ibus-engines.rime = pkgs.callPackage ./ibus-rime.nix { };
   kcptun = pkgs.callPackage ./kcptun.nix { };
   steven-black-hosts = pkgs.callPackage ./steven-black-hosts.nix { };
