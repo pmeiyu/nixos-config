@@ -33,8 +33,6 @@ in {
   config = mkIf cfg.enable {
     networking.nameservers = [ "::1" ];
     networking.networkmanager.dns = "none";
-    networking.extraHosts = ''
-    '';
 
     services.dnscrypt-proxy2 = {
       enable = true;
@@ -95,6 +93,17 @@ in {
         ''}
 
         addn-hosts=/etc/hosts.local
+      '';
+    };
+
+    networking.firewall = {
+      extraCommands = ''
+        iptables -I INPUT -p tcp -m tcp -s 10.0.0.0/8 --dport 53 -j ACCEPT
+        iptables -I INPUT -p udp -m udp -s 10.0.0.0/8 --dport 53 -j ACCEPT
+      '';
+      extraStopCommands = ''
+        iptables -D INPUT -p tcp -m tcp -s 10.0.0.0/8 --dport 53 -j ACCEPT
+        iptables -D INPUT -p udp -m udp -s 10.0.0.0/8 --dport 53 -j ACCEPT
       '';
     };
   };
