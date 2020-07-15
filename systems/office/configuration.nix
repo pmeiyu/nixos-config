@@ -76,7 +76,8 @@
     '';
   };
 
-  networking.interfaces.enp1s0 = { mtu = 1492; };
+  networking.usePredictableInterfaceNames = false;
+  networking.interfaces.eth0.mtu = 1492;
 
   ## Programs
 
