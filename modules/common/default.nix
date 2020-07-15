@@ -99,6 +99,15 @@ in {
     security.pki.certificateFiles = [ ./PMY-CA.pem ];
     security.pki.caCertificateBlacklist = [ "CFCA EV ROOT" ];
 
+    ## Network
+
+    networking.firewall = {
+      enable = true;
+      allowPing = true;
+      allowedTCPPorts = [ 80 443 ];
+      allowedUDPPorts = [ ];
+    };
+
     ## Services
 
     services.journald.extraConfig = ''

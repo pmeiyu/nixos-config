@@ -62,13 +62,6 @@ in {
     networking.networkmanager.enable = true;
     system.nssDatabases.hosts = [ "mdns" ];
 
-    networking.firewall = {
-      enable = true;
-      allowPing = true;
-      allowedTCPPorts = [ 80 443 ];
-      allowedUDPPorts = [ 53 ];
-    };
-
     # Programs
     programs.gnupg.agent.enable = true;
     programs.gnupg.agent.enableSSHSupport = true;
