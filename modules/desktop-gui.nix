@@ -18,10 +18,9 @@ in {
       noto-fonts-cjk
       noto-fonts-emoji
       powerline-fonts
-      source-han-sans-simplified-chinese
-      source-han-sans-traditional-chinese
-      source-han-serif-simplified-chinese
-      source-han-serif-traditional-chinese
+      source-han-mono
+      source-han-sans
+      source-han-serif
       wqy_microhei
     ];
     fonts.fontconfig.defaultFonts = {
