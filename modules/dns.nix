@@ -89,7 +89,7 @@ in {
         ''}
 
         ${optionalString cfg.dnsmasq-china-list.enable ''
-          conf-dir=${pkgs.dnsmasq-china-list}/,*.conf
+          conf-dir=${pkgs.dnsmasq-china-list.dnsmasq}/,*.conf
         ''}
 
         addn-hosts=/etc/hosts.local

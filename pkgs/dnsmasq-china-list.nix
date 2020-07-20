@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ stdenv, fetchFromGitHub, target ? "raw" }:
 
 stdenv.mkDerivation rec {
   pname = "dnsmasq-china-list";
@@ -11,11 +11,13 @@ stdenv.mkDerivation rec {
     sha256 = "0a610x03f9hwr5jdsi91vxz6sz4xwad23idk0bn3b2n3dq3dhjfx";
   };
 
-  buildPhase = "true";
+  buildPhase = ''
+    make ${target}
+  '';
 
   installPhase = ''
     mkdir -p $out
-    cp -rv * $out
+    cp -rv *${target}*{.conf,.txt} $out
   '';
 
   meta = with stdenv.lib; {
