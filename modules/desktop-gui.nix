@@ -47,10 +47,13 @@ in {
       mako
       mpv
       rofi
+      screenkey
       slurp
       termite
       vlc
       waybar
+      wev
+      wf-recorder
       wl-clipboard
     ];
 
