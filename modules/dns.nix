@@ -6,33 +6,25 @@ in {
   options = {
     my.dns = {
       enable = mkEnableOption "Enable local DNS server.";
-      dnssec.enable = mkOption {
+      dnssec.enable = mkEnableOption "Enable DNSSEC.";
+      tcp-upstream = mkOption {
         type = types.bool;
-        default = false;
+        default = true;
         description = ''
-          Enable DNSSEC.
+          Whether the upstream queries use TCP only for transport.
         '';
       };
-      adblock.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Enable hosts file for adblock.
-        '';
-      };
-      dnsmasq-china-list.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Enable dnsmasq-china-list.
-        '';
-      };
+      block.ad = mkEnableOption "Block ad.";
+      block.fake-news = mkEnableOption "Block fake news.";
+      block.gambling = mkEnableOption "Block gambling.";
+      block.social = mkEnableOption "Block social networks.";
+      dnsmasq-china-list.enable = mkEnableOption "Enable dnsmasq-china-list.";
     };
   };
 
   config = mkIf cfg.enable {
     networking.nameservers = [ "::1" ];
-    networking.networkmanager.dns = "none";
+    networking.networkmanager.dns = mkDefault "none";
 
     services.dnscrypt-proxy2 = {
       enable = true;
@@ -61,14 +53,76 @@ in {
       };
     };
 
-    services.dnsmasq = {
+    services.unbound = {
       enable = true;
+      interfaces = [ "127.0.0.1" "::1" ];
+      allowedAccess = [ ];
+      forwardAddresses = [ ];
+      enableRootTrustAnchor = cfg.dnssec.enable;
+      extraConfig = ''
+        cache-min-ttl: 600
+        cache-max-negative-ttl: 30
+        do-not-query-localhost: no
+
+        domain-insecure: "home"
+        domain-insecure: "lan"
+        domain-insecure: "tinc"
+        private-domain: "home"
+        private-domain: "lan"
+        private-domain: "tinc"
+        private-address: 10.0.0.0/8
+        private-address: 169.254.0.0/16
+        private-address: 172.16.0.0/12
+        private-address: 192.168.0.0/16
+        private-address: fd00::/8
+        private-address: fe80::/10
+
+        ${optionalString cfg.tcp-upstream ''
+          tcp-upstream: yes
+        ''}
+
+        ${optionalString cfg.block.ad ''
+          access-control-view: 0.0.0.0 block-ad
+          access-control-view: :: block-ad
+          include: ${pkgs.steven-black-hosts}/unbound/ad.conf
+        ''}
+
+        ${optionalString cfg.block.fake-news ''
+          access-control-view: 0.0.0.0 block-fakenews
+          access-control-view: :: block-fakenews
+          include: ${pkgs.steven-black-hosts}/unbound/fakenews.conf
+        ''}
+
+        ${optionalString cfg.block.gambling ''
+          access-control-view: 0.0.0.0 block-gambling
+          access-control-view: :: block-gambling
+          include: ${pkgs.steven-black-hosts}/unbound/gambling.conf
+        ''}
+
+        ${optionalString cfg.block.social ''
+          access-control-view: 0.0.0.0 block-social
+          access-control-view: :: block-social
+          include: ${pkgs.steven-black-hosts}/unbound/social.conf
+        ''}
+
+        ${optionalString cfg.dnsmasq-china-list.enable ''
+          include: ${pkgs.dnsmasq-china-list.unbound}/*.conf
+        ''}
+
+        forward-zone:
+          name: .
+          forward-addr: ::1@54
+      '';
+    };
+
+    services.dnsmasq = {
+      enable = false;
       resolveLocalQueries = false;
       extraConfig = ''
         except-interface=virbr0
         bind-dynamic
 
-        server=::1#54
+        server=::1#55
 
         no-resolv
         log-queries
@@ -79,31 +133,7 @@ in {
         domain=lan
         # expand-hosts
 
-        ${optionalString cfg.dnssec.enable ''
-          dnssec
-          conf-file=${pkgs.dnsmasq}/share/dnsmasq/trust-anchors.conf
-        ''}
-
-        ${optionalString cfg.adblock.enable ''
-          addn-hosts=${pkgs.steven-black-hosts}/hosts
-        ''}
-
-        ${optionalString cfg.dnsmasq-china-list.enable ''
-          conf-dir=${pkgs.dnsmasq-china-list.dnsmasq}/,*.conf
-        ''}
-
         addn-hosts=/etc/hosts.local
-      '';
-    };
-
-    networking.firewall = {
-      extraCommands = ''
-        iptables -I INPUT -p tcp -m tcp -s 10.0.0.0/8 --dport 53 -j ACCEPT
-        iptables -I INPUT -p udp -m udp -s 10.0.0.0/8 --dport 53 -j ACCEPT
-      '';
-      extraStopCommands = ''
-        iptables -D INPUT -p tcp -m tcp -s 10.0.0.0/8 --dport 53 -j ACCEPT
-        iptables -D INPUT -p udp -m udp -s 10.0.0.0/8 --dport 53 -j ACCEPT
       '';
     };
   };

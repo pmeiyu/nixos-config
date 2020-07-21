@@ -11,7 +11,7 @@ in {
     my.common.enable = true;
     my.dns = {
       enable = true;
-      adblock.enable = true;
+      block.ad = true;
       dnsmasq-china-list.enable = true;
     };
     my.emacs.enable = true;
