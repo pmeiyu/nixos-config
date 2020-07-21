@@ -72,7 +72,7 @@ in {
     };
     system.activationScripts.my-nginx = ''
       mkdir -p /srv/cache/guix-mirror && \
-      chown -R nginx:nginx /srv/cache/guix-mirror
+      chown nginx:nginx /srv/cache/guix-mirror
     '';
   };
 }
