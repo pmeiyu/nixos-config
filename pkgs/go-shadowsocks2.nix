@@ -11,7 +11,7 @@ buildGoModule rec {
     sha256 = "0v7yirl2zkp67c9h22n61vckkawad354nsvyn9irvk5426c7zfid";
   };
 
-  vendorSha256 = "0avlnbj8s6wnmgsavivyhk16wkh2ns0lp7xc1pi9rg2pkymcdmz7";
+  vendorSha256 = "0iyak8af708h3rdrslndladbcjrix35j3rlhpsb8ljchqp09lksg";
 
   meta = with stdenv.lib; {
     description = "Next-generation Shadowsocks in Go";
