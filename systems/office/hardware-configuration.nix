@@ -14,61 +14,36 @@
     fsType = "vfat";
   };
 
-  # Full disk encryption with Yubikey
-  # https://nixos.wiki/wiki/Yubikey_based_Full_Disk_Encryption_(FDE)_on_NixOS
-  #
-  # SALT_LENGTH=16
-  # KEY_LENGTH=64
-  # ITERATIONS=1000000
-  # salt="$(dd if=/dev/random bs=1 count=$SALT_LENGTH 2>/dev/null | rbtohex)"
-  # challenge="$(echo -n $salt | openssl dgst -binary -sha512 | rbtohex)"
-  # response="$(sudo ykchalresp -1 -x $challenge 2>/dev/null)"
-  # k_luks="$(echo | pbkdf2-sha512 $KEY_LENGTH $ITERATIONS $response | rbtohex)"
-  #
-  # mkdir -p /boot/crypt-storage
-  # echo -ne "$salt\n$ITERATIONS" | sudo tee /boot/crypt-storage/default
-  # echo -n "$k_luks" | hextorb >/tmp/pass
-  # sudo cryptsetup luksAddKey /dev/sda2 /tmp/pass
-  # rm /tmp/pass
-
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "usbhid" "sd_mod" "r8169" ];
   boot.initrd.kernelModules =
     [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" "r8169" ];
-  boot.initrd.luks.yubikeySupport = true;
   boot.initrd.network.enable = true;
+
+  boot.initrd.luks.gpgSupport = true;
 
   boot.initrd.luks.devices."root" = {
     device = "/dev/disk/by-uuid/bad2ef9f-b9de-4080-a635-3aed316a7c49";
     fallbackToPassword = true;
     allowDiscards = true;
-    yubikey = {
-      slot = 1;
-      twoFactor = false;
-      storage = {
-        device = config.fileSystems."/boot".device;
-        fsType = config.fileSystems."/boot".fsType;
-        path = "/crypt-storage/a";
-      };
+    gpgCard = {
+      encryptedPass = ./pass.gpg;
+      publicKey = ./public-keys.pgp.asc;
     };
-  };
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/03443ae0-816a-4e97-953e-8d5508f4f95c";
-    fsType = "btrfs";
   };
 
   boot.initrd.luks.devices."store" = {
     device = "/dev/disk/by-uuid/0174c10a-065c-4e25-afb3-29808254eeb7";
     fallbackToPassword = true;
-    yubikey = {
-      slot = 1;
-      twoFactor = false;
-      storage = {
-        device = config.fileSystems."/boot".device;
-        fsType = config.fileSystems."/boot".fsType;
-        path = "/crypt-storage/b";
-      };
+    gpgCard = {
+      encryptedPass = ./pass.gpg;
+      publicKey = ./public-keys.pgp.asc;
     };
+  };
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/03443ae0-816a-4e97-953e-8d5508f4f95c";
+    fsType = "btrfs";
   };
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/816e15c3-014b-45d1-89ef-53d4b9775449";
