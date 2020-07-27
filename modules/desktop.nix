@@ -131,5 +131,8 @@ in {
     ## Services
 
     services.fstrim.enable = true;
+
+    # Smart card
+    services.pcscd.enable = true;
   };
 }
