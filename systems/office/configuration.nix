@@ -22,7 +22,6 @@
     enable-store = true;
   };
   my.weechat.enable = true;
-  my.yubikey.enable = true;
 
   ## Nix
 
