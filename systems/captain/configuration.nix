@@ -15,7 +15,6 @@
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
-  my.yubikey.enable = true;
 
   ## Nix
 
