@@ -1,0 +1,3 @@
+{
+  ip = import ./ip.nix;
+}

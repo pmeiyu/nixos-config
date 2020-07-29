@@ -1,5 +1,6 @@
 let pkgs = import <nixpkgs> { };
 in with pkgs; {
+  data = import ./data;
   dnsmasq-china-list = {
     dnscrypt-proxy =
       callPackage ./dnsmasq-china-list.nix { target = "dnscrypt-proxy"; };
