@@ -49,7 +49,6 @@ in {
       rofi
       screenkey
       slurp
-      termite
       vlc
       waybar
       wev

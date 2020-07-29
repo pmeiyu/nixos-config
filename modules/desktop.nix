@@ -73,8 +73,6 @@ in {
 
     environment.systemPackages = with pkgs; [
       alsaUtils
-      aria2
-      badvpn
       binutils
       btrfs-progs
       cowsay
@@ -95,20 +93,15 @@ in {
       mkpasswd
       mpc_cli
       mpd
-      msmtp
-      mu
-      ncmpcpp
       neofetch
       nethogs
       nftables
       ntfsprogs
-      offlineimap
       parallel
       parted
       pciutils
       progress
       pulseaudio
-      rclone
       ripgrep
       sl
       sqlite
@@ -120,7 +113,6 @@ in {
       usbutils
       xdg-user-dirs
       xdg_utils
-      youtube-dl
 
       # Hardware
       lm_sensors
