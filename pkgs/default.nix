@@ -8,6 +8,7 @@ in with pkgs; {
     raw = callPackage ./dnsmasq-china-list.nix { target = "raw"; };
     unbound = callPackage ./dnsmasq-china-list.nix { target = "unbound"; };
   };
+  gfwlist = callPackage ./gfwlist.nix { };
   go-shadowsocks2 = callPackage ./go-shadowsocks2.nix { };
   gost = callPackage ./gost.nix { };
   ibus-engines.rime = callPackage ./ibus-rime.nix { };
