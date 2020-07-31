@@ -17,6 +17,7 @@
 
   my.deluge.enable = true;
   my.desktop.enable = true;
+  my.dns.ipset.enable = true;
   my.hotspot = {
     enable = true;
     interface = "wlan0";
@@ -87,10 +88,6 @@
   environment.systemPackages = with pkgs; [ iw raspberrypi-tools ];
 
   ## Services
-
-  services.dnsmasq.extraConfig = ''
-    conf-dir=/etc/dnsmasq.d/,*.conf
-  '';
 
   services.samba = {
     shares = {

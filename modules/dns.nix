@@ -19,6 +19,7 @@ in {
       block.gambling = mkEnableOption "Block gambling.";
       block.social = mkEnableOption "Block social networks.";
       dnsmasq-china-list.enable = mkEnableOption "Enable dnsmasq-china-list.";
+      ipset.enable = mkEnableOption "Enable ipset.";
     };
   };
 
@@ -49,13 +50,13 @@ in {
     systemd.services.dnscrypt-proxy2 = {
       serviceConfig = {
         Restart = "always";
-        RestartSec = "60";
+        RestartSec = "120";
       };
     };
 
     services.unbound = {
       enable = true;
-      interfaces = [ "127.0.0.1" "::1" ];
+      interfaces = [ "127.0.0.1@55" "::1@55" ];
       allowedAccess = [ ];
       forwardAddresses = [ ];
       enableRootTrustAnchor = cfg.dnssec.enable;
@@ -116,7 +117,7 @@ in {
     };
 
     services.dnsmasq = {
-      enable = false;
+      enable = true;
       resolveLocalQueries = false;
       extraConfig = ''
         except-interface=virbr0
@@ -131,9 +132,24 @@ in {
         min-cache-ttl=600
         local=/lan/
         domain=lan
-        # expand-hosts
+        expand-hosts
 
         addn-hosts=/etc/hosts.local
+
+        ${optionalString cfg.ipset.enable ''
+          conf-dir=${pkgs.dnsmasq-china-list}/dnsmasq-ipset/,*.conf
+          conf-dir=${pkgs.gfwlist}/dnsmasq-ipset/,*.conf
+        ''}
+      '';
+    };
+
+    systemd.services.dnsmasq = {
+      path = [ pkgs.ipset ];
+      preStart = optionalString cfg.ipset.enable ''
+        ipset create -exist china4 hash:ip family inet
+        ipset create -exist china6 hash:ip family inet6
+        ipset create -exist gfwlist4 hash:ip family inet
+        ipset create -exist gfwlist6 hash:ip family inet6
       '';
     };
   };

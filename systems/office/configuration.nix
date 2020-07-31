@@ -130,10 +130,6 @@
   #   kubelet.extraOpts = "--fail-swap-on=false";
   # };
 
-  services.dnsmasq.extraConfig = ''
-    conf-dir=/etc/dnsmasq.d/,*.conf
-  '';
-
   services.guix = {
     enable = true;
     publish.enable = true;
