@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, target ? "raw" }:
+{ stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
   pname = "dnsmasq-china-list";
@@ -12,12 +12,32 @@ stdenv.mkDerivation rec {
   };
 
   buildPhase = ''
-    make ${target}
+    make raw
+    mkdir -p build/raw
+    cp -v *.raw.txt build/raw
+
+    make dnscrypt-proxy
+    mkdir -p build/dnscrypt-proxy
+    cp -v dnscrypt-proxy-forwarding-rules.txt build/dnscrypt-proxy
+
+    make dnsmasq
+    mkdir -p build/dnsmasq
+    cp -v *.dnsmasq.conf build/dnsmasq
+
+    make unbound
+    mkdir -p build/unbound
+    cp -v *.unbound.conf build/unbound
+
+    # ipset
+    mkdir -p build/dnsmasq-ipset
+    for i in accelerated-domains.china apple.china google.china; do
+        awk '{print "ipset=/" $0 "/china4,china6"}' $i.raw.txt >build/dnsmasq-ipset/$i.conf
+    done
   '';
 
   installPhase = ''
     mkdir -p $out
-    cp -rv *${target}*{.conf,.txt} $out
+    cp -rv build/* $out
   '';
 
   meta = with stdenv.lib; {

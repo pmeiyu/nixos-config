@@ -1,13 +1,7 @@
 let pkgs = import <nixpkgs> { };
 in with pkgs; {
   data = import ./data;
-  dnsmasq-china-list = {
-    dnscrypt-proxy =
-      callPackage ./dnsmasq-china-list.nix { target = "dnscrypt-proxy"; };
-    dnsmasq = callPackage ./dnsmasq-china-list.nix { target = "dnsmasq"; };
-    raw = callPackage ./dnsmasq-china-list.nix { target = "raw"; };
-    unbound = callPackage ./dnsmasq-china-list.nix { target = "unbound"; };
-  };
+  dnsmasq-china-list = callPackage ./dnsmasq-china-list.nix { };
   gfwlist = callPackage ./gfwlist.nix { };
   go-shadowsocks2 = callPackage ./go-shadowsocks2.nix { };
   gost = callPackage ./gost.nix { };
