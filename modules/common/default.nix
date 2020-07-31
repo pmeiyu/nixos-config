@@ -97,7 +97,7 @@ in {
     ## Certificates
 
     security.pki.certificateFiles = [ ./PMY-CA.pem ];
-    security.pki.caCertificateBlacklist = [ "CFCA EV ROOT" ];
+    # security.pki.caCertificateBlacklist = [ "CFCA EV ROOT" ];
 
     ## Network
 
