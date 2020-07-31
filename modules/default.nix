@@ -21,6 +21,7 @@
     ./samba.nix
     ./server.nix
     ./snapper.nix
+    ./tun2socks.nix
     ./vlmcsd.nix
     ./weechat.nix
     ./yubikey.nix
