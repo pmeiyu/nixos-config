@@ -106,7 +106,7 @@ in {
         ''}
 
         ${optionalString cfg.dnsmasq-china-list.enable ''
-          include: ${pkgs.dnsmasq-china-list.unbound}/*.conf
+          include: ${pkgs.dnsmasq-china-list}/unbound/*.conf
         ''}
 
         forward-zone:
