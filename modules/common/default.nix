@@ -106,6 +106,7 @@ in {
       allowPing = true;
       allowedTCPPorts = [ 80 443 ];
       allowedUDPPorts = [ ];
+      logReversePathDrops = true;
     };
 
     ## Services
