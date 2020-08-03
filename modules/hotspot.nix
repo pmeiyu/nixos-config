@@ -92,14 +92,10 @@ in {
     # };
 
     networking.firewall = {
-      extraCommands = ''
-        iptables -I INPUT -p tcp -m tcp -s 10.0.0.0/8 --dport 53 -j ACCEPT
-        iptables -I INPUT -p udp -m udp -s 10.0.0.0/8 --dport 53 -j ACCEPT
-      '';
-      extraStopCommands = ''
-        iptables -D INPUT -p tcp -m tcp -s 10.0.0.0/8 --dport 53 -j ACCEPT
-        iptables -D INPUT -p udp -m udp -s 10.0.0.0/8 --dport 53 -j ACCEPT
-      '';
+      interfaces."${cfg.interface}" = {
+        allowedTCPPorts = [ 53 ];
+        allowedUDPPorts = [ 53 ];
+      };
     };
 
     networking.nat = {
