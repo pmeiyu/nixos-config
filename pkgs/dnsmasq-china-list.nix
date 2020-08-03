@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchFromGitHub, upstream-server ? null }:
 
 stdenv.mkDerivation rec {
   pname = "dnsmasq-china-list";
@@ -10,6 +10,11 @@ stdenv.mkDerivation rec {
     rev = "cca913cc3575c0d200b52fcf34f5e0f12e1d811c";
     sha256 = "0a610x03f9hwr5jdsi91vxz6sz4xwad23idk0bn3b2n3dq3dhjfx";
   };
+
+  prePatch = lib.optionalString (!isNull upstream-server) ''
+    substituteInPlace Makefile \
+       --replace 'SERVER=114.114.114.114' 'SERVER=${upstream-server}';
+  '';
 
   buildPhase = ''
     make raw
