@@ -81,7 +81,10 @@
   ## Programs
 
   programs.adb.enable = true;
-  programs.java.enable = true;
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk11;
+  };
   programs.thefuck.enable = true;
 
   environment.systemPackages = with pkgs; [
