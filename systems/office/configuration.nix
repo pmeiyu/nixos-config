@@ -2,10 +2,10 @@
 
 {
   imports = [
+    ../..
     ./hardware-configuration.nix
     ./private.nix
-
-    ../..
+    ./development.nix
   ];
 
   my.bluetooth.enable = true;
@@ -81,10 +81,6 @@
   ## Programs
 
   programs.adb.enable = true;
-  programs.java = {
-    enable = true;
-    package = pkgs.jdk11;
-  };
   programs.thefuck.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -115,23 +111,11 @@
   services.xserver.windowManager.stumpwm.enable = true;
 
   services.printing.enable = true;
-  services.zookeeper.enable = true;
 
   # Virtualization
   virtualisation.libvirtd.enable = true;
   security.wrappers.spice-client-glib-usb-acl-helper.source =
     "${pkgs.spice_gtk}/bin/spice-client-glib-usb-acl-helper";
-
-  virtualisation.docker = {
-    enable = true;
-    extraOptions = "--registry-mirror=https://registry.docker-cn.com";
-  };
-
-  # services.kubernetes = {
-  #   roles = [ "master" "node" ];
-  #   masterAddress = "localhost";
-  #   kubelet.extraOpts = "--fail-swap-on=false";
-  # };
 
   services.guix = {
     enable = true;
