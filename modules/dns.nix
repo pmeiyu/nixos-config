@@ -62,7 +62,7 @@ in {
       enableRootTrustAnchor = cfg.dnssec.enable;
       extraConfig = ''
         cache-min-ttl: 600
-        cache-max-negative-ttl: 30
+        cache-max-negative-ttl: 3
         do-not-query-localhost: no
 
         domain-insecure: "home"
