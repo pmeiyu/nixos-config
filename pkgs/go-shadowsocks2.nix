@@ -2,13 +2,13 @@
 
 buildGoModule rec {
   pname = "go-shadowsocks2";
-  version = "0.1.0";
+  version = "0.1.2";
 
   src = fetchFromGitHub {
     owner = "shadowsocks";
     repo = "go-shadowsocks2";
     rev = "v${version}";
-    sha256 = "0v7yirl2zkp67c9h22n61vckkawad354nsvyn9irvk5426c7zfid";
+    sha256 = "1gi29xbszi8flg9sv0b75gy2sb37q4zva39p262da2qaprzm0990";
   };
 
   vendorSha256 = "0iyak8af708h3rdrslndladbcjrix35j3rlhpsb8ljchqp09lksg";
