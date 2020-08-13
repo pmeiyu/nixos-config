@@ -19,7 +19,6 @@
   my.snapper = {
     enable = true;
     enable-home = true;
-    enable-store = true;
   };
   my.weechat.enable = true;
 
