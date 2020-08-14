@@ -6,6 +6,11 @@ in {
   options = {
     services.guix.mirror = {
       enable = mkEnableOption "Enable Guix mirror";
+      cache-directory = mkOption {
+        type = types.str;
+        default = "/srv/cache/guix-mirror";
+        description = "Cache directory for guix mirror.";
+      };
       set-as-substitute = mkOption {
         type = types.bool;
         default = true;
@@ -35,7 +40,7 @@ in {
       proxyResolveWhileRunning = true;
       commonHttpConfig = ''
         # cache for guix mirror
-        proxy_cache_path /srv/cache/guix-mirror
+        proxy_cache_path ${cfg.cache-directory}
             levels=2
             inactive=30d              # remove inactive keys after this period
             keys_zone=guix-mirror:8m  # about 8 thousand keys per megabyte
@@ -71,8 +76,8 @@ in {
       };
     };
     system.activationScripts.my-nginx = ''
-      mkdir -p /srv/cache/guix-mirror && \
-      chown nginx:nginx /srv/cache/guix-mirror
+      mkdir -p ${cfg.cache-directory} && \
+      chown nginx:nginx ${cfg.cache-directory}
     '';
   };
 }
