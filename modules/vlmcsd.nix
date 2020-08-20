@@ -14,7 +14,7 @@ in {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStart = "${pkgs.vlmcsd}/bin/vlmcsd -D -v";
-        User = "nobody";
+        DynamicUser = true;
       };
     };
 
