@@ -104,7 +104,7 @@
 
   services.btrfs.autoScrub = {
     enable = true;
-    fileSystems = [ "/" "/srv/store" ];
+    fileSystems = [ "/" ];
   };
 
   services.xserver.windowManager.stumpwm.enable = true;
