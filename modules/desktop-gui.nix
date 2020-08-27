@@ -59,7 +59,10 @@ in {
     ## Services
 
     services.xserver.enable = true;
-    services.xserver.displayManager.gdm.enable = true;
+    services.xserver.displayManager.gdm = {
+      enable = true;
+      autoSuspend = mkDefault false;
+    };
     programs.sway = {
       enable = true;
       extraPackages = with pkgs; [ swaybg swayidle swaylock xwayland ];
