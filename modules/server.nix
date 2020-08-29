@@ -10,7 +10,9 @@ in {
   config = mkIf cfg.enable {
     my.common.enable = true;
 
+    # Limit number of entries in boot menu.
     boot.loader.grub.configurationLimit = mkDefault 2;
+    boot.loader.systemd-boot.configurationLimit = mkDefault 2;
 
     networking.firewall = {
       enable = true;

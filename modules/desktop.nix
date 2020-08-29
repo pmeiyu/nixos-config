@@ -37,6 +37,7 @@ in {
 
     # Limit number of entries in boot menu.
     boot.loader.grub.configurationLimit = mkDefault 5;
+    boot.loader.systemd-boot.configurationLimit = mkDefault 5;
 
     ## Kernel
 

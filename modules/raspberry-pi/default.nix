@@ -40,6 +40,7 @@ in {
     boot.loader.raspberryPi = {
       enable = true;
       version = 4;
+      uboot.configurationLimit = mkDefault 3;
       firmwareConfig = ''
         ${optionalString cfg.audio.enable "dtparam=audio=on"}
         ${optionalString cfg.gpu.enable "gpu_mem=${toString cfg.gpu.mem}"}
