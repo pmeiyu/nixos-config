@@ -29,12 +29,6 @@
     options = [ "noatime" ];
   };
 
-  fileSystems."/srv/store" = {
-    device = "/dev/disk/by-label/archive";
-    fsType = "btrfs";
-    options = [ "noatime" ];
-  };
-
   fileSystems."/tmp" = {
     device = "tmpfs";
     fsType = "tmpfs";

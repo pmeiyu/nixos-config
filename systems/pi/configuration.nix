@@ -2,10 +2,8 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
-    ./private.nix
-
     ../..
+    ./hardware-configuration.nix
   ];
 
   my.raspberry-pi = {
@@ -18,11 +16,6 @@
   my.deluge.enable = true;
   my.desktop.enable = true;
   my.dns.ipset.enable = true;
-  my.hotspot = {
-    enable = true;
-    interface = "wlan0";
-    ssid = "Pi";
-  };
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
@@ -54,11 +47,6 @@
 
   hardware.usbWwan.enable = true;
 
-  # Rename LTE modem
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="net", DRIVERS=="?*", ATTR{address}=="0c:5b:8f:27:9a:64", NAME="wwan0"
-  '';
-
   ## Environment
 
   networking.hostName = "pi";
@@ -89,31 +77,31 @@
 
   ## Services
 
-  services.samba = {
-    shares = {
-      store = {
-        path = "/srv/store";
-        browseable = true;
-        writable = true;
-        "valid users" = "meiyu";
-      };
-    };
-  };
-
-  services.syncthing = {
+  my.hotspot = {
     enable = true;
-    user = "meiyu";
-    group = config.users.users.meiyu.group;
-    dataDir = config.users.users.meiyu.home;
-    openDefaultPorts = true;
+    interface = "wlan0";
+    ssid = "Pi";
+    password = "12345678";
   };
-
-  services.tor = {
-    enable = true;
-    client.enable = true;
-    client.transparentProxy.enable = true;
+  # 802.11ac AP configuration for Raspberry Pi 4B.
+  services.hostapd = lib.mkForce {
+    hwMode = "a";
+    channel = 40;
+    countryCode = "US";
     extraConfig = ''
-      Socks5Proxy localhost:1080
+      ieee80211ac=1
+
+      # QoS
+      wmm_enabled=1
+
+      # 1 = WPA
+      auth_algs=1
+
+      # WPA-PSK = WPA-Personal
+      wpa_key_mgmt=WPA-PSK
+
+      # CCMP = AES in Counter mode with CBC-MAC (CCMP-128)
+      rsn_pairwise=CCMP
     '';
   };
 }

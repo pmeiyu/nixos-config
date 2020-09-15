@@ -27,13 +27,11 @@ in {
       enable = true;
       interface = cfg.interface;
       ssid = cfg.ssid;
-      hwMode = "a";
-      channel = 40;
-      countryCode = "US";
+      hwMode = "g";
+      channel = 7;
+      countryCode = null;
       wpaPassphrase = cfg.password;
       extraConfig = ''
-        ieee80211ac=1
-
         # QoS
         wmm_enabled=1
 
