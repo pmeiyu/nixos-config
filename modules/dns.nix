@@ -34,6 +34,7 @@ in {
         require_dnssec = cfg.dnssec.enable;
         require_nolog = true;
         require_nofilter = true;
+        force_tcp = cfg.tcp-upstream;
         fallback_resolver = "9.9.9.9:53";
         sources.public-resolvers = {
           urls = [
