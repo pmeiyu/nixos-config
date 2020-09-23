@@ -111,10 +111,8 @@
 
   services.printing.enable = true;
 
-  # Virtualization
   virtualisation.libvirtd.enable = true;
-  security.wrappers.spice-client-glib-usb-acl-helper.source =
-    "${pkgs.spice_gtk}/bin/spice-client-glib-usb-acl-helper";
+  virtualisation.spiceUSBRedirection.enable = true;
 
   services.guix = {
     enable = true;
