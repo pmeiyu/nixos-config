@@ -14,6 +14,7 @@ in {
           Whether the upstream queries use TCP only for transport.
         '';
       };
+      block.ipv6 = mkEnableOption "Do not resolve IPv6 record.";
       block.ad = mkEnableOption "Block ad.";
       block.fake-news = mkEnableOption "Block fake news.";
       block.gambling = mkEnableOption "Block gambling.";
@@ -34,6 +35,7 @@ in {
         require_dnssec = cfg.dnssec.enable;
         require_nolog = true;
         require_nofilter = true;
+        block_ipv6 = cfg.block.ipv6;
         force_tcp = cfg.tcp-upstream;
         fallback_resolver = "9.9.9.9:53";
         sources.public-resolvers = {
