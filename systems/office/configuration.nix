@@ -13,6 +13,7 @@
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
   my.gnome-flashback.enable = true;
+  my.monitor.enable = true;
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
@@ -80,7 +81,10 @@
   ## Programs
 
   programs.adb.enable = true;
+  programs.bandwhich.enable = true;
   programs.thefuck.enable = true;
+  programs.wireshark.enable = true;
+  programs.zmap.enable = true;
 
   environment.systemPackages = with pkgs; [
     bandwhich
@@ -89,6 +93,7 @@
     nethogs
     ngrep
     qemu
+    tldr
 
     # GUI
     arc-icon-theme
@@ -108,6 +113,10 @@
   };
 
   services.xserver.windowManager.stumpwm.enable = true;
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "i3";
+  };
 
   services.printing.enable = true;
 
@@ -134,6 +143,11 @@
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
+    settings = {
+      mysqld = {
+        innodb_strict_mode = 0;
+      };
+    };
   };
   services.postgresql.enable = true;
   services.redis.enable = true;
