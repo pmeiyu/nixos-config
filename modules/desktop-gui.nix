@@ -72,7 +72,7 @@ in {
       extraPackages = with pkgs; [ swaybg swayidle swaylock xwayland ];
       extraSessionCommands = ''
         # Load environment variables from login shell.
-        if [ -n "$__USER_PROFILE_SOURCED" ]; then
+        if [ -z "$__USER_PROFILE_SOURCED" ]; then
             xsession_tmp=`mktemp /tmp/xsession-env-XXXXXX`
             zsh --login -c "/bin/sh -c 'export -p' > $xsession_tmp"
             source $xsession_tmp
