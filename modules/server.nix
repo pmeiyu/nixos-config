@@ -14,6 +14,8 @@ in {
     boot.loader.grub.configurationLimit = mkDefault 2;
     boot.loader.systemd-boot.configurationLimit = mkDefault 2;
 
+    environment.noXlibs = true;
+
     networking.firewall = {
       enable = true;
       allowPing = true;
