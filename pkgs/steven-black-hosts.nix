@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "steven-black-hosts";
-  version = "2.6.22";
+  version = "3.1.1";
 
   src = fetchFromGitHub {
     owner = "StevenBlack";
     repo = "hosts";
     rev = version;
-    sha256 = "0nhh37khgkmgpqv9126qji2q0f1ha0000sj948jj28al4ig48cxh";
+    sha256 = "0iinwza10094gy5r2wirdpyvg3akcwwvrdvhvvdvid9wrxrgb3hr";
   };
 
   buildPhase = ''
