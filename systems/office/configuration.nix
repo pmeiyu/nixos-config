@@ -27,11 +27,6 @@
 
   system.autoUpgrade.enable = true;
 
-  nix.binaryCaches = lib.mkForce [
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
-    "https://cache.nixos.org/"
-  ];
-
   nix.maxJobs = 8;
 
   ## Boot loader
@@ -75,7 +70,6 @@
     '';
   };
 
-  networking.usePredictableInterfaceNames = false;
   networking.interfaces.eth0.mtu = 1492;
 
   ## Programs
@@ -87,10 +81,8 @@
   programs.zmap.enable = true;
 
   environment.systemPackages = with pkgs; [
-    bandwhich
     goaccess
     httpie
-    nethogs
     ngrep
     qemu
     tldr
@@ -106,11 +98,6 @@
   ## Services
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
-  services.btrfs.autoScrub = {
-    enable = true;
-    fileSystems = [ "/" ];
-  };
 
   services.xserver.windowManager.stumpwm.enable = true;
   services.xrdp = {

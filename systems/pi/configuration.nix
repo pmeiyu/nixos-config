@@ -15,16 +15,10 @@
 
   my.deluge.enable = true;
   my.desktop.enable = true;
-  my.dns.ipset.enable = true;
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
   my.weechat.enable = true;
-
-  ## Nix
-
-  nix.binaryCaches =
-    [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/" ];
 
   ## Boot loader
 

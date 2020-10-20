@@ -10,25 +10,31 @@ in {
   config = mkIf cfg.enable {
     my.common.enable = true;
     my.dns = {
-      enable = true;
-      block.ad = true;
-      dnsmasq-china-list.enable = true;
+      enable = mkDefault true;
+      block.ad = mkDefault true;
+      dnsmasq-china-list.enable = mkDefault true;
+      ipset.enable = mkDefault true;
     };
     my.emacs.enable = true;
 
     ## Nix
 
-    system.stateVersion = lib.mkDefault "20.09";
+    system.stateVersion = mkDefault "20.09";
+
+    nix.binaryCaches = lib.mkForce [
+      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
+      "https://cache.nixos.org/"
+    ];
 
     system.autoUpgrade = {
-      enable = lib.mkDefault false;
-      channel = lib.mkDefault "https://nixos.org/channels/nixos-unstable";
+      enable = mkDefault false;
+      channel = mkDefault "https://nixos.org/channels/nixos-unstable";
     };
 
     nix.gc = {
-      automatic = lib.mkDefault true;
-      dates = lib.mkDefault "weekly";
-      options = lib.mkDefault "--delete-older-than 30d";
+      automatic = mkDefault true;
+      dates = mkDefault "weekly";
+      options = mkDefault "--delete-older-than 30d";
     };
 
     nix.trustedUsers = [ "root" "@wheel" ];
@@ -45,6 +51,8 @@ in {
     boot.kernelParams = [ "boot.shell_on_fail" ];
 
     ## Hardware
+
+    powerManagement.cpuFreqGovernor = mkDefault "powersave";
 
     sound.enable = true;
     hardware.pulseaudio.enable = true;
@@ -63,7 +71,9 @@ in {
     networking.networkmanager.enable = true;
     system.nssDatabases.hosts = [ "mdns" ];
 
-    # Programs
+    networking.usePredictableInterfaceNames = false;
+
+    ## Programs
     programs.gnupg.agent.enable = true;
     programs.gnupg.agent.enableSSHSupport = true;
     programs.zsh.ohMyZsh = {
@@ -88,6 +98,7 @@ in {
       gotify-cli
       imagemagick7
       iptables
+      iw
       jq
       libnotify
       lolcat
@@ -123,6 +134,7 @@ in {
 
     ## Services
 
+    services.btrfs.autoScrub.enable = true;
     services.fstrim.enable = true;
 
     # Smart card
