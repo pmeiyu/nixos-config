@@ -58,7 +58,11 @@ in {
 
     ## Services
 
-    services.xserver.enable = true;
+    services.xserver = {
+      enable = true;
+      xkbOptions = "ctrl:nocaps";
+    };
+
     services.xserver.displayManager.gdm = {
       enable = true;
       autoSuspend = mkDefault false;
