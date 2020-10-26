@@ -54,6 +54,8 @@ in {
 
     powerManagement.cpuFreqGovernor = mkDefault "powersave";
 
+    services.logind.lidSwitchExternalPower = "lock";
+
     sound.enable = true;
     hardware.pulseaudio.enable = true;
 
