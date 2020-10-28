@@ -21,6 +21,7 @@
     enable = true;
     enable-home = true;
   };
+  my.virtualization.enable = true;
   my.weechat.enable = true;
 
   ## Nix
@@ -106,9 +107,6 @@
   };
 
   services.printing.enable = true;
-
-  virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
 
   services.guix = {
     enable = true;

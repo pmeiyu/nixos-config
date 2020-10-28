@@ -22,6 +22,7 @@
     ./server.nix
     ./snapper.nix
     ./tun2socks.nix
+    ./virtualization.nix
     ./vlmcsd.nix
     ./weechat.nix
     ./yubikey.nix
