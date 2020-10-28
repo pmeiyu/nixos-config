@@ -17,6 +17,7 @@
     ./monitor.nix
     ./network.nix
     ./nginx.nix
+    ./overlay-networks.nix
     ./raspberry-pi
     ./samba.nix
     ./server.nix
