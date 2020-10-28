@@ -1,5 +1,6 @@
-let pkgs = import <nixpkgs> { };
-in with pkgs; {
+{ pkgs ? import <nixpkgs> { } }:
+
+with pkgs; {
   data = import ./data;
   dnsmasq-china-list = callPackage ./dnsmasq-china-list.nix { };
   gfwlist = callPackage ./gfwlist.nix { };

@@ -5,5 +5,5 @@
     ./modules
   ];
 
-  nixpkgs.config.packageOverrides = pkgs: import ./pkgs;
+  nixpkgs.config.packageOverrides = pkgs: import ./pkgs { pkgs = pkgs; };
 }
