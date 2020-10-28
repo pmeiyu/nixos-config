@@ -14,7 +14,9 @@
     ./gotify.nix
     ./guix
     ./hotspot.nix
+    ./hydroxide.nix
     ./monitor.nix
+    ./mpd.nix
     ./network.nix
     ./nginx.nix
     ./overlay-networks.nix
@@ -22,6 +24,7 @@
     ./samba.nix
     ./server.nix
     ./snapper.nix
+    ./syncthing.nix
     ./tun2socks.nix
     ./virtualization.nix
     ./vlmcsd.nix

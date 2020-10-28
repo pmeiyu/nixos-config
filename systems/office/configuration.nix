@@ -3,9 +3,9 @@
 {
   imports = [
     ../..
+    ../../snippets/development.nix
     ./hardware-configuration.nix
     ./private.nix
-    ./development.nix
   ];
 
   my.bluetooth.enable = true;
@@ -14,6 +14,7 @@
   my.desktop.gui.enable = true;
   my.gnome-flashback.enable = true;
   my.monitor.enable = true;
+  my.mpd.enable = true;
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;
@@ -21,6 +22,7 @@
     enable = true;
     enable-home = true;
   };
+  my.syncthing.enable = true;
   my.virtualization.enable = true;
   my.weechat.enable = true;
 
@@ -75,7 +77,6 @@
 
   ## Programs
 
-  programs.adb.enable = true;
   programs.bandwhich.enable = true;
   programs.thefuck.enable = true;
   programs.wireshark.enable = true;
@@ -83,17 +84,12 @@
 
   environment.systemPackages = with pkgs; [
     goaccess
-    httpie
-    ngrep
-    qemu
     tldr
 
     # GUI
     arc-icon-theme
     arc-theme
     gnome3.gnome-tweaks
-    sqlitebrowser
-    virtmanager
   ];
 
   ## Services
@@ -125,32 +121,22 @@
     extraConfig = { Datastore.StorageMax = "100GB"; };
   };
 
-  services.mysql = {
-    enable = true;
-    package = pkgs.mariadb;
-    settings = {
-      mysqld = {
-        innodb_strict_mode = 0;
-      };
+  services.mysql.settings = {
+    mysqld = {
+      innodb_strict_mode = 0;
     };
   };
-  services.postgresql.enable = true;
-  services.redis.enable = true;
 
-  services.syncthing = {
+  services.zookeeper.enable = true;
+
+  # services.kubernetes = {
+  #   roles = [ "master" "node" ];
+  #   masterAddress = "localhost";
+  #   kubelet.extraOpts = "--fail-swap-on=false";
+  # };
+
+  virtualisation.docker = {
     enable = true;
-    user = "meiyu";
-    group = config.users.users.meiyu.group;
-    dataDir = config.users.users.meiyu.home;
-    openDefaultPorts = true;
-  };
-
-  systemd.services.mpd = {
-    description = "mpd";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon --stdout";
-      User = "meiyu";
-    };
+    extraOptions = "--registry-mirror=https://registry.docker-cn.com";
   };
 }
