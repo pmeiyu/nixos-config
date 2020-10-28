@@ -110,6 +110,8 @@ in {
       neofetch
       nethogs
       nftables
+      ngrep
+      nixfmt
       ntfsprogs
       parallel
       parted

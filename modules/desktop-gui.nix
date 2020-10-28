@@ -34,9 +34,12 @@ in {
       ibus.engines = with pkgs.ibus-engines; [ rime ];
     };
 
+    ## Programs
+
+    programs.adb.enable = true;
+
     environment.systemPackages = with pkgs; [
       brightnessctl
-      nixfmt
 
       alacritty
       evince
@@ -46,11 +49,14 @@ in {
       keepassxc
       mako
       mpv
+      networkmanagerapplet
       rofi
       screenkey
       slurp
+      sqlitebrowser
       vlc
       waybar
+      waypipe
       wev
       wf-recorder
       wl-clipboard

@@ -150,6 +150,8 @@ in {
       iptables
       lsof
       lzip
+      home-manager
+      ncdu
       nmap
       openssl
       psmisc
