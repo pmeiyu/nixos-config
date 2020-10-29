@@ -32,7 +32,10 @@ in {
       };
       max-jobs = mkOption {
         type = types.int;
-        default = config.nix.maxJobs;
+        default = if (builtins.typeOf config.nix.maxJobs) == "int" then
+          config.nix.maxJobs
+        else
+          4;
         description = "Max number of jobs.";
       };
       publish = {
