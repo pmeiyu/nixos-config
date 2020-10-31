@@ -50,7 +50,8 @@ in {
       virtualHosts."${cfg.domain}" = {
         locations."/guix/" = {
           extraConfig = ''
-            proxy_pass https://${cfg.upstream}/;
+            set $upstream "https://${cfg.upstream}/";
+            proxy_pass $upstream;
             proxy_ssl_server_name on;
             proxy_ssl_name ${cfg.upstream};
             proxy_set_header Host ${cfg.upstream};
