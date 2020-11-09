@@ -154,6 +154,12 @@ in {
         ipset create -exist gfwlist4 hash:ip family inet
         ipset create -exist gfwlist6 hash:ip family inet6
       '';
+      postStop = optionalString cfg.ipset.enable ''
+        ipset flush china4
+        ipset flush china6
+        ipset flush gfwlist4
+        ipset flush gfwlist6
+      '';
     };
   };
 }
