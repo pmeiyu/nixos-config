@@ -104,7 +104,7 @@ in {
     systemd.services.guix-daemon = let
       substitute-urls = "${
           optionalString (cfg.mirror.enable && cfg.mirror.set-as-substitute)
-          "http://${cfg.mirror.domain}/guix "
+            "http://${cfg.mirror.domain} "
         }${cfg.substitute-urls}";
     in {
       description = "Build daemon for GNU Guix";

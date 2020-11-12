@@ -18,7 +18,7 @@ in {
       };
       domain = mkOption {
         type = types.str;
-        default = "mirror.lan";
+        default = "guix.mirror.lan";
         description = "Domain name.";
       };
       upstream = mkOption {
@@ -38,19 +38,20 @@ in {
     services.nginx = {
       enable = true;
       proxyResolveWhileRunning = true;
+      resolver = { addresses = [ "[::1]" ]; };
       commonHttpConfig = ''
         # cache for guix mirror
         proxy_cache_path ${cfg.cache-directory}
             levels=2
-            inactive=30d              # remove inactive keys after this period
-            keys_zone=guix-mirror:8m  # about 8 thousand keys per megabyte
-            max_size=50g;             # total cache data size
+            inactive=60d                # Remove inactive keys after this period.
+            keys_zone=guix-mirror:10m   # About 8 thousand keys per megabyte.
+            max_size=50g;               # Total cache data size.
       '';
 
       virtualHosts."${cfg.domain}" = {
-        locations."/guix/" = {
+        locations."/" = {
           extraConfig = ''
-            set $upstream "https://${cfg.upstream}/";
+            set $upstream "https://${cfg.upstream}";
             proxy_pass $upstream;
             proxy_ssl_server_name on;
             proxy_ssl_name ${cfg.upstream};
@@ -58,16 +59,16 @@ in {
 
             proxy_cache guix-mirror;
             proxy_cache_valid 200 60d;
-            proxy_cache_valid any 3m;
+            proxy_cache_valid any 0;
             proxy_connect_timeout 60s;
-            proxy_ignore_client_abort on;
-
+            proxy_read_timeout 60s;
+            proxy_send_timeout 60s;
             client_body_buffer_size 256k;
+            gzip off;
 
+            proxy_ignore_client_abort on;
             proxy_hide_header Set-Cookie;
             proxy_ignore_headers Set-Cookie;
-
-            gzip off;
           '';
         };
         extraConfig = ''
