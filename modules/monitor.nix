@@ -84,10 +84,18 @@ in {
     services.telegraf = mkIf cfg.client.enable {
       enable = true;
       extraConfig = {
+        agent = {
+          interval = "30s";
+          collection_jitter = "1s";
+          flush_interval = "60s";
+          flush_jitter = "10s";
+        };
         outputs = {
           influxdb = {
             urls = [ cfg.client.outputs.influxdb-url ];
             database = "telegraf";
+            timeout = "30s";
+            content_encoding = "gzip";
           };
         };
         inputs = {
