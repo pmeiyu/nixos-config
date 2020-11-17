@@ -25,6 +25,7 @@
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
+    options = [ "compress=zstd" "noatime" ];
   };
 
   boot.initrd.luks.devices."swap" = {

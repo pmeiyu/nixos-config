@@ -45,11 +45,12 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/0d12b8e1-8d19-4543-8b45-b18628692e8b";
     fsType = "btrfs";
+    options = [ "compress=zstd" "noatime" ];
   };
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/05d69054-3fd5-4708-9c32-344309331c48";
     fsType = "btrfs";
-    # options = [ "subvol=home" ];
+    options = [ "compress=zstd" "noatime" ];
   };
 
   swapDevices = [{
