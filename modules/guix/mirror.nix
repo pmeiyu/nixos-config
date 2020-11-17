@@ -77,7 +77,7 @@ in {
         '';
       };
     };
-    system.activationScripts.my-nginx = ''
+    system.activationScripts.my-guix-mirror = ''
       mkdir -p ${cfg.cache-directory} && \
       chown nginx:nginx ${cfg.cache-directory}
     '';
