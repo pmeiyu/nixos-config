@@ -12,7 +12,6 @@
   my.deluge.enable = true;
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
-  my.gnome-flashback.enable = true;
   my.monitor.enable = true;
   my.mpd.enable = true;
   my.network.prefer-ipv4 = true;
@@ -96,7 +95,10 @@
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+  services.xserver.desktopManager.gnome3.enable = true;
+
   services.xserver.windowManager.stumpwm.enable = true;
+
   services.xrdp = {
     enable = true;
     defaultWindowManager = "i3";
