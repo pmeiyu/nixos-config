@@ -21,6 +21,9 @@
   hardware.cpu.intel.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;
 
+  # GPU
+  services.xserver.videoDrivers = [ "modesetting" ];
+
   # Intel GPU Hardware Acceleration
   hardware.opengl.extraPackages = with pkgs; [
     intel-media-driver
@@ -28,6 +31,14 @@
     vaapiIntel
     vaapiVdpau
   ];
+
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.pulseaudio = {
+    enable = true;
+    package = pkgs.pulseaudioFull;
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
+  };
 
   hardware.trackpoint = {
     enable = true;
