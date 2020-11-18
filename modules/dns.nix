@@ -88,25 +88,25 @@ in {
         ${optionalString cfg.block.ad ''
           access-control-view: 0.0.0.0 block-ad
           access-control-view: :: block-ad
-          include: ${pkgs.steven-black-hosts}/unbound/ad.conf
+          include: ${pkgs.hosts}/unbound/block-ad.conf
         ''}
 
         ${optionalString cfg.block.fake-news ''
           access-control-view: 0.0.0.0 block-fakenews
           access-control-view: :: block-fakenews
-          include: ${pkgs.steven-black-hosts}/unbound/fakenews.conf
+          include: ${pkgs.hosts}/unbound/block-fakenews.conf
         ''}
 
         ${optionalString cfg.block.gambling ''
           access-control-view: 0.0.0.0 block-gambling
           access-control-view: :: block-gambling
-          include: ${pkgs.steven-black-hosts}/unbound/gambling.conf
+          include: ${pkgs.hosts}/unbound/block-gambling.conf
         ''}
 
         ${optionalString cfg.block.social ''
           access-control-view: 0.0.0.0 block-social
           access-control-view: :: block-social
-          include: ${pkgs.steven-black-hosts}/unbound/social.conf
+          include: ${pkgs.hosts}/unbound/block-social.conf
         ''}
 
         ${optionalString cfg.dnsmasq-china-list.enable ''
