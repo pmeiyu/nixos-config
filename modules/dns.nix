@@ -65,7 +65,7 @@ in {
       enableRootTrustAnchor = cfg.dnssec.enable;
       extraConfig = ''
         cache-min-ttl: 600
-        cache-max-negative-ttl: 3
+        cache-max-negative-ttl: 60
         do-not-query-localhost: no
 
         domain-insecure: "home"
@@ -86,26 +86,26 @@ in {
         ''}
 
         ${optionalString cfg.block.ad ''
-          access-control-view: 0.0.0.0 block-ad
-          access-control-view: :: block-ad
+          access-control-view: 127.0.0.0/8 block-ad
+          access-control-view: ::/8 block-ad
           include: ${pkgs.hosts}/unbound/block-ad.conf
         ''}
 
         ${optionalString cfg.block.fake-news ''
-          access-control-view: 0.0.0.0 block-fakenews
-          access-control-view: :: block-fakenews
+          access-control-view: 127.0.0.0/8 block-fakenews
+          access-control-view: ::/8 block-fakenews
           include: ${pkgs.hosts}/unbound/block-fakenews.conf
         ''}
 
         ${optionalString cfg.block.gambling ''
-          access-control-view: 0.0.0.0 block-gambling
-          access-control-view: :: block-gambling
+          access-control-view: 127.0.0.0/8 block-gambling
+          access-control-view: ::/8 block-gambling
           include: ${pkgs.hosts}/unbound/block-gambling.conf
         ''}
 
         ${optionalString cfg.block.social ''
-          access-control-view: 0.0.0.0 block-social
-          access-control-view: :: block-social
+          access-control-view: 127.0.0.0/8 block-social
+          access-control-view: ::/8 block-social
           include: ${pkgs.hosts}/unbound/block-social.conf
         ''}
 
