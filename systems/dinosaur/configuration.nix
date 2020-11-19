@@ -85,9 +85,9 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ ];
-    interfaces."eth*".allowedTCPPorts = [ 445 ];
+    interfaces."eth+".allowedTCPPorts = [ 445 ];
     interfaces.wlan0.allowedTCPPorts = [ 445 3389 ];
-    interfaces."tinc*".allowedTCPPorts = [ 445 3389 ];
+    interfaces."tinc+".allowedTCPPorts = [ 445 3389 ];
     interfaces.virbr0.allowedTCPPorts = [ 445 ];
 
     extraPackages = [ pkgs.iproute pkgs.ipset ];
