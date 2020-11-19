@@ -166,8 +166,6 @@ in {
       zstd
 
       my-python
-
-      termite # Install terminfo file for termite.
     ];
   };
 }
