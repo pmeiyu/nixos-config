@@ -11,7 +11,7 @@ in {
         type = types.bool;
         default = true;
         description = ''
-          Whether the upstream queries use TCP only for transport.
+          Whether to query upstream with TCP.
         '';
       };
       block.ipv6 = mkEnableOption "Do not resolve IPv6 record.";
@@ -59,7 +59,7 @@ in {
 
     services.unbound = {
       enable = true;
-      interfaces = [ "127.0.0.1@55" "::1@55" ];
+      interfaces = [ "127.0.0.1@53" "::1@53" ];
       allowedAccess = [ ];
       forwardAddresses = [ ];
       enableRootTrustAnchor = cfg.dnssec.enable;
@@ -109,13 +109,9 @@ in {
           include: ${pkgs.hosts}/unbound/block-social.conf
         ''}
 
-        ${optionalString cfg.dnsmasq-china-list.enable ''
-          include: ${pkgs.dnsmasq-china-list}/unbound/*.conf
-        ''}
-
         forward-zone:
           name: .
-          forward-addr: ::1@54
+          forward-addr: ::1@55
       '';
     };
 
@@ -123,21 +119,28 @@ in {
       enable = true;
       resolveLocalQueries = false;
       extraConfig = ''
+        port=55
         except-interface=virbr0
         bind-dynamic
 
-        server=::1#55
+        server=::1#54
 
         no-resolv
         log-queries
         log-dhcp
-        cache-size=1000
-        min-cache-ttl=600
         local=/lan/
         domain=lan
         expand-hosts
 
+        # Disable cache
+        cache-size=0
+        min-cache-ttl=0
+
         addn-hosts=/etc/hosts.local
+
+        ${optionalString cfg.dnsmasq-china-list.enable ''
+          conf-dir=${pkgs.dnsmasq-china-list}/dnsmasq/,*.conf
+        ''}
 
         ${optionalString cfg.ipset.enable ''
           conf-dir=${pkgs.dnsmasq-china-list}/dnsmasq-ipset/,*.conf

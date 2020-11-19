@@ -84,10 +84,10 @@ in {
       }];
     };
 
-    # services.unbound = {
-    #   interfaces = [ "10.10.0.1" ];
-    #   allowedAccess = [ "10.10.0.0/16" "fd00:10::/64" ];
-    # };
+    services.unbound = {
+      interfaces = [ "10.10.0.1" ];
+      allowedAccess = [ "10.10.0.0/16" "fd00:10::/64" ];
+    };
 
     networking.firewall = {
       interfaces."${cfg.interface}" = {
