@@ -23,12 +23,12 @@ in {
       allowedTCPPorts = [ 80 443 ];
       allowedUDPPorts = [ 443 ];
       extraCommands = ''
-        iptables -A OUTPUT -p tcp -m tcp --dport 25 -j REJECT
-        ip6tables -A OUTPUT -p tcp -m tcp --dport 25 -j REJECT
+        iptables -w -A OUTPUT -p tcp -m tcp --dport 25 -j REJECT
+        ip6tables -w -A OUTPUT -p tcp -m tcp --dport 25 -j REJECT
       '';
       extraStopCommands = ''
-        iptables -D OUTPUT -p tcp -m tcp --dport 25 -j REJECT
-        ip6tables -D OUTPUT -p tcp -m tcp --dport 25 -j REJECT
+        iptables -w -D OUTPUT -p tcp -m tcp --dport 25 -j REJECT
+        ip6tables -w -D OUTPUT -p tcp -m tcp --dport 25 -j REJECT
       '';
     };
   };

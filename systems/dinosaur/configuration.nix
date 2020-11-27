@@ -92,22 +92,22 @@
 
     extraPackages = [ pkgs.iproute pkgs.ipset ];
     extraCommands = ''
-      ip6tables -I INPUT -p esp -j ACCEPT
+      ip6tables -w -I INPUT -p esp -j ACCEPT
 
       ipset create -exist china4 hash:ip family inet
       ipset create -exist china6 hash:ip family inet6
-      iptables -I PREROUTING -t mangle -m set --match-set china4 dst -j MARK --set-mark 100
-      ip6tables -I PREROUTING -t mangle -m set --match-set china6 dst -j MARK --set-mark 100
+      iptables -w -I PREROUTING -t mangle -m set --match-set china4 dst -j MARK --set-mark 100
+      ip6tables -w -I PREROUTING -t mangle -m set --match-set china6 dst -j MARK --set-mark 100
       ip rule add fwmark 100 lookup main priority 100
       ip -6 rule add fwmark 100 lookup main priority 100
     '';
     extraStopCommands = ''
-      ip6tables -D INPUT -p esp -j ACCEPT
+      ip6tables -w -D INPUT -p esp -j ACCEPT
 
       ipset flush china4
       ipset flush china6
-      iptables -D PREROUTING -t mangle -m set --match-set china4 dst -j MARK --set-mark 100
-      ip6tables -D PREROUTING -t mangle -m set --match-set china6 dst -j MARK --set-mark 100
+      iptables -w -D PREROUTING -t mangle -m set --match-set china4 dst -j MARK --set-mark 100
+      ip6tables -w -D PREROUTING -t mangle -m set --match-set china6 dst -j MARK --set-mark 100
       ip rule delete fwmark 100 lookup main priority 100
       ip -6 rule delete fwmark 100 lookup main priority 100
     '';

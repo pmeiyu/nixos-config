@@ -52,10 +52,10 @@
   networking.firewall = {
     enable = true;
     extraCommands = ''
-      ip6tables -I INPUT -p esp -j ACCEPT
+      ip6tables -w -I INPUT -p esp -j ACCEPT
     '';
     extraStopCommands = ''
-      ip6tables -D INPUT -p esp -j ACCEPT
+      ip6tables -w -D INPUT -p esp -j ACCEPT
     '';
     interfaces.eth0 = {
       allowedTCPPorts = [ 445 ];
