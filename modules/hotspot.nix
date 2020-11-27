@@ -94,11 +94,16 @@ in {
         allowedTCPPorts = [ 53 ];
         allowedUDPPorts = [ 53 ];
       };
-    };
-
-    networking.nat = {
-      enable = true;
-      internalIPs = [ "10.10.0.0/24" ];
+      extraCommands = ''
+        iptables -w -t nat -A POSTROUTING -s 10.10.0.0/24 -j MASQUERADE
+        iptables -w -A FORWARD -i ${cfg.interface} -s 10.10.0.0/24 -j ACCEPT
+        iptables -w -A FORWARD -o ${cfg.interface} -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      '';
+      extraStopCommands = ''
+        iptables -w -t nat -D POSTROUTING -s 10.10.0.0/24 -j MASQUERADE
+        iptables -w -D FORWARD -i ${cfg.interface} -s 10.10.0.0/24 -j ACCEPT
+        iptables -w -D FORWARD -o ${cfg.interface} -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      '';
     };
   };
 }
