@@ -27,8 +27,6 @@ in {
       "fs.inotify.max_user_watches" = "100000";
       "net.core.default_qdisc" = "fq";
       "net.ipv4.tcp_congestion_control" = "bbr";
-      "net.ipv4.ip_forward" = "1";
-      "net.ipv6.conf.all.forwarding" = "1";
     };
 
     ## Environment

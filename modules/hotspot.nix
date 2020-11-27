@@ -23,6 +23,11 @@ in {
   };
 
   config = mkIf cfg.enable {
+    boot.kernel.sysctl = {
+      "net.ipv4.ip_forward" = "1";
+      "net.ipv6.conf.all.forwarding" = "1";
+    };
+
     services.hostapd = {
       enable = true;
       interface = cfg.interface;
