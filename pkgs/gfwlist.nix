@@ -23,8 +23,13 @@ stdenv.mkDerivation rec {
         }
     }' | sort | uniq >>build/gfwlist.domains.txt
 
-    mkdir -p build/dnsmasq-ipset
-    awk '{print "ipset=/" $0 "/gfwlist4,gfwlist6"}' build/gfwlist.domains.txt >build/dnsmasq-ipset/gfwlist.conf
+    awk '{print "ipset=/" $0 "/gfwlist4,gfwlist6"}' \
+        build/gfwlist.domains.txt >build/gfwlist.dnsmasq.ipset.conf
+
+    awk '{print "nameserver /" $0 "/gfwlist"}' \
+        build/gfwlist.domains.txt >build/gfwlist.smartdns.conf
+    awk '{print "ipset /" $0 "/gfwlist4"}' \
+        build/gfwlist.domains.txt >build/gfwlist.smartdns.ipset.conf
   '';
 
   installPhase = ''
