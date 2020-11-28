@@ -54,6 +54,7 @@ in {
       screenkey
       slurp
       sqlitebrowser
+      termite
       vlc
       waybar
       waypipe

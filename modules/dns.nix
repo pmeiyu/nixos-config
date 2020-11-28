@@ -104,13 +104,13 @@ in {
           "https://cloudflare-dns.com/dns-query -group global gfwlist -exclude-default-group"
           "https://dns.tuna.tsinghua.edu.cn:8443/resolve -group china -exclude-default-group"
         ];
-        speed-check-mode = "ping,tcp:80";
-        prefetch-domain = false;
-        serve-expired = true;
+        speed-check-mode = mkDefault "ping,tcp:80";
+        prefetch-domain = mkDefault false;
+        serve-expired = mkDefault true;
         force-AAAA-SOA = cfg.block.ipv6;
-        dualstack-ip-selection = !cfg.block.ipv6;
-        log-level = "warn";
-        audit-enable = cfg.log.enable;
+        dualstack-ip-selection = mkDefault (!cfg.block.ipv6);
+        log-level = mkDefault "warn";
+        audit-enable = mkDefault cfg.log.enable;
         conf-file = optionals cfg.dnsmasq-china-list.enable [
           "${pkgs.dnsmasq-china-list}/smartdns/accelerated-domains.china.smartdns.conf"
           "${pkgs.dnsmasq-china-list}/smartdns/apple.china.smartdns.conf"
