@@ -7,55 +7,21 @@ in {
     my.dns = {
       enable = mkEnableOption "Enable local DNS server.";
       dnssec.enable = mkEnableOption "Enable DNSSEC.";
-      tcp-upstream = mkOption {
-        type = types.bool;
-        default = true;
-        description = ''
-          Whether to query upstream with TCP.
-        '';
-      };
       block.ipv6 = mkEnableOption "Do not resolve IPv6 record.";
       block.ad = mkEnableOption "Block ad.";
       block.fake-news = mkEnableOption "Block fake news.";
       block.gambling = mkEnableOption "Block gambling.";
       block.social = mkEnableOption "Block social networks.";
       dnsmasq-china-list.enable = mkEnableOption "Enable dnsmasq-china-list.";
+      gfwlist.enable = mkEnableOption "Enable gfwlist.";
       ipset.enable = mkEnableOption "Enable ipset.";
+      log.enable = mkEnableOption "Enable log.";
     };
   };
 
   config = mkIf cfg.enable {
     networking.nameservers = [ "::1" ];
     networking.networkmanager.dns = mkDefault "none";
-
-    services.dnscrypt-proxy2 = {
-      enable = true;
-      settings = {
-        listen_addresses = [ "[::1]:54" ];
-        require_dnssec = cfg.dnssec.enable;
-        require_nolog = true;
-        require_nofilter = true;
-        block_ipv6 = cfg.block.ipv6;
-        force_tcp = cfg.tcp-upstream;
-        fallback_resolver = "9.9.9.9:53";
-        sources.public-resolvers = {
-          urls = [
-            "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md"
-            "https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md"
-          ];
-          cache_file = "public-resolvers.md";
-          minisign_key =
-            "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-          refresh_delay = 72;
-        };
-      };
-    };
-    systemd.services.dnscrypt-proxy2 = {
-      serviceConfig = {
-        Restart = "always";
-        RestartSec = "120";
-      };
-    };
 
     services.unbound = {
       enable = true;
@@ -80,10 +46,6 @@ in {
         private-address: 192.168.0.0/16
         private-address: fd00::/8
         private-address: fe80::/10
-
-        ${optionalString cfg.tcp-upstream ''
-          tcp-upstream: yes
-        ''}
 
         ${optionalString cfg.block.ad ''
           access-control-view: 127.0.0.0/8 block-ad
@@ -111,53 +73,68 @@ in {
 
         forward-zone:
           name: .
-          forward-addr: ::1@55
+          forward-addr: ::1@54
       '';
     };
 
-    services.dnsmasq = {
+    services.smartdns = {
       enable = true;
-      resolveLocalQueries = false;
-      extraConfig = ''
-        port=55
-        except-interface=virbr0
-        bind-dynamic
-
-        server=::1#54
-
-        no-resolv
-        log-queries
-        log-dhcp
-        local=/lan/
-        domain=lan
-        expand-hosts
-
-        # Disable cache
-        cache-size=0
-        min-cache-ttl=0
-
-        addn-hosts=/etc/hosts.local
-
-        ${optionalString cfg.dnsmasq-china-list.enable ''
-          conf-dir=${pkgs.dnsmasq-china-list}/dnsmasq/,*.conf
-        ''}
-
-        ${optionalString cfg.ipset.enable ''
-          conf-dir=${pkgs.dnsmasq-china-list}/dnsmasq-ipset/,*.conf
-          conf-dir=${pkgs.gfwlist}/dnsmasq-ipset/,*.conf
-        ''}
-      '';
+      settings = {
+        bind = [ "[::1]:54" ];
+        server = [
+          # Tsinghua
+          "101.6.6.6:5353 -group china -exclude-default-group"
+          # USTC
+          "202.38.93.153:5353 -group china -exclude-default-group"
+          "202.141.162.123:5353 -group china -exclude-default-group"
+          "202.141.178.13:5353 -group china -exclude-default-group"
+        ];
+        server-tls = [
+          "1.1.1.1:853 -group global gfwlist"
+          "8.8.8.8:853 -group global gfwlist"
+          "9.9.9.9:853 -group global gfwlist"
+          # alidns.com
+          "223.5.5.5:853 -group china -exclude-default-group"
+          # dns.pub
+          "119.29.29.29:853 -group china -exclude-default-group"
+          # dns.sb
+          "185.222.222.222:853 -group global"
+        ];
+        server-https = [
+          "https://cloudflare-dns.com/dns-query -group global gfwlist -exclude-default-group"
+          "https://dns.tuna.tsinghua.edu.cn:8443/resolve -group china -exclude-default-group"
+        ];
+        speed-check-mode = "ping,tcp:80";
+        prefetch-domain = false;
+        serve-expired = true;
+        force-AAAA-SOA = cfg.block.ipv6;
+        dualstack-ip-selection = !cfg.block.ipv6;
+        log-level = "warn";
+        audit-enable = cfg.log.enable;
+        conf-file = optionals cfg.dnsmasq-china-list.enable [
+          "${pkgs.dnsmasq-china-list}/smartdns/accelerated-domains.china.smartdns.conf"
+          "${pkgs.dnsmasq-china-list}/smartdns/apple.china.smartdns.conf"
+          "${pkgs.dnsmasq-china-list}/smartdns/google.china.smartdns.conf"
+        ] ++ optionals (cfg.dnsmasq-china-list.enable && cfg.ipset.enable) [
+          "${pkgs.dnsmasq-china-list}/smartdns-ipset/accelerated-domains.china.conf"
+          "${pkgs.dnsmasq-china-list}/smartdns-ipset/apple.china.conf"
+          "${pkgs.dnsmasq-china-list}/smartdns-ipset/google.china.conf"
+        ] ++ optionals cfg.gfwlist.enable
+          [ "${pkgs.gfwlist}/gfwlist.smartdns.conf" ]
+          ++ optionals (cfg.gfwlist.enable && cfg.ipset.enable)
+          [ "${pkgs.gfwlist}/gfwlist.smartdns.ipset.conf" ];
+      };
     };
 
-    systemd.services.dnsmasq = {
+    systemd.services.smartdns = mkIf cfg.ipset.enable {
       path = [ pkgs.ipset ];
-      preStart = optionalString cfg.ipset.enable ''
+      preStart = ''
         ipset create -exist china4 hash:ip family inet
         ipset create -exist china6 hash:ip family inet6
         ipset create -exist gfwlist4 hash:ip family inet
         ipset create -exist gfwlist6 hash:ip family inet6
       '';
-      postStop = optionalString cfg.ipset.enable ''
+      postStop = ''
         ipset flush china4
         ipset flush china6
         ipset flush gfwlist4

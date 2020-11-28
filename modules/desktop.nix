@@ -13,6 +13,7 @@ in {
       enable = mkDefault true;
       block.ad = mkDefault true;
       dnsmasq-china-list.enable = mkDefault true;
+      gfwlist.enable = mkDefault true;
       ipset.enable = mkDefault true;
     };
     my.emacs.enable = true;
