@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, upstream-server ? null }:
+{ lib, stdenv, fetchFromGitHub, upstream-server ? "114.114.114.114"}:
 
 stdenv.mkDerivation rec {
   pname = "dnsmasq-china-list";
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
 
   prePatch = lib.optionalString (!isNull upstream-server) ''
     substituteInPlace Makefile \
-       --replace 'SERVER=114.114.114.114' 'SERVER=${upstream-server}';
+        --replace 'SERVER=114.114.114.114' 'SERVER=${upstream-server}';
   '';
 
   buildPhase = ''
@@ -28,6 +28,12 @@ stdenv.mkDerivation rec {
     make dnsmasq
     mkdir -p build/dnsmasq
     cp -v *.dnsmasq.conf build/dnsmasq
+    cp -v bogus-nxdomain.china.conf build/dnsmasq
+
+    make smartdns
+    mkdir -p build/smartdns
+    cp -v *.smartdns.conf build/smartdns
+    sed -i 's|/${upstream-server}$|/china|' build/smartdns/*
 
     make unbound
     mkdir -p build/unbound
@@ -37,6 +43,11 @@ stdenv.mkDerivation rec {
     mkdir -p build/dnsmasq-ipset
     for i in accelerated-domains.china apple.china google.china; do
         awk '{print "ipset=/" $0 "/china4,china6"}' $i.raw.txt >build/dnsmasq-ipset/$i.conf
+    done
+
+    mkdir -p build/smartdns-ipset
+    for i in accelerated-domains.china apple.china google.china; do
+        awk '{print "ipset /" $0 "/china4"}' $i.raw.txt >build/smartdns-ipset/$i.conf
     done
   '';
 
