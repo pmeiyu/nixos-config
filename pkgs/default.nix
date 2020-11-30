@@ -2,8 +2,13 @@
 
 with pkgs; {
   data = import ./data;
-  dnsmasq-china-list = callPackage ./dnsmasq-china-list.nix { };
   gfwlist = callPackage ./gfwlist.nix { };
+  chinalist = callPackage ./dnsmasq-china-list.nix { format = "raw"; };
+  chinalist-smartdns = callPackage ./dnsmasq-china-list.nix {
+    format = "smartdns";
+    upstream-dns = "china";
+    ipset = true;
+  };
   go-shadowsocks2 = callPackage ./go-shadowsocks2.nix { };
   gost = callPackage ./gost.nix { };
   hosts = callPackage ./hosts.nix { };
