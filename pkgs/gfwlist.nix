@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ stdenv, fetchFromGitHub, format ? "raw", upstream-dns ? "8.8.8.8" }:
 
 stdenv.mkDerivation rec {
   pname = "gfwlist";
@@ -14,22 +14,32 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     mkdir -p build
 
-    base64 -d gfwlist.txt >build/gfwlist.txt
+    base64 -d gfwlist.txt >gfwlist.raw.txt
+    mv gfwlist.raw.txt gfwlist.txt
 
-    base64 -d gfwlist.txt | \
     awk '! /^\[|^!|^@|^\/|:|\/|%|*/ {
         if(match($0, /([0-9a-z-]+\.)+[a-z]+/)) {
             print substr($0, RSTART, RLENGTH)
         }
-    }' | sort | uniq >>build/gfwlist.domains.txt
+    }' gfwlist.txt | sort | uniq >gfwlist.domains.txt
 
-    awk '{print "ipset=/" $0 "/gfwlist4,gfwlist6"}' \
-        build/gfwlist.domains.txt >build/gfwlist.dnsmasq.ipset.conf
-
-    awk '{print "nameserver /" $0 "/gfwlist"}' \
-        build/gfwlist.domains.txt >build/gfwlist.smartdns.conf
-    awk '{print "ipset /" $0 "/gfwlist4"}' \
-        build/gfwlist.domains.txt >build/gfwlist.smartdns.ipset.conf
+    case ${format} in
+    raw)
+      cp gfwlist.txt gfwlist.domains.txt build/
+      ;;
+    dnsmasq)
+      awk '{print "server=/" $0 "/${upstream-dns}"}' \
+          gfwlist.domains.txt >build/gfwlist.dnsmasq.conf
+      awk '{print "ipset=/" $0 "/gfwlist4,gfwlist6"}' \
+          gfwlist.domains.txt >build/gfwlist.dnsmasq.ipset.conf
+      ;;
+    smartdns)
+      awk '{print "nameserver /" $0 "/gfwlist"}' \
+          gfwlist.domains.txt >build/gfwlist.smartdns.conf
+      awk '{print "ipset /" $0 "/gfwlist4"}' \
+          gfwlist.domains.txt >build/gfwlist.smartdns.ipset.conf
+      ;;
+    esac
   '';
 
   installPhase = ''
