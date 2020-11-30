@@ -12,7 +12,7 @@ in {
     my.dns = {
       enable = mkDefault true;
       block.ad = mkDefault true;
-      dnsmasq-china-list.enable = mkDefault true;
+      chinalist.enable = mkDefault true;
       gfwlist.enable = mkDefault true;
       ipset.enable = mkDefault true;
     };

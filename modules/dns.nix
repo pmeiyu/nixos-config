@@ -12,7 +12,7 @@ in {
       block.fake-news = mkEnableOption "Block fake news.";
       block.gambling = mkEnableOption "Block gambling.";
       block.social = mkEnableOption "Block social networks.";
-      dnsmasq-china-list.enable = mkEnableOption "Enable dnsmasq-china-list.";
+      chinalist.enable = mkEnableOption "Enable dnsmasq-china-list.";
       gfwlist.enable = mkEnableOption "Enable gfwlist.";
       ipset.enable = mkEnableOption "Enable ipset.";
       log.enable = mkEnableOption "Enable log.";
@@ -111,18 +111,18 @@ in {
         dualstack-ip-selection = mkDefault (!cfg.block.ipv6);
         log-level = mkDefault "warn";
         audit-enable = mkDefault cfg.log.enable;
-        conf-file = optionals cfg.dnsmasq-china-list.enable [
-          "${pkgs.dnsmasq-china-list}/smartdns/accelerated-domains.china.smartdns.conf"
-          "${pkgs.dnsmasq-china-list}/smartdns/apple.china.smartdns.conf"
-          "${pkgs.dnsmasq-china-list}/smartdns/google.china.smartdns.conf"
-        ] ++ optionals (cfg.dnsmasq-china-list.enable && cfg.ipset.enable) [
-          "${pkgs.dnsmasq-china-list}/smartdns-ipset/accelerated-domains.china.conf"
-          "${pkgs.dnsmasq-china-list}/smartdns-ipset/apple.china.conf"
-          "${pkgs.dnsmasq-china-list}/smartdns-ipset/google.china.conf"
+        conf-file = optionals cfg.chinalist.enable [
+          "${pkgs.chinalist-smartdns}/accelerated-domains.china.smartdns.conf"
+          "${pkgs.chinalist-smartdns}/apple.china.smartdns.conf"
+          "${pkgs.chinalist-smartdns}/google.china.smartdns.conf"
+        ] ++ optionals (cfg.chinalist.enable && cfg.ipset.enable) [
+          "${pkgs.chinalist-smartdns}/accelerated-domains.china.smartdns.ipset.conf"
+          "${pkgs.chinalist-smartdns}/apple.china.smartdns.ipset.conf"
+          "${pkgs.chinalist-smartdns}/google.china.smartdns.ipset.conf"
         ] ++ optionals cfg.gfwlist.enable
-          [ "${pkgs.gfwlist}/gfwlist.smartdns.conf" ]
+          [ "${pkgs.gfwlist-smartdns}/gfwlist.smartdns.conf" ]
           ++ optionals (cfg.gfwlist.enable && cfg.ipset.enable)
-          [ "${pkgs.gfwlist}/gfwlist.smartdns.ipset.conf" ];
+          [ "${pkgs.gfwlist-smartdns}/gfwlist.smartdns.ipset.conf" ];
       };
     };
 
