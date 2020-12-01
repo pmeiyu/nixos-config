@@ -36,15 +36,5 @@ in {
         Socks5Proxy localhost:1080
       '';
     };
-
-    systemd.services.v2ray = {
-      description = "v2ray";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStart = "${pkgs.v2ray}/bin/v2ray -config /etc/v2ray/config.json";
-        DynamicUser = true;
-      };
-    };
   };
 }
