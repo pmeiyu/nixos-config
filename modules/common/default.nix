@@ -64,6 +64,7 @@ in {
           "networkmanager"
           "video"
           "wheel"
+          "wireshark"
         ];
         password = config.users.users.root.password;
         hashedPassword = config.users.users.root.hashedPassword;
