@@ -22,9 +22,9 @@ in {
 
     system.stateVersion = mkDefault "20.09";
 
-    nix.binaryCaches = lib.mkForce [
+    nix.binaryCaches = [
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
-      "https://cache.nixos.org/"
+      "https://mirrors.bfsu.edu.cn/nix-channels/store/"
     ];
 
     system.autoUpgrade = {
