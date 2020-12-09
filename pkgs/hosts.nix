@@ -28,16 +28,22 @@ stdenv.mkDerivation rec {
 
     # StevenBlack hosts
 
-    cp stevenblack-hosts/hosts build/ad
+    awk -e '/#|^ *$/ { print; next; }' \
+        -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/' \
+        stevenblack-hosts/hosts >>build/ad
 
     for i in fakenews gambling porn social; do
         find stevenblack-hosts/extensions/$i -name hosts \
-             -exec cat '{}' >>build/$i \;
+            -exec awk -e '/#|^ *$/ { print; next; }' \
+                      -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/' \
+                      '{}' >>build/$i \;
     done
 
     # yhosts
 
-    cat yhosts/hosts >>build/ad
+    awk -e '/#|^ *$/ { print; next; }' \
+        -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/' \
+        yhosts/hosts >>build/ad
 
     ## Unbound config
 
