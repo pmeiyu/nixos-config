@@ -50,9 +50,9 @@ stdenv.mkDerivation rec {
     for i in ad fakenews gambling porn social; do
         echo 'view:' >build/unbound/block-$i.conf
         echo "name: \"block-$i\"" >>build/unbound/block-$i.conf
-        awk '/^0\.0\.0\.0|^127\.0\.0\.1/ {
-            print "local-data: \"" $2 " 60 IN A 0.0.0.0\"";
-            print "local-data: \"" $2 " 60 IN AAAA ::1\""
+        echo "view-first: yes" >>build/unbound/block-$i.conf
+        awk '/0\.0\.0\.0|127\.0\.0\.1/ {
+            print "local-zone: " $0 ". refuse";
         }' build/$i >>build/unbound/block-$i.conf
     done
   '';
