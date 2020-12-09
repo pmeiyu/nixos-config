@@ -11,6 +11,7 @@ in {
       block.ad = mkEnableOption "Block ad.";
       block.fake-news = mkEnableOption "Block fake news.";
       block.gambling = mkEnableOption "Block gambling.";
+      block.porn = mkEnableOption "Block porn.";
       block.social = mkEnableOption "Block social networks.";
       chinalist.enable = mkEnableOption "Enable dnsmasq-china-list.";
       gfwlist.enable = mkEnableOption "Enable gfwlist.";
@@ -30,6 +31,7 @@ in {
       forwardAddresses = [ ];
       enableRootTrustAnchor = cfg.dnssec.enable;
       extraConfig = ''
+        server:
         cache-min-ttl: 600
         cache-max-negative-ttl: 60
         do-not-query-localhost: no
@@ -49,31 +51,38 @@ in {
 
         ${optionalString cfg.block.ad ''
           access-control-view: 127.0.0.0/8 block-ad
-          access-control-view: ::/8 block-ad
-          include: ${pkgs.hosts}/unbound/block-ad.conf
+          access-control-view: ::1 block-ad
         ''}
 
         ${optionalString cfg.block.fake-news ''
           access-control-view: 127.0.0.0/8 block-fakenews
-          access-control-view: ::/8 block-fakenews
-          include: ${pkgs.hosts}/unbound/block-fakenews.conf
+          access-control-view: ::1 block-fakenews
         ''}
 
         ${optionalString cfg.block.gambling ''
           access-control-view: 127.0.0.0/8 block-gambling
-          access-control-view: ::/8 block-gambling
-          include: ${pkgs.hosts}/unbound/block-gambling.conf
+          access-control-view: ::1 block-gambling
+        ''}
+
+        ${optionalString cfg.block.porn ''
+          access-control-view: 127.0.0.0/8 block-porn
+          access-control-view: ::1 block-porn
         ''}
 
         ${optionalString cfg.block.social ''
           access-control-view: 127.0.0.0/8 block-social
-          access-control-view: ::/8 block-social
-          include: ${pkgs.hosts}/unbound/block-social.conf
+          access-control-view: ::1 block-social
         ''}
+
+        include: ${pkgs.hosts}/unbound/block-ad.conf
+        include: ${pkgs.hosts}/unbound/block-fakenews.conf
+        include: ${pkgs.hosts}/unbound/block-gambling.conf
+        include: ${pkgs.hosts}/unbound/block-porn.conf
+        include: ${pkgs.hosts}/unbound/block-social.conf
 
         forward-zone:
           name: .
-          forward-addr: ::1@54
+            forward-addr: ::1@54
       '';
     };
 
