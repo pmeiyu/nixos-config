@@ -17,6 +17,7 @@
     interface = "wlan0";
     ssid = "Castle";
     password = lib.mkDefault "12345678";
+    block.ad = true;
   };
   my.hydroxide.enable = true;
   my.mpd.enable = true;
