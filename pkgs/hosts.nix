@@ -26,24 +26,20 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     mkdir -p build/unbound
 
-    # StevenBlack hosts
-
-    awk -e '/#|^ *$/ { print; next; }' \
-        -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/' \
-        stevenblack-hosts/hosts >>build/ad
+    for i in stevenblack-hosts/hosts yhosts/hosts; do
+        awk -e '/#|^ *$/ { print; next; }' \
+            -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/ {
+                print "0.0.0.0 " tolower($2)
+            }' $i >>build/ad
+    done
 
     for i in fakenews gambling porn social; do
         find stevenblack-hosts/extensions/$i -name hosts \
             -exec awk -e '/#|^ *$/ { print; next; }' \
-                      -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/' \
-                      '{}' >>build/$i \;
+                      -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/ {
+                          print "0.0.0.0 " tolower($2)
+                      }' '{}' >>build/$i \;
     done
-
-    # yhosts
-
-    awk -e '/#|^ *$/ { print; next; }' \
-        -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/' \
-        yhosts/hosts >>build/ad
 
     ## Unbound config
 
@@ -51,9 +47,10 @@ stdenv.mkDerivation rec {
         echo 'view:' >build/unbound/block-$i.conf
         echo "name: \"block-$i\"" >>build/unbound/block-$i.conf
         echo "view-first: yes" >>build/unbound/block-$i.conf
-        awk '/0\.0\.0\.0|127\.0\.0\.1/ {
+        awk '/^0\.0\.0\.0|^127\.0\.0\.1/ { print tolower($2) }' build/$i \
+        | sort | uniq | awk '{
             print "local-zone: " $0 ". refuse";
-        }' build/$i >>build/unbound/block-$i.conf
+        }' >>build/unbound/block-$i.conf
     done
   '';
 
@@ -63,7 +60,7 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with stdenv.lib; {
-    description = "hosts files";
+    description = "DNS hosts file";
     platforms = platforms.all;
   };
 }
