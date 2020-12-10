@@ -62,9 +62,9 @@ in {
             proxy_cache guix-mirror;
             proxy_cache_valid 200 206 60d;
             proxy_cache_valid any 1m;
-            proxy_connect_timeout 60s;
-            proxy_read_timeout 60s;
-            proxy_send_timeout 60s;
+            proxy_connect_timeout 10s;
+            proxy_read_timeout 30s;
+            proxy_send_timeout 30s;
             client_body_buffer_size 256k;
             gzip off;
 
