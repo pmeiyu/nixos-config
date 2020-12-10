@@ -51,8 +51,14 @@ stdenv.mkDerivation rec {
         echo 'view:' >build/unbound/block-$i.conf
         echo "name: \"block-$i\"" >>build/unbound/block-$i.conf
         echo "view-first: yes" >>build/unbound/block-$i.conf
-        awk '/^0\.0\.0\.0|^127\.0\.0\.1/ { print tolower($2) }' build/$i \
-        | sort | uniq | awk '{
+
+        awk '!/^#|^ *$/' build/$i | \
+        # Split and reverse domain names.
+        awk -F"." '{for(i=NF; i>1; i--) printf "%s ", $i; print $i}' | \
+        sort | uniq | \
+        # Restore domain names.
+        awk '{for(i=NF; i>1; i--) printf "%s.", $i; print $i}' | \
+        awk '{
             print "local-zone: " $0 ". refuse";
         }' >>build/unbound/block-$i.conf
     done
