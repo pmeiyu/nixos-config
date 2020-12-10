@@ -1,7 +1,10 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.services.guix.mirror;
+let
+  cfg = config.services.guix.mirror;
+  upstream-domain =
+    elemAt (splitString "/" (elemAt (splitString ":" cfg.upstream) 1)) 2;
 in {
   options = {
     services.guix.mirror = {
@@ -22,8 +25,8 @@ in {
         description = "Domain name.";
       };
       upstream = mkOption {
-        type = types.str;
-        default = "ci.guix.gnu.org";
+        type = types.strMatching "https?://.*";
+        default = "https://ci.guix.gnu.org";
         description = "Upstream substitute server.";
       };
     };
@@ -51,11 +54,10 @@ in {
       virtualHosts."${cfg.domain}" = {
         locations."/" = {
           extraConfig = ''
-            set $upstream "https://${cfg.upstream}";
-            proxy_pass $upstream;
+            proxy_pass ${cfg.upstream};
             proxy_ssl_server_name on;
-            proxy_ssl_name ${cfg.upstream};
-            proxy_set_header Host ${cfg.upstream};
+            proxy_ssl_name ${upstream-domain};
+            proxy_set_header Host ${upstream-domain};
 
             proxy_cache guix-mirror;
             proxy_cache_valid 200 206 60d;

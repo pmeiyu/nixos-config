@@ -131,7 +131,7 @@
     enable = true;
     publish.enable = true;
     mirror.enable = true;
-    mirror.upstream = "mirror.guix.org.cn";
+    mirror.upstream = "https://mirror.guix.org.cn";
   };
 
   services.nginx = {

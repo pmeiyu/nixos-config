@@ -110,7 +110,7 @@
     enable = true;
     publish.enable = true;
     mirror.enable = true;
-    mirror.upstream = "mirror.guix.org.cn";
+    mirror.upstream = "https://mirrors.sjtug.sjtu.edu.cn/guix";
     signing-key.pub = ../../local/guix/signing-key.pub;
     signing-key.sec = ../../local/guix/signing-key.sec;
   };
