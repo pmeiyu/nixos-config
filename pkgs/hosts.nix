@@ -27,18 +27,22 @@ stdenv.mkDerivation rec {
     mkdir -p build/unbound
 
     for i in stevenblack-hosts/hosts yhosts/hosts; do
-        awk -e '/#|^ *$/ { print; next; }' \
+        awk -e '/^#/ { print; next; }' \
+            -e '/^ *$/ { printf "\n"; next; }' \
             -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/ {
-                print "0.0.0.0 " tolower($2)
-            }' $i >>build/ad
+                print tolower($2)
+            }' $i | \
+        uniq >>build/ad
     done
 
     for i in fakenews gambling porn social; do
-        find stevenblack-hosts/extensions/$i -name hosts \
-            -exec awk -e '/#|^ *$/ { print; next; }' \
-                      -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/ {
-                          print "0.0.0.0 " tolower($2)
-                      }' '{}' >>build/$i \;
+        find stevenblack-hosts/extensions/$i -name hosts -exec \
+        awk -e '/^#/ { print; next; }' \
+            -e '/^ *$/ { printf "\n"; next; }' \
+            -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/ {
+                print tolower($2)
+            }' '{}' \; | \
+        uniq >>build/$i
     done
 
     ## Unbound config
