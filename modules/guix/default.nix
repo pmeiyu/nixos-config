@@ -26,9 +26,9 @@ in {
         };
       };
       substitute-urls = mkOption {
-        type = types.str;
-        default = "https://ci.guix.gnu.org";
-        description = "Substitute URLs.";
+        type = types.listOf types.str;
+        default = [ "https://ci.guix.gnu.org" ];
+        description = "List of substitute URLs.";
       };
       max-jobs = mkOption {
         type = types.int;
@@ -101,19 +101,14 @@ in {
         mode = "0400";
       };
 
-    systemd.services.guix-daemon = let
-      substitute-urls = "${
-          optionalString (cfg.mirror.enable && cfg.mirror.set-as-substitute)
-            "http://${cfg.mirror.domain} "
-        }${cfg.substitute-urls}";
-    in {
+    systemd.services.guix-daemon = {
       description = "Build daemon for GNU Guix";
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStart =
           "/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon"
           + " --build-users-group=guixbuild"
-          + " --substitute-urls='${substitute-urls}'"
+          + " --substitute-urls='${toString cfg.substitute-urls}'"
           + " --max-jobs=${toString cfg.max-jobs}";
         Environment =
           "'GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profile/lib/locale'"

@@ -11,6 +11,7 @@ in {
 
     services.nginx = {
       enable = true;
+      resolver.addresses = [ "[::1]" ];
       virtualHosts.localhost = {
         default = mkDefault true;
         locations."/" = {

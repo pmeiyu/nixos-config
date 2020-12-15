@@ -58,6 +58,6 @@
 
   services.guix = {
     enable = true;
-    substitute-urls = "https://mirror.guix.org.cn";
+    substitute-urls = [ "https://mirrors.sjtug.sjtu.edu.cn/guix" ];
   };
 }
