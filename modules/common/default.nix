@@ -54,6 +54,7 @@ in {
         isNormalUser = true;
         uid = 1000;
         extraGroups = [
+          "adbusers"
           "audio"
           "docker"
           "input"
