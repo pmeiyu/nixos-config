@@ -2,21 +2,21 @@
 
 stdenv.mkDerivation rec {
   pname = "hosts";
-  version = "2020.11.18";
+  version = "2021.01.07";
 
   srcs = [
     (fetchFromGitHub {
       owner = "StevenBlack";
       repo = "hosts";
-      rev = "3.2.3";
-      sha256 = "03h90p569kb0k594vqv36bccfcscjyrbqqd9gyr2jvhjlbyh3rlb";
+      rev = "3.3.2";
+      sha256 = "06iafjn118ynrdsa3s530z6z7fd7whn73jh26wbdc8half6bpj45";
       name = "stevenblack-hosts";
     })
     (fetchFromGitHub {
       owner = "VeleSila";
       repo = "yhosts";
-      rev = "021aead99b2c3bb5a7e1450a5217fcfd1f9fe287";
-      sha256 = "1bijz65fy29fgfmdp16nb8kdvc14rbj8lf0h31v2yi5wjfxgv6vi";
+      rev = "a96a387675c1bc61d2ea4d730bdf2a8c9b74fd6c";
+      sha256 = "0bq75m7qnxq7wskqirhf47f6dby4cqwxg4qji270sskzchbp44kq";
       name = "yhosts";
     })
   ];
@@ -24,10 +24,11 @@ stdenv.mkDerivation rec {
   sourceRoot = ".";
 
   buildPhase = ''
-    mkdir -p build/unbound
+    mkdir -p build
 
-    for i in stevenblack-hosts/hosts yhosts/hosts; do
+    for i in stevenblack-hosts/hosts yhosts/hosts.txt; do
         awk -e '/^#/ { print; next; }' \
+            -e '/^@/ { print "#" $0; next; }' \
             -e '/^ *$/ { printf "\n"; next; }' \
             -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/ {
                 print tolower($2)
@@ -46,6 +47,8 @@ stdenv.mkDerivation rec {
     done
 
     ## Unbound config
+
+    mkdir -p build/unbound
 
     for i in ad fakenews gambling porn social; do
         echo 'view:' >build/unbound/block-$i.conf
