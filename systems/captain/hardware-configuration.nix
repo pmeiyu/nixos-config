@@ -13,12 +13,12 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/15CC-F05B";
+    device = "/dev/disk/by-uuid/C4C3-3DA2";
     fsType = "vfat";
   };
 
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/393236c0-9ab0-4452-a357-ec0c1e4482cd";
+    device = "/dev/disk/by-uuid/ed0e0e5c-4077-47a7-b9e0-d890737fad08";
     allowDiscards = true;
     fallbackToPassword = true;
   };
