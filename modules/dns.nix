@@ -74,11 +74,14 @@ in {
           access-control-view: ::1 block-social
         ''}
 
-        include: ${pkgs.hosts}/unbound/block-ad.conf
-        include: ${pkgs.hosts}/unbound/block-fakenews.conf
-        include: ${pkgs.hosts}/unbound/block-gambling.conf
-        include: ${pkgs.hosts}/unbound/block-porn.conf
-        include: ${pkgs.hosts}/unbound/block-social.conf
+        ${optionalString (cfg.block.ad || cfg.block.fake-news
+          || cfg.block.gambling || cfg.block.porn || cfg.block.social) ''
+            include: ${pkgs.hosts}/unbound/block-ad.conf
+            include: ${pkgs.hosts}/unbound/block-fakenews.conf
+            include: ${pkgs.hosts}/unbound/block-gambling.conf
+            include: ${pkgs.hosts}/unbound/block-porn.conf
+            include: ${pkgs.hosts}/unbound/block-social.conf
+          ''}
 
         forward-zone:
           name: .
