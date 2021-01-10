@@ -32,9 +32,9 @@ in {
       enable = true;
       client.enable = true;
       client.transparentProxy.enable = true;
-      extraConfig = ''
-        Socks5Proxy localhost:1080
-      '';
+      settings = {
+        Socks5Proxy = "localhost:1080";
+      };
     };
   };
 }
