@@ -30,14 +30,20 @@
     options = [ "compress=zstd" "noatime" ];
   };
 
-  boot.initrd.luks.devices."store" = {
-    device = "/dev/disk/by-uuid/5d6841d3-aa0c-4cbf-b191-63c8b5253bd6";
+  boot.initrd.luks.devices."st" = {
+    device = "/dev/disk/by-uuid/8c48718b-5d06-477e-9797-802f9f6cc96a";
+    fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partuuid/a40374be-2443-4c01-ae9d-159f4906d127";
+    keyFileSize = 1024;
+  };
+  boot.initrd.luks.devices."wd" = {
+    device = "/dev/disk/by-uuid/46d88fb9-3244-40f6-b2fb-8d3a51dc74fa";
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partuuid/a40374be-2443-4c01-ae9d-159f4906d127";
     keyFileSize = 1024;
   };
   fileSystems."/srv/store" = {
-    device = "/dev/disk/by-uuid/e40f321c-c915-41d3-8f56-5d1c56155b84";
+    device = "/dev/disk/by-uuid/1c78a577-61a2-41d5-9cf5-fc5e5085d9a7";
     fsType = "btrfs";
     options = [ "compress=zstd" "noatime" ];
   };
