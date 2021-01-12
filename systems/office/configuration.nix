@@ -78,7 +78,10 @@
 
   programs.bandwhich.enable = true;
   programs.thefuck.enable = true;
-  programs.wireshark.enable = true;
+  programs.wireshark = {
+    enable= true;
+    package = pkgs.wireshark;
+  };
   programs.zmap.enable = true;
 
   environment.systemPackages = with pkgs; [
