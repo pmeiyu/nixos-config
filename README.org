@@ -1,6 +1,6 @@
 #+Title: Nix Configuration
 #+Author: Peng Mei Yu
-#+Copyright: Copyright 2019-2020 Peng Mei Yu
+#+Copyright: Copyright 2019-2021 Peng Mei Yu
 #+License: GPLv3
 
 
