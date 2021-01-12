@@ -11,7 +11,7 @@
    #+end_src
 
    #+NAME: partition-table
-   | /dev/sda1 | /boot/efi | FAT   | 127MB |
+   | /dev/sda1 | /boot/efi | FAT   | 255MB |
    | /dev/sda2 | /         | Btrfs | 20GB  |
 
    #+begin_src sh
