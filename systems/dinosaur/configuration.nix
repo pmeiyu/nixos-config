@@ -45,6 +45,16 @@
   hardware.pulseaudio.systemWide = true;
   hardware.usbWwan.enable = true;
 
+  # GPU
+  services.xserver.videoDrivers = [ "modesetting" "amdgpu" ];
+
+  # Enable OpenCL
+  hardware.opengl.enable = true;
+  hardware.opengl.extraPackages = with pkgs; [
+    rocm-opencl-icd
+    rocm-opencl-runtime
+  ];
+
   # Rename LTE modem
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="net", DRIVERS=="?*", ATTR{address}=="0c:5b:8f:27:9a:64", NAME="wwan0"
@@ -63,7 +73,12 @@
   ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
-  boot.kernelParams = [ "amd_iommu=on" ];
+  boot.kernelParams = [
+    "amd_iommu=on"
+
+    # Fix AMD Radeon RX5500XT quirk.
+    "pci=noats"
+  ];
 
   ## Environment
 
