@@ -59,7 +59,7 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 445 1081 ];
+    allowedTCPPorts = [ 445 ];
     allowedTCPPortRanges = [{
       from = 8000;
       to = 8999;
@@ -72,6 +72,7 @@
     '';
   };
 
+  # Fix network issue.
   networking.interfaces.eth0.mtu = 1492;
 
   ## Programs
@@ -79,7 +80,7 @@
   programs.bandwhich.enable = true;
   programs.thefuck.enable = true;
   programs.wireshark = {
-    enable= true;
+    enable = true;
     package = pkgs.wireshark;
   };
   programs.zmap.enable = true;
@@ -116,20 +117,6 @@
     mirror.upstream = "https://mirrors.sjtug.sjtu.edu.cn/guix";
     signing-key.pub = ../../local/guix/signing-key.pub;
     signing-key.sec = ../../local/guix/signing-key.sec;
-  };
-
-  services.ipfs = {
-    enable = true;
-    autoMount = true;
-    enableGC = false;
-    dataDir = "/srv/store/ipfs";
-    extraConfig = { Datastore.StorageMax = "100GB"; };
-  };
-
-  services.mysql.settings = {
-    mysqld = {
-      innodb_strict_mode = 0;
-    };
   };
 
   services.zookeeper.enable = true;
