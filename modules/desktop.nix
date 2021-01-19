@@ -112,7 +112,7 @@ in {
       nethogs
       nftables
       ngrep
-      nixfmt
+      nixpkgs-fmt
       ntfsprogs
       parallel
       parted
