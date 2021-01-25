@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.desktop.gui;
-in {
+in
+{
   options = {
     my.desktop.gui = {
       enable = mkEnableOption "Enable Graphical configurations.";
@@ -54,6 +55,7 @@ in {
       screenkey
       slurp
       sqlitebrowser
+      swappy
       termite
       vlc
       waybar
