@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.snapper;
-in {
+in
+{
   options = {
     my.snapper = {
       enable = mkEnableOption "Enable Snapper.";
@@ -35,10 +36,12 @@ in {
       };
     };
 
-    system.activationScripts.my-snapper = concatMapStrings (x: ''
-      [ -e ${x}/.snapshots ] || \
-          ${pkgs.btrfs-progs}/bin/btrfs subvolume create ${x}/.snapshots
-    '') (mapAttrsToList (name: value: value.subvolume)
-      config.services.snapper.configs);
+    system.activationScripts.my-snapper = concatMapStrings
+      (x: ''
+        [ -e ${x}/.snapshots ] || \
+            ${pkgs.btrfs-progs}/bin/btrfs subvolume create ${x}/.snapshots
+      '')
+      (mapAttrsToList (name: value: value.subvolume)
+        config.services.snapper.configs);
   };
 }

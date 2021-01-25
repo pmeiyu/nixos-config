@@ -1,5 +1,10 @@
-{ lib, stdenv, fetchFromGitHub, format ? "raw", upstream-dns ? "114.114.114.114"
-, ipset ? false }:
+{ lib
+, stdenv
+, fetchFromGitHub
+, format ? "raw"
+, upstream-dns ? "114.114.114.114"
+, ipset ? false
+}:
 
 stdenv.mkDerivation rec {
   pname = "dnsmasq-china-list";

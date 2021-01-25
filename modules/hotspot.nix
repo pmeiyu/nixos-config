@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.hotspot;
-in {
+in
+{
   options = {
     my.hotspot = {
       enable = mkEnableOption "Enable WiFi hotspot.";

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.desktop;
-in {
+in
+{
   options = {
     my.desktop = { enable = mkEnableOption "Enable desktop configurations."; };
   };

@@ -7,7 +7,8 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILSWDNLrevEMD83aVXEAoCirJxWxI1Ft5AlK15KipL+x"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF"
   ];
-in {
+in
+{
   options = {
     my.common = { enable = mkEnableOption "Enable common configurations."; };
   };

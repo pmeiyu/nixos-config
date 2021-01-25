@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.network;
-in {
+in
+{
   options = {
     my.network.prefer-ipv4 = mkEnableOption "Prefer IPv4 over IPv6";
   };

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.emacs;
-in {
+in
+{
   options = { my.emacs = { enable = mkEnableOption "Enable emacs."; }; };
 
   config = mkIf cfg.enable {

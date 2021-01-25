@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.gotify;
-in {
+in
+{
   options = {
     my.gotify = {
       enable = mkEnableOption "Enable Gotify.";

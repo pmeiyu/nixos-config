@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.server;
-in {
+in
+{
   options = {
     my.server = { enable = mkEnableOption "Enable server configurations."; };
   };

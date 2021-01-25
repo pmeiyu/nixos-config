@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.tun2socks;
-in {
+in
+{
   options = {
     my.tun2socks = {
       enable = mkEnableOption "Enable tun2socks.";
@@ -67,7 +68,7 @@ in {
           + " --netif-netmask 255.255.255.0" + " --netif-ip6addr fd00:8:8::1"
           + " --socks-server-addr ${cfg.socks-proxy}"
           + (optionalString cfg.udp.enable
-            " --udpgw-remote-server-addr ${cfg.udp.gateway}");
+          " --udpgw-remote-server-addr ${cfg.udp.gateway}");
       };
       postStart = ''
         TABLE=110

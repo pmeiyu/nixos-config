@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.nginx;
-in {
+in
+{
   options = { my.nginx = { enable = mkEnableOption "Enable Nginx."; }; };
 
   config = mkIf cfg.enable {

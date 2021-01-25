@@ -5,7 +5,8 @@ let
   cfg = config.my.raspberry-pi.fan-control;
   python = pkgs.python3.withPackages
     (python-packages: with python-packages; [ python-periphery ]);
-in {
+in
+{
   options = {
     my.raspberry-pi.fan-control = {
       enable = mkEnableOption "Enable fan control for Raspberry Pi.";

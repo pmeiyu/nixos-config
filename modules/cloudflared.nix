@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.cloudflared;
-in {
+in
+{
   options = {
     my.cloudflared = { enable = mkEnableOption "Enable cloudflared."; };
   };

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.virtualization;
-in {
+in
+{
   options = {
     my.virtualization.enable = mkEnableOption "Enable virtualization.";
   };

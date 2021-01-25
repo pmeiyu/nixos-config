@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.bluetooth;
-in {
+in
+{
   options = {
     my.bluetooth = { enable = mkEnableOption "Enable bluetooth."; };
   };

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.yubikey;
-in {
+in
+{
   options = { my.yubikey = { enable = mkEnableOption "Enable YubiKey."; }; };
 
   config = mkIf cfg.enable {

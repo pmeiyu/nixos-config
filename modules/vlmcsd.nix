@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.services.vlmcsd;
-in {
+in
+{
   options = {
     services.vlmcsd = { enable = mkEnableOption "Enable vlmcsd."; };
   };

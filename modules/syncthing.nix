@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.syncthing;
-in {
+in
+{
   options.my.syncthing.enable = mkEnableOption "Enable Syncthing.";
 
   config = mkIf cfg.enable {

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.overlay-networks;
-in {
+in
+{
   options = {
     my.overlay-networks.enable = mkEnableOption "Enable overlay networks";
   };

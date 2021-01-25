@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.mpd;
-in {
+in
+{
   options.my.mpd.enable = mkEnableOption "Enable MPD.";
 
   config = mkIf cfg.enable {

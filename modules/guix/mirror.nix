@@ -5,7 +5,8 @@ let
   cfg = config.services.guix.mirror;
   upstream-domain =
     elemAt (splitString "/" (elemAt (splitString ":" cfg.upstream) 1)) 2;
-in {
+in
+{
   options = {
     services.guix.mirror = {
       enable = mkEnableOption "Enable Guix mirror";

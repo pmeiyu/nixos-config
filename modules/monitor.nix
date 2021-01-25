@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.monitor;
-in {
+in
+{
   options = {
     my.monitor = {
       enable = mkEnableOption "Enable monitor server and client.";
@@ -119,17 +120,17 @@ in {
           # http_response = { urls = [ "http://localhost/" ]; };
           # ping = { urls = [ "9.9.9.9" ]; };
         } // optionalAttrs (cfg.server.enable) { influxdb = { }; }
-          // optionalAttrs (config.my.desktop.enable) {
-            sensors = { };
-            smart = {
-              path = "${
+        // optionalAttrs (config.my.desktop.enable) {
+          sensors = { };
+          smart = {
+            path = "${
                   pkgs.writeShellScriptBin "smartctl"
                   "/run/wrappers/bin/sudo ${pkgs.smartmontools}/bin/smartctl $@"
                 }/bin/smartctl";
-            };
-            temp = { };
-            wireless = { };
           };
+          temp = { };
+          wireless = { };
+        };
       };
     };
 

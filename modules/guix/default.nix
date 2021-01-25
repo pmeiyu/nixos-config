@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.services.guix;
-in {
+in
+{
   imports = [ ./mirror.nix ];
 
   options = {
@@ -32,10 +33,11 @@ in {
       };
       max-jobs = mkOption {
         type = types.int;
-        default = if (builtins.typeOf config.nix.maxJobs) == "int" then
-          config.nix.maxJobs
-        else
-          4;
+        default =
+          if (builtins.typeOf config.nix.maxJobs) == "int" then
+            config.nix.maxJobs
+          else
+            4;
         description = "Max number of jobs.";
       };
       publish = {
@@ -78,19 +80,21 @@ in {
     '';
 
     users.groups.guixbuild = { };
-    users.users = let
-      makeGuixBuildUser = n: {
-        name = "guixbuilder${n}";
-        value = {
-          description = "Guix build user ${n}";
-          group = "guixbuild";
-          extraGroups = [ "guixbuild" ];
-          isSystemUser = true;
+    users.users =
+      let
+        makeGuixBuildUser = n: {
+          name = "guixbuilder${n}";
+          value = {
+            description = "Guix build user ${n}";
+            group = "guixbuild";
+            extraGroups = [ "guixbuild" ];
+            isSystemUser = true;
+          };
         };
-      };
-      guixBuildUsers = lib.listToAttrs
-        (map makeGuixBuildUser (map (lib.fixedWidthNumber 2) (lib.range 1 10)));
-    in guixBuildUsers;
+        guixBuildUsers = lib.listToAttrs
+          (map makeGuixBuildUser (map (lib.fixedWidthNumber 2) (lib.range 1 10)));
+      in
+      guixBuildUsers;
 
     environment.etc."guix/acl" = { source = cfg.acl; };
     environment.etc."guix/signing-key.pub" =

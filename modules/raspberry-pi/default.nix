@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.raspberry-pi;
-in {
+in
+{
   imports = [ ./fan-control ];
 
   options = {

@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.weechat;
-in {
+in
+{
   options = {
     my.weechat = {
       enable = mkEnableOption "Enable WeeChat.";

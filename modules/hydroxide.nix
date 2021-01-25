@@ -2,7 +2,8 @@
 
 with lib;
 let cfg = config.my.hydroxide;
-in {
+in
+{
   options.my.hydroxide.enable = mkEnableOption "Enable hydroxide.";
 
   config = mkIf cfg.enable {
