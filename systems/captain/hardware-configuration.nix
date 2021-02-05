@@ -21,6 +21,7 @@
     device = "/dev/disk/by-uuid/ed0e0e5c-4077-47a7-b9e0-d890737fad08";
     allowDiscards = true;
     fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partlabel/prophet";
   };
   fileSystems."/" = {
     device = "/dev/mapper/root";
@@ -32,6 +33,7 @@
     device = "/dev/disk/by-uuid/d118d859-5e79-45d9-9e03-65a428a0ecbb";
     allowDiscards = true;
     fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partlabel/prophet";
   };
   swapDevices = [{ device = "/dev/mapper/swap"; }];
 }
