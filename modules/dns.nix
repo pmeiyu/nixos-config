@@ -118,7 +118,7 @@ in
           "https://cloudflare-dns.com/dns-query -group global gfwlist -exclude-default-group"
           "https://dns.tuna.tsinghua.edu.cn:8443/resolve -group china -exclude-default-group"
         ];
-        speed-check-mode = mkDefault "ping,tcp:80";
+        speed-check-mode = mkDefault "ping,tcp:443";
         prefetch-domain = mkDefault false;
         serve-expired = mkDefault true;
         force-AAAA-SOA = cfg.block.ipv6;
