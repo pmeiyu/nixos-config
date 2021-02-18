@@ -76,7 +76,10 @@
   boot.kernelParams = [
     "amd_iommu=on"
 
-    # Fix AMD Radeon RX5500XT quirk.
+    # Enable AMD GPU overclocking.
+    "amdgpu.ppfeaturemask=0xffffffff"
+
+    # Fix AMD Radeon RX 5500 XT quirk.
     "pci=noats"
   ];
 
