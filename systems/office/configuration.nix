@@ -50,7 +50,7 @@
   networking.search = [ ];
 
   networking.networkmanager = {
-    # ethernet.macAddress = "random";
+    ethernet.macAddress = "random";
     wifi.macAddress = "random";
   };
 
