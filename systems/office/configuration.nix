@@ -54,9 +54,6 @@
     wifi.macAddress = "random";
   };
 
-  # networking.proxy.default = "http://localhost:1081";
-  # networking.proxy.noProxy = "127.0.0.1,localhost";
-
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 445 ];
