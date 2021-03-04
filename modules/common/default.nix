@@ -18,6 +18,12 @@ in
 
     nix.binaryCachePublicKeys = [ ];
 
+    # Enable flakes.
+    nix.package = pkgs.nixFlakes;
+    nix.extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+
     ## Boot
 
     boot.cleanTmpDir = true;
