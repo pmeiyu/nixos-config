@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./bluetooth.nix
     ./cloudflared.nix
     ./common
     ./deluge.nix
@@ -29,6 +28,5 @@
     ./virtualization.nix
     ./vlmcsd.nix
     ./weechat.nix
-    ./yubikey.nix
   ];
 }

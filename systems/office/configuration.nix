@@ -3,12 +3,14 @@
 {
   imports = [
     ../..
+    ../../snippets/cpu/intel.nix
+    ../../snippets/gpu/intel.nix
+    ../../snippets/bluetooth.nix
     ../../snippets/development.nix
     ./hardware-configuration.nix
     ./private.nix
   ];
 
-  my.bluetooth.enable = true;
   my.deluge.enable = true;
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
@@ -38,7 +40,6 @@
 
   ## Hardware
 
-  hardware.cpu.intel.updateMicrocode = true;
   hardware.pulseaudio.systemWide = true;
 
   ## Environment

@@ -3,6 +3,8 @@
 {
   imports = [
     ../..
+    ../../snippets/cpu/amd.nix
+    ../../snippets/gpu/amd.nix
     ../../snippets/development.nix
     ./hardware-configuration.nix
     ./private.nix
@@ -41,19 +43,8 @@
 
   ## Hardware
 
-  hardware.cpu.amd.updateMicrocode = true;
   hardware.pulseaudio.systemWide = true;
   hardware.usbWwan.enable = true;
-
-  # GPU
-  services.xserver.videoDrivers = [ "modesetting" "amdgpu" ];
-
-  # Enable OpenCL
-  hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = with pkgs; [
-    rocm-opencl-icd
-    rocm-opencl-runtime
-  ];
 
   # Rename LTE modem
   services.udev.extraRules = ''

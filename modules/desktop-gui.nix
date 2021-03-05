@@ -70,6 +70,7 @@ in
     services.xserver = {
       enable = true;
       xkbOptions = "ctrl:nocaps";
+      videoDrivers = [ "modesetting" ];
     };
 
     services.xserver.displayManager.gdm = {

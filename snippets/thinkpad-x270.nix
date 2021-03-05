@@ -1,6 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ./cpu/intel.nix
+    ./gpu/intel.nix
+    ./bluetooth.nix
+  ];
+
   boot.kernelModules = [ "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
@@ -10,35 +16,11 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    intel-gpu-tools
-
     # WWAN utilities
     libmbim
     libqmi
     minicom
   ];
-
-  hardware.cpu.intel.updateMicrocode =
-    lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  # GPU
-  services.xserver.videoDrivers = [ "modesetting" ];
-
-  # Intel GPU Hardware Acceleration
-  hardware.opengl.extraPackages = with pkgs; [
-    intel-media-driver
-    libvdpau-va-gl
-    vaapiIntel
-    vaapiVdpau
-  ];
-
-  # Bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
-  };
 
   hardware.trackpoint = {
     enable = true;
