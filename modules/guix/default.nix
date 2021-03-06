@@ -28,7 +28,10 @@ in
       };
       substitute-urls = mkOption {
         type = types.listOf types.str;
-        default = [ "https://ci.guix.gnu.org" ];
+        default = [
+          "https://mirror.sjtu.edu.cn/guix"
+          "https://ci.guix.gnu.org"
+        ];
         description = "List of substitute URLs.";
       };
       max-jobs = mkOption {
