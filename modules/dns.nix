@@ -111,18 +111,18 @@ in
           "223.5.5.5:853 -group china -exclude-default-group"
           # dns.pub
           "119.29.29.29:853 -group china -exclude-default-group"
-          # dns.sb
-          "185.222.222.222:853 -group global"
         ];
         server-https = [
-          "https://cloudflare-dns.com/dns-query -group global gfwlist -exclude-default-group"
+          "https://cloudflare-dns.com/dns-query -group global gfwlist"
           "https://dns.tuna.tsinghua.edu.cn:8443/resolve -group china -exclude-default-group"
         ];
-        speed-check-mode = mkDefault "ping,tcp:443";
+        cache-size = 0;
+        cache-persist = false;
+        speed-check-mode = mkDefault "none";
         prefetch-domain = mkDefault false;
         serve-expired = mkDefault true;
         force-AAAA-SOA = cfg.block.ipv6;
-        dualstack-ip-selection = mkDefault (!cfg.block.ipv6);
+        dualstack-ip-selection = mkDefault false;
         log-level = mkDefault "warn";
         audit-enable = mkDefault cfg.log.enable;
         conf-file = optionals cfg.chinalist.enable [
