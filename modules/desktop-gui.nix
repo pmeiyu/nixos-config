@@ -63,6 +63,7 @@ in
       wev
       wf-recorder
       wl-clipboard
+      ydotool
     ];
 
     ## Services
