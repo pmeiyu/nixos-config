@@ -43,7 +43,6 @@
 
   ## Hardware
 
-  hardware.pulseaudio.systemWide = true;
   hardware.usbWwan.enable = true;
 
   # Rename LTE modem

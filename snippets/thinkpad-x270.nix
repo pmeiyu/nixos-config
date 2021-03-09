@@ -4,14 +4,13 @@
   imports = [
     ./cpu/intel.nix
     ./gpu/intel.nix
-    ./bluetooth.nix
   ];
 
   boot.kernelModules = [ "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
   boot.kernelParams = [
-    # Fix screen flickering.  Disable "Panel Self Refresh".
+    # Disable "Panel Self Refresh".  Fix random freezes.
     "i915.enable_psr=0"
   ];
 
@@ -21,6 +20,8 @@
     libqmi
     minicom
   ];
+
+  hardware.bluetooth.enable = true;
 
   hardware.trackpoint = {
     enable = true;

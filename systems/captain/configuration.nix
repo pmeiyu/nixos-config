@@ -60,4 +60,5 @@
     enable = true;
     substitute-urls = [ "https://mirrors.sjtug.sjtu.edu.cn/guix" ];
   };
+  services.blueman.enable = true;
 }

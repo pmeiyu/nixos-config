@@ -5,7 +5,6 @@
     ../..
     ../../snippets/cpu/intel.nix
     ../../snippets/gpu/intel.nix
-    ../../snippets/bluetooth.nix
     ../../snippets/development.nix
     ./hardware-configuration.nix
     ./private.nix
@@ -40,7 +39,7 @@
 
   ## Hardware
 
-  hardware.pulseaudio.systemWide = true;
+  hardware.bluetooth.enable = true;
 
   ## Environment
 
@@ -106,6 +105,7 @@
     defaultWindowManager = "i3";
   };
 
+  services.blueman.enable = true;
   services.printing.enable = true;
 
   services.guix = {
