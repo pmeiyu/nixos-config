@@ -94,8 +94,8 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ ];
-    interfaces."eth+".allowedTCPPorts = [ 445 ];
+    allowedTCPPorts = [ 8443 ];
+    interfaces."en+".allowedTCPPorts = [ 445 ];
     interfaces.wlan0.allowedTCPPorts = [ 445 3389 ];
     interfaces."tinc+".allowedTCPPorts = [ 445 3389 ];
     interfaces.virbr0.allowedTCPPorts = [ 445 ];
@@ -125,7 +125,10 @@
 
   ## Programs
 
-  environment.systemPackages = with pkgs; [ edac-utils ];
+  environment.systemPackages = with pkgs; [
+    certbot
+    edac-utils
+  ];
 
   ## Services
 
@@ -140,6 +143,12 @@
 
   services.nginx = {
     virtualHosts."earth.pengmeiyu.com" = {
+      listen = [
+        { addr = "*"; port = 443; ssl = true; }
+        { addr = "[::]"; port = 443; ssl = true; }
+        { addr = "*"; port = 8443; ssl = true; }
+        { addr = "[::]"; port = 8443; ssl = true; }
+      ];
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -162,8 +171,8 @@
 
   services.samba = {
     shares = {
-      store = {
-        path = "/srv/store";
+      srv = {
+        path = "/srv";
         browseable = true;
         writable = true;
         "valid users" = "meiyu";
