@@ -26,24 +26,29 @@
   my.virtualization.enable = true;
   my.weechat.enable = true;
 
+
   ## Nix
 
   system.autoUpgrade.enable = true;
 
   nix.maxJobs = 8;
 
+
   ## Boot loader
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+
   ## Hardware
 
   hardware.bluetooth.enable = true;
 
+
   ## Environment
 
   networking.hostName = "office";
+
 
   ## Network
 
@@ -72,6 +77,7 @@
   # Fix network issue.
   networking.interfaces.eth0.mtu = 1492;
 
+
   ## Programs
 
   programs.bandwhich.enable = true;
@@ -92,12 +98,13 @@
     gnome3.gnome-tweaks
   ];
 
+
   ## Services
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   services.xserver.desktopManager.gnome3.enable = true;
-
+  services.xserver.windowManager.dwm.enable = true;
   services.xserver.windowManager.stumpwm.enable = true;
 
   services.xrdp = {
@@ -106,10 +113,9 @@
   };
 
   services.blueman.enable = true;
-  services.printing.enable = true;
-
+  services.dictd.enable = true;
   services.guix.enable = true;
-  services.zookeeper.enable = true;
+  services.printing.enable = true;
 
   # services.kubernetes = {
   #   roles = [ "master" "node" ];

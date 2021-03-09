@@ -9,15 +9,20 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/ADC5-4424";
-    fsType = "vfat";
-  };
-
-  boot.initrd.availableKernelModules =
-    [ "xhci_pci" "ahci" "usbhid" "sd_mod" "r8169" ];
-  boot.initrd.kernelModules =
-    [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" "r8169" ];
+  boot.initrd.availableKernelModules = [
+    "ahci"
+    "r8169"
+    "sd_mod"
+    "usbhid"
+    "xhci_pci"
+  ];
+  boot.initrd.kernelModules = [
+    "nls_cp437"
+    "nls_iso8859-1"
+    "r8169"
+    "usbhid"
+    "vfat"
+  ];
   boot.initrd.network.enable = true;
 
   boot.initrd.luks.gpgSupport = true;
@@ -42,11 +47,17 @@
     };
   };
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/ADC5-4424";
+    fsType = "vfat";
+  };
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/0d12b8e1-8d19-4543-8b45-b18628692e8b";
     fsType = "btrfs";
     options = [ "compress=zstd" "noatime" ];
   };
+
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/05d69054-3fd5-4708-9c32-344309331c48";
     fsType = "btrfs";
