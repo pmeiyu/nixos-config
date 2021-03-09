@@ -19,6 +19,7 @@ in
     };
     my.emacs.enable = true;
 
+
     ## Nix
 
     system.stateVersion = mkDefault "21.03";
@@ -42,16 +43,19 @@ in
 
     nix.trustedUsers = [ "root" "@wheel" ];
 
+
     ## Boot
 
     # Limit number of entries in boot menu.
     boot.loader.grub.configurationLimit = mkDefault 10;
     boot.loader.systemd-boot.configurationLimit = mkDefault 10;
 
+
     ## Kernel
 
     boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
     boot.kernelParams = [ "boot.shell_on_fail" ];
+
 
     ## Hardware
 
@@ -71,12 +75,18 @@ in
       longitude = 115.0;
     };
 
+
     ## Network
 
-    networking.networkmanager.enable = true;
     system.nssDatabases.hosts = [ "mdns" ];
 
+    networking.networkmanager = {
+      enable = true;
+      wifi.backend = "iwd";
+    };
+
     networking.usePredictableInterfaceNames = false;
+
 
     ## Programs
     programs.gnupg.agent.enable = true;
@@ -138,6 +148,7 @@ in
       powertop
       smartmontools
     ];
+
 
     ## Services
 
