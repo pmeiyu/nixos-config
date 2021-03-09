@@ -90,6 +90,7 @@
   ## Network
 
   networking.search = [ ];
+  networking.usePredictableInterfaceNames = true;
 
   networking.firewall = {
     enable = true;

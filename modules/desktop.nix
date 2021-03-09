@@ -91,7 +91,7 @@ in
       wifi.backend = "iwd";
     };
 
-    networking.usePredictableInterfaceNames = false;
+    networking.usePredictableInterfaceNames = mkDefault false;
 
 
     ## Programs
