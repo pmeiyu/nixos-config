@@ -135,12 +135,7 @@
     defaultWindowManager = "i3";
   };
 
-  services.guix = {
-    enable = true;
-    publish.enable = true;
-    mirror.enable = true;
-    mirror.upstream = "https://mirror.guix.org.cn";
-  };
+  services.guix.enable = true;
 
   services.nginx = {
     virtualHosts."earth.pengmeiyu.com" = {

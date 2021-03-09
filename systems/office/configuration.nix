@@ -108,15 +108,7 @@
   services.blueman.enable = true;
   services.printing.enable = true;
 
-  services.guix = {
-    enable = true;
-    publish.enable = true;
-    mirror.enable = true;
-    mirror.upstream = "https://mirrors.sjtug.sjtu.edu.cn/guix";
-    signing-key.pub = ../../local/guix/signing-key.pub;
-    signing-key.sec = ../../local/guix/signing-key.sec;
-  };
-
+  services.guix.enable = true;
   services.zookeeper.enable = true;
 
   # services.kubernetes = {

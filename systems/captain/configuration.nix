@@ -56,9 +56,6 @@
 
   services.xserver.desktopManager.gnome3.enable = true;
 
-  services.guix = {
-    enable = true;
-    substitute-urls = [ "https://mirrors.sjtug.sjtu.edu.cn/guix" ];
-  };
   services.blueman.enable = true;
+  services.guix.enable = true;
 }
