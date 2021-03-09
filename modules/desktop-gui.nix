@@ -99,7 +99,5 @@ in
     services.gnome3.core-os-services.enable = true;
     services.gvfs.enable = true;
     programs.seahorse.enable = true;
-
-    services.pipewire.enable = true;
   };
 }
