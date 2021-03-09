@@ -9,16 +9,7 @@ in
   options = {
     my.raspberry-pi = {
       enable = mkEnableOption "Enable configurations for Raspberry Pi 4.";
-      audio = {
-        enable = mkEnableOption "Enable audio.";
-        pulseaudio.systemWide = mkOption {
-          type = types.bool;
-          default = true;
-          description = ''
-            Enable system-wide PulseAudio.
-          '';
-        };
-      };
+      audio.enable = mkEnableOption "Enable audio.";
       gpu = {
         enable = mkEnableOption "Enable GPU.";
         mem = mkOption {
@@ -47,9 +38,6 @@ in
         ${optionalString cfg.gpu.enable "gpu_mem=${toString cfg.gpu.mem}"}
       '';
     };
-
-    hardware.pulseaudio.systemWide =
-      mkIf cfg.audio.enable cfg.audio.pulseaudio.systemWide;
 
     hardware.deviceTree = mkIf cfg.gpu.enable {
       base = pkgs.device-tree_rpi;
