@@ -99,19 +99,35 @@ in
       settings = {
         bind = [ "[::1]:54" ];
         server = [
+          # dns.sb
+          "185.222.222.222 -group global -exclude-default-group"
+          "[2a09::] -group global -exclude-default-group"
+
           # Tsinghua
           "101.6.6.6:5353 -group china -exclude-default-group"
+
           # USTC
           "202.38.93.153:5353 -group china -exclude-default-group"
           "202.141.162.123:5353 -group china -exclude-default-group"
           "202.141.178.13:5353 -group china -exclude-default-group"
         ];
         server-tls = [
+          # cloudflare-dns.com
           "1.1.1.1:853 -group global gfwlist"
-          "8.8.8.8:853 -group global gfwlist"
+          "[2606:4700:4700::1111]:853 -group global gfwlist"
+
+          # quad9.net
           "9.9.9.9:853 -group global gfwlist"
+          "149.112.112.112:853 -group global gfwlist"
+          "[2620:fe::fe]:853 -group global gfwlist"
+
+          # dns.sb
+          "185.222.222.222:853 -group global gfwlist"
+          "[2a09::]:853 -group global gfwlist"
+
           # alidns.com
           "223.5.5.5:853 -group china -exclude-default-group"
+
           # dns.pub
           "119.29.29.29:853 -group china -exclude-default-group"
         ];
