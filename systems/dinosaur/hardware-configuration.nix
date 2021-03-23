@@ -6,8 +6,9 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules =
-    [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [
+    "nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -30,14 +31,20 @@
     options = [ "compress=zstd" "noatime" ];
   };
 
-  boot.initrd.luks.devices."st" = {
+  boot.initrd.luks.devices."st-1" = {
     device = "/dev/disk/by-uuid/8c48718b-5d06-477e-9797-802f9f6cc96a";
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partuuid/a40374be-2443-4c01-ae9d-159f4906d127";
     keyFileSize = 1024;
   };
-  boot.initrd.luks.devices."wd" = {
+  boot.initrd.luks.devices."wd-1" = {
     device = "/dev/disk/by-uuid/46d88fb9-3244-40f6-b2fb-8d3a51dc74fa";
+    fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partuuid/a40374be-2443-4c01-ae9d-159f4906d127";
+    keyFileSize = 1024;
+  };
+  boot.initrd.luks.devices."wd-2" = {
+    device = "/dev/disk/by-uuid/4a0ad149-632c-495d-943c-3bb02337fd3b";
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partuuid/a40374be-2443-4c01-ae9d-159f4906d127";
     keyFileSize = 1024;
