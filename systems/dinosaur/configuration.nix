@@ -55,8 +55,8 @@
   boot.kernelModules = [
     "acpi_call"
 
-    # For motherboard sensors.
-    "it87"
+    # For Nuvoton NCT6792D Super IO Sensors on motherboard.
+    "nct6775"
 
     # VFIO
     "vfio_pci"
