@@ -150,6 +150,7 @@ in
       xdg_utils
 
       # Hardware
+      dmidecode
       lm_sensors
       powertop
       smartmontools
