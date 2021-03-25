@@ -99,6 +99,8 @@ in
       settings = {
         bind = [ "[::1]:54" ];
         server = [
+          "[::1]:55 -group global gfwlist"
+
           # dns.sb
           "185.222.222.222 -group global -exclude-default-group"
           "[2a09::] -group global -exclude-default-group"
@@ -174,6 +176,21 @@ in
         ipset flush gfwlist4
         ipset flush gfwlist6
       '';
+    };
+
+    services.dnscrypt-proxy2 = {
+      enable = true;
+      settings = {
+        listen_addresses = [ "[::1]:55" ];
+        fallback_resolvers = [
+          "1.1.1.1:53"
+          "8.8.8.8:53"
+          "9.9.9.9:53"
+        ];
+        ipv6_servers = true;
+        block_ipv6 = cfg.block.ipv6;
+        cache = false;
+      };
     };
   };
 }
