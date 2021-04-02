@@ -47,6 +47,13 @@
   hardware.bluetooth.enable = true;
 
 
+  ## Kernel
+
+  boot.kernelModules = [
+    "nct6775"
+  ];
+
+
   ## Environment
 
   networking.hostName = "office";
