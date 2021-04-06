@@ -7,10 +7,25 @@ in
   options = {
     my.hotspot = {
       enable = mkEnableOption "Enable WiFi hotspot.";
+      version = mkOption {
+        type = types.enum [ 4 5 6 ];
+        default = 4;
+        description = "WiFi version.";
+      };
       interface = mkOption {
         type = types.str;
         default = "wlan0";
         description = "Network interface.";
+      };
+      channel = mkOption {
+        type = types.int;
+        default = 0;
+        description = "Radio frequency channel.";
+      };
+      countryCode = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "ISO country code.";
       };
       ssid = mkOption {
         type = types.str;
@@ -38,24 +53,34 @@ in
       enable = true;
       interface = cfg.interface;
       ssid = cfg.ssid;
-      hwMode = "g";
-      channel = 7;
-      countryCode = null;
+      hwMode = if cfg.version == 4 then "g" else "a";
+      channel = cfg.channel;
+      countryCode = cfg.countryCode;
       wpaPassphrase = cfg.password;
       extraConfig = ''
-        # QoS
-        wmm_enabled=1
-
-        # 1 = WPA
+        # 1 = WPA, 2 = WEP, 3 = both
         auth_algs=1
 
-        # WPA-PSK = WPA-Personal
+        # WPA-PSK = WPA-Personal / WPA2-Personal
         # SAE = WPA3-Personal
         wpa_key_mgmt=WPA-PSK
 
         # CCMP = AES in Counter mode with CBC-MAC (CCMP-128)
         rsn_pairwise=CCMP
-      '';
+
+        # QoS
+        wmm_enabled=1
+
+      '' + (optionalString (cfg.version == 4) ''
+        ieee80211n=1
+        ht_capab=[HT40+][SHORT-GI-20][SHORT-GI-40][DSSS_CCK-40]
+      '') + (optionalString (cfg.version == 5) ''
+        ieee80211ac=1
+        ieee80211n=1
+        vht_capab=[SHORT-GI-80][HTC-VHT]
+      '') + (optionalString (cfg.version == 6) ''
+        ieee80211ax=1
+      '');
     };
 
     services.dhcpd4 = {
