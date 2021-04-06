@@ -63,7 +63,6 @@ in
 
     services.logind.lidSwitchExternalPower = "lock";
 
-    sound.enable = false;
     hardware.pulseaudio.enable = false;
     services.pipewire = {
       enable = true;
