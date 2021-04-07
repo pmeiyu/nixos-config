@@ -16,7 +16,9 @@
   my.dns.block.ipv6 = true;
   my.hotspot = {
     enable = true;
+    version = 4;
     interface = "wlan0";
+    channel = 6;
     ssid = "Castle";
     password = lib.mkDefault "12345678";
     block.ad = true;
