@@ -97,7 +97,10 @@ in
       '';
     };
 
-    services.gnome3.core-os-services.enable = true;
+    services.gnome3 = {
+      core-os-services.enable = true;
+      games.enable = false;
+    };
     services.gvfs.enable = true;
     programs.seahorse.enable = true;
   };
