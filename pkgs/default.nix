@@ -6,7 +6,7 @@ with pkgs; {
   chinalist-smartdns = callPackage ./dnsmasq-china-list.nix {
     format = "smartdns";
     upstream-dns = "china";
-    ipset = true;
+    enable-ipset = true;
   };
   gfwlist = callPackage ./gfwlist.nix { format = "raw"; };
   gfwlist-smartdns = callPackage ./gfwlist.nix { format = "smartdns"; };

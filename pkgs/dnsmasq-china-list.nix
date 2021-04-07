@@ -3,25 +3,25 @@
 , fetchFromGitHub
 , format ? "raw"
 , upstream-dns ? "114.114.114.114"
-, ipset ? false
+, enable-ipset ? false
 }:
 
 stdenv.mkDerivation rec {
   pname = "dnsmasq-china-list";
-  version = "2020.06.19";
+  version = "2021.04.07";
 
   src = fetchFromGitHub {
     owner = "felixonmars";
     repo = "dnsmasq-china-list";
-    rev = "cca913cc3575c0d200b52fcf34f5e0f12e1d811c";
-    sha256 = "0a610x03f9hwr5jdsi91vxz6sz4xwad23idk0bn3b2n3dq3dhjfx";
+    rev = "0cdcf4abdd077d1dc379650fe9c04f0f19fa3958";
+    sha256 = "5TivzgYqkEguXvqtnh/OdjFCOdq3vWgLn2YORyybdDU=";
   };
 
   buildPhase = ''
     mkdir -p build
     make ${format} SERVER=${upstream-dns}
     cp -v *.${format}.{conf,txt} build/
-  '' + lib.optionalString ipset ''
+  '' + (lib.optionalString enable-ipset ''
     case ${format} in
     dnsmasq)
       for i in accelerated-domains.china apple.china google.china; do
@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
       done
       ;;
     esac
-  '';
+  '');
 
   installPhase = ''
     mkdir -p $out
