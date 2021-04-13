@@ -7,6 +7,14 @@ in
   options = {
     my.hotspot = {
       enable = mkEnableOption "Enable WiFi hotspot.";
+      ssid = mkOption {
+        type = types.str;
+        description = "SSID.";
+      };
+      password = mkOption {
+        type = types.str;
+        description = "WPA password.";
+      };
       version = mkOption {
         type = types.enum [ 4 5 6 ];
         default = 4;
@@ -27,13 +35,15 @@ in
         default = null;
         description = "ISO country code.";
       };
-      ssid = mkOption {
+      ht_capab = mkOption {
         type = types.str;
-        description = "SSID.";
+        default = "";
+        example = "[HT40+][SHORT-GI-40]";
       };
-      password = mkOption {
+      vht_capab = mkOption {
         type = types.str;
-        description = "WPA password.";
+        default = "";
+        example = "[SHORT-GI-80][HTC-VHT]";
       };
       block.ad = mkEnableOption "Block ad.";
       block.fake-news = mkEnableOption "Block fake news.";
@@ -58,6 +68,8 @@ in
       countryCode = cfg.countryCode;
       wpaPassphrase = cfg.password;
       extraConfig = ''
+        utf8_ssid=1
+
         # 1 = WPA, 2 = WEP, 3 = both
         auth_algs=1
 
@@ -73,11 +85,11 @@ in
 
       '' + (optionalString (cfg.version == 4) ''
         ieee80211n=1
-        ht_capab=[HT40+][SHORT-GI-20][SHORT-GI-40][DSSS_CCK-40]
+        ht_capab=${cfg.ht_capab}
       '') + (optionalString (cfg.version == 5) ''
         ieee80211ac=1
         ieee80211n=1
-        vht_capab=[SHORT-GI-80][HTC-VHT]
+        vht_capab=${cfg.vht_capab}
       '') + (optionalString (cfg.version == 6) ''
         ieee80211ax=1
       '');
@@ -85,7 +97,7 @@ in
 
     services.dhcpd4 = {
       enable = true;
-      interfaces = [ "wlan0" ];
+      interfaces = [ cfg.interface ];
       extraConfig = ''
         option domain-name-servers 10.10.0.1;
         option domain-name "lan";
@@ -100,7 +112,7 @@ in
     services.radvd = {
       enable = true;
       config = ''
-        interface wlan0 {
+        interface ${cfg.interface} {
           AdvSendAdvert on;
           prefix fd00:10::/64 { };
         };

@@ -16,11 +16,13 @@
   my.dns.block.ipv6 = true;
   my.hotspot = {
     enable = true;
+    ssid = "Castle";
+    password = lib.mkDefault "12345678";
     version = 4;
     interface = "wlan0";
     channel = 6;
-    ssid = "Castle";
-    password = lib.mkDefault "12345678";
+    countryCode = "US";
+    ht_capab = "[HT40+][SHORT-GI-40][RX-STBC1][TX-STBC]";
     block.ad = true;
   };
   my.hydroxide.enable = true;
