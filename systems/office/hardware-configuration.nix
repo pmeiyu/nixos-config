@@ -6,66 +6,58 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-
   boot.initrd.availableKernelModules = [
     "ahci"
-    "r8169"
     "sd_mod"
+    "usb_storage"
     "usbhid"
     "xhci_pci"
   ];
-  boot.initrd.kernelModules = [
-    "nls_cp437"
-    "nls_iso8859-1"
-    "r8169"
-    "usbhid"
-    "vfat"
-  ];
+  boot.initrd.kernelModules = [ ];
   boot.initrd.network.enable = true;
 
-  boot.initrd.luks.gpgSupport = true;
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
 
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/47a2fa95-920c-4167-9243-f68375909ccd";
-    fallbackToPassword = true;
+    device = "/dev/disk/by-uuid/baa6c224-1705-455c-91f2-48cf34d6a4ed";
     allowDiscards = true;
-    gpgCard = {
-      encryptedPass = ./pass.gpg;
-      publicKey = ./public-keys.pgp.asc;
-    };
+    fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
   };
 
-  boot.initrd.luks.devices."home" = {
-    device = "/dev/disk/by-uuid/c766b927-db66-48eb-8e66-2e30c63655a8";
-    fallbackToPassword = true;
+  boot.initrd.luks.devices."store" = {
+    device = "/dev/disk/by-uuid/47a2fa95-920c-4167-9243-f68375909ccd";
     allowDiscards = true;
-    gpgCard = {
-      encryptedPass = ./pass.gpg;
-      publicKey = ./public-keys.pgp.asc;
-    };
+    fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/ADC5-4424";
+    device = "/dev/disk/by-uuid/AA45-BE8E";
     fsType = "vfat";
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/0d12b8e1-8d19-4543-8b45-b18628692e8b";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "compress=zstd" "noatime" ];
   };
 
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/05d69054-3fd5-4708-9c32-344309331c48";
+    device = "/dev/mapper/store";
     fsType = "btrfs";
-    options = [ "compress=zstd" "noatime" ];
+    options = [ "compress=zstd" "noatime" "subvol=home" ];
+  };
+
+  fileSystems."/srv" = {
+    device = "/dev/mapper/store";
+    fsType = "btrfs";
+    options = [ "compress=zstd" "noatime" "subvol=srv" ];
   };
 
   swapDevices = [{
-    device = "/dev/disk/by-partuuid/d1b801c9-68bb-124b-b26d-6ada01bee825";
+    device = "/dev/disk/by-partuuid/7c936da4-c5c0-4771-9158-7df52a06cb63";
     randomEncryption.enable = true;
   }];
 
