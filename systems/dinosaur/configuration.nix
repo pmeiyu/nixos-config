@@ -45,15 +45,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  ## Hardware
-
-  hardware.usbWwan.enable = true;
-
-  # Rename LTE modem
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="net", DRIVERS=="?*", ATTR{address}=="0c:5b:8f:27:9a:64", NAME="wwan0"
-  '';
-
   ## Kernel
 
   boot.kernelModules = [
@@ -94,12 +85,12 @@
   ## Network
 
   networking.search = [ ];
-  networking.usePredictableInterfaceNames = true;
 
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 8443 ];
     interfaces."en+".allowedTCPPorts = [ 445 ];
+    interfaces."eth+".allowedTCPPorts = [ 445 ];
     interfaces.wlan0.allowedTCPPorts = [ 445 3389 ];
     interfaces."tinc+".allowedTCPPorts = [ 445 3389 ];
     interfaces.virbr0.allowedTCPPorts = [ 445 ];
@@ -132,6 +123,10 @@
   environment.systemPackages = with pkgs; [
     certbot
     edac-utils
+
+    # WWAN utilities
+    libmbim
+    minicom
   ];
 
   ## Services
