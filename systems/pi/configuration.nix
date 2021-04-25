@@ -37,10 +37,6 @@
 
   boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
-  ## Hardware
-
-  hardware.usbWwan.enable = true;
-
   ## Environment
 
   networking.hostName = "pi";
@@ -67,35 +63,21 @@
 
   ## Programs
 
-  environment.systemPackages = with pkgs; [ iw raspberrypi-tools ];
+  environment.systemPackages = with pkgs; [
+    iw
+    raspberrypi-tools
+  ];
 
   ## Services
 
   my.hotspot = {
     enable = true;
-    interface = "wlan0";
     ssid = "Pi";
     password = "12345678";
-  };
-  # 802.11ac AP configuration for Raspberry Pi 4B.
-  services.hostapd = lib.mkForce {
-    hwMode = "a";
+    version = 5;
+    interface = "wlan0";
     channel = 40;
     countryCode = "US";
-    extraConfig = ''
-      ieee80211ac=1
-
-      # QoS
-      wmm_enabled=1
-
-      # 1 = WPA
-      auth_algs=1
-
-      # WPA-PSK = WPA-Personal
-      wpa_key_mgmt=WPA-PSK
-
-      # CCMP = AES in Counter mode with CBC-MAC (CCMP-128)
-      rsn_pairwise=CCMP
-    '';
+    block.ad = true;
   };
 }
