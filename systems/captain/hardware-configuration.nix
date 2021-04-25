@@ -6,34 +6,40 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules =
-    [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/C4C3-3DA2";
-    fsType = "vfat";
-  };
-
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/ed0e0e5c-4077-47a7-b9e0-d890737fad08";
+    device = "/dev/disk/by-uuid/a4661cb5-1a2d-4ca7-a32c-4c1b6e499d9c";
     allowDiscards = true;
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partlabel/prophet";
   };
+
+  boot.initrd.luks.devices."swap" = {
+    device = "/dev/disk/by-uuid/b4fd8d0d-647b-43d9-9975-2dd69412eaa4";
+    allowDiscards = true;
+    fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partlabel/prophet";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/EAE0-FEEB";
+    fsType = "vfat";
+  };
+
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "compress=zstd" "noatime" ];
   };
 
-  boot.initrd.luks.devices."swap" = {
-    device = "/dev/disk/by-uuid/d118d859-5e79-45d9-9e03-65a428a0ecbb";
-    allowDiscards = true;
-    fallbackToPassword = true;
-    keyFile = "/dev/disk/by-partlabel/prophet";
+  fileSystems."/tmp" = {
+    device = "tmpfs";
+    fsType = "tmpfs";
   };
+
   swapDevices = [{ device = "/dev/mapper/swap"; }];
 }
