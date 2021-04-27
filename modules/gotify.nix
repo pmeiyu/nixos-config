@@ -27,11 +27,16 @@ in
           proxy_pass http://localhost:${toString cfg.port};
           rewrite ^/gotify(/.*) $1 break;
 
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+          # The proxy must preserve the host because gotify verifies the host
+          # with the origin.
+          proxy_set_header Host $host;
+
           # Proxy WebSocket
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection $connection_upgrade;
-          proxy_read_timeout 86400;
         '';
       };
     };
