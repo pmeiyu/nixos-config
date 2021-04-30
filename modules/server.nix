@@ -12,8 +12,8 @@ in
     my.common.enable = true;
 
     # Limit number of entries in boot menu.
-    boot.loader.grub.configurationLimit = mkDefault 2;
-    boot.loader.systemd-boot.configurationLimit = mkDefault 2;
+    boot.loader.grub.configurationLimit = mkDefault 10;
+    boot.loader.systemd-boot.configurationLimit = mkDefault 10;
 
     # This will cause too many packages to be built.
     # environment.noXlibs = true;
