@@ -13,7 +13,6 @@
   my.deluge.enable = true;
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
-  my.dns.block.ipv6 = true;
   my.hotspot = {
     enable = true;
     ssid = "Castle";
