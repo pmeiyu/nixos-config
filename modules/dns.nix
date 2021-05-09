@@ -27,64 +27,64 @@ in
 
     services.unbound = {
       enable = true;
-      interfaces = [ "127.0.0.1@53" "::1@53" ];
-      allowedAccess = [ ];
-      forwardAddresses = [ ];
       enableRootTrustAnchor = cfg.dnssec.enable;
-      extraConfig = ''
-        server:
-        cache-min-ttl: 600
-        cache-max-negative-ttl: 60
-        do-not-query-localhost: no
+      settings = {
+        forward-zone = [{
+          name = ".";
+          forward-addr = [ "::1@54" ];
+        }];
+        server = {
+          interface = [
+            "127.0.0.1@53"
+            "::1@53"
+          ];
+          access-control = [
+            "127.0.0.0/8 allow"
+            "::1/128 allow"
+          ];
 
-        domain-insecure: "home"
-        domain-insecure: "lan"
-        domain-insecure: "tinc"
-        private-domain: "home"
-        private-domain: "lan"
-        private-domain: "tinc"
-        private-address: 10.0.0.0/8
-        private-address: 169.254.0.0/16
-        private-address: 172.16.0.0/12
-        private-address: 192.168.0.0/16
-        private-address: fd00::/8
-        private-address: fe80::/10
+          cache-min-ttl = 600;
+          cache-max-negative-ttl = 60;
+          do-not-query-localhost = false;
 
-        ${optionalString cfg.block.ad ''
-          access-control-view: 127.0.0.0/8 block-ad
-          access-control-view: ::1 block-ad
-        ''}
+          domain-insecure = [ "home" "lan" "tinc" ];
+          private-domain = [ "home" "lan" "tinc" ];
+          private-address = [
+            "10.0.0.0/8"
+            "169.254.0.0/16"
+            "172.16.0.0/12"
+            "192.168.0.0/16"
+            "fc00::/7"
+            "fe80::/10"
+          ];
 
-        ${optionalString cfg.block.fake-news ''
-          access-control-view: 127.0.0.0/8 block-fakenews
-          access-control-view: ::1 block-fakenews
-        ''}
+          access-control-view = [
+          ] ++ (optionals cfg.block.ad [
+            "127.0.0.0/8 block-ad"
+            "::1 block-ad"
+          ]) ++ (optionals cfg.block.fake-news [
+            "127.0.0.0/8 block-fakenews"
+            "::1 block-fakenews"
+          ]) ++ (optionals cfg.block.gambling [
+            "127.0.0.0/8 block-gambling"
+            "::1 block-gambling"
+          ]) ++ (optionals cfg.block.porn [
+            "127.0.0.0/8 block-porn"
+            "::1 block-porn"
+          ]) ++ (optionals cfg.block.social [
+            "127.0.0.0/8 block-social"
+            "::1 block-social"
+          ]);
+        };
 
-        ${optionalString cfg.block.gambling ''
-          access-control-view: 127.0.0.0/8 block-gambling
-          access-control-view: ::1 block-gambling
-        ''}
-
-        ${optionalString cfg.block.porn ''
-          access-control-view: 127.0.0.0/8 block-porn
-          access-control-view: ::1 block-porn
-        ''}
-
-        ${optionalString cfg.block.social ''
-          access-control-view: 127.0.0.0/8 block-social
-          access-control-view: ::1 block-social
-        ''}
-
-        include: ${pkgs.hosts}/unbound/block-ad.conf
-        include: ${pkgs.hosts}/unbound/block-fakenews.conf
-        include: ${pkgs.hosts}/unbound/block-gambling.conf
-        include: ${pkgs.hosts}/unbound/block-porn.conf
-        include: ${pkgs.hosts}/unbound/block-social.conf
-
-        forward-zone:
-          name: .
-            forward-addr: ::1@54
-      '';
+        include = [
+          "${pkgs.hosts}/unbound/block-ad.conf"
+          "${pkgs.hosts}/unbound/block-fakenews.conf"
+          "${pkgs.hosts}/unbound/block-gambling.conf"
+          "${pkgs.hosts}/unbound/block-porn.conf"
+          "${pkgs.hosts}/unbound/block-social.conf"
+        ];
+      };
     };
 
     services.smartdns = {

@@ -132,37 +132,34 @@ in
       }];
     };
 
-    services.unbound = {
-      interfaces = [ "10.10.0.1" ];
-      allowedAccess = [ "10.10.0.0/16" "fd00:10::/64" ];
-      extraConfig = ''
-        server:
-
-        ${optionalString cfg.block.ad ''
-          access-control-view: 10.10.0.0/16 block-ad
-          access-control-view: fd00:10::/64 block-ad
-        ''}
-
-        ${optionalString cfg.block.fake-news ''
-          access-control-view: 10.10.0.0/16 block-fakenews
-          access-control-view: fd00:10::/64 block-fakenews
-        ''}
-
-        ${optionalString cfg.block.gambling ''
-          access-control-view: 10.10.0.0/16 block-gambling
-          access-control-view: fd00:10::/64 block-gambling
-        ''}
-
-        ${optionalString cfg.block.porn ''
-          access-control-view: 10.10.0.0/16 block-porn
-          access-control-view: fd00:10::/64 block-porn
-        ''}
-
-        ${optionalString cfg.block.social ''
-          access-control-view: 10.10.0.0/16 block-social
-          access-control-view: fd00:10::/64 block-social
-        ''}
-      '';
+    services.unbound.settings = {
+      server = {
+        interface = [
+          "10.10.0.1"
+          "fd00:10::1"
+        ];
+        access-control = [
+          "10.10.0.0/16 allow"
+          "fd00:10::/64 allow"
+        ];
+        access-control-view = [
+        ] ++ (optionals cfg.block.ad [
+          "10.10.0.0/16 block-ad"
+          "fd00:10::/64 block-ad"
+        ]) ++ (optionals cfg.block.fake-news [
+          "10.10.0.0/16 block-fakenews"
+          "fd00:10::/64 block-fakenews"
+        ]) ++ (optionals cfg.block.gambling [
+          "10.10.0.0/16 block-gambling"
+          "fd00:10::/64 block-gambling"
+        ]) ++ (optionals cfg.block.porn [
+          "10.10.0.0/16 block-porn"
+          "fd00:10::/64 block-porn"
+        ]) ++ (optionals cfg.block.social [
+          "10.10.0.0/16 block-social"
+          "fd00:10::/64 block-social"
+        ]);
+      };
     };
 
     networking.firewall = {
