@@ -151,6 +151,7 @@ in
       # Hardware
       dmidecode
       lm_sensors
+      nvme-cli
       powertop
       smartmontools
     ];
