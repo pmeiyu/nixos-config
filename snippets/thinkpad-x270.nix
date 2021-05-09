@@ -30,6 +30,8 @@
 
   services.fprintd.enable = true;
 
+  services.fwupd.enable = true;
+
   services.tlp = {
     enable = true;
     settings = {
