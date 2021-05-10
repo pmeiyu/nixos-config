@@ -97,7 +97,7 @@ in
       '';
     };
 
-    services.gnome3 = {
+    services.gnome = {
       core-os-services.enable = true;
       games.enable = false;
     };

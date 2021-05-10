@@ -19,7 +19,7 @@ in
 
     services.xserver.displayManager.gdm.enable = true;
 
-    services.xserver.desktopManager.gnome3 = {
+    services.xserver.desktopManager.gnome = {
       enable = true;
       flashback.customSessions = [{
         wmName = "i3";

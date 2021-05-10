@@ -146,7 +146,7 @@
 
   ## Services
 
-  services.xserver.desktopManager.gnome3.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
   services.xrdp = {
     enable = true;

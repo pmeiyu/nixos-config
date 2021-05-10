@@ -102,9 +102,7 @@
     tldr
 
     # GUI
-    arc-icon-theme
-    arc-theme
-    gnome3.gnome-tweaks
+    gnome.gnome-tweaks
   ];
 
 
@@ -112,7 +110,7 @@
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  services.xserver.desktopManager.gnome3.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   services.xserver.windowManager.dwm.enable = true;
   services.xserver.windowManager.stumpwm.enable = true;
 
