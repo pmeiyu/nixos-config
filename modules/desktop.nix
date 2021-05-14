@@ -59,8 +59,6 @@ in
 
     ## Hardware
 
-    powerManagement.cpuFreqGovernor = mkDefault "powersave";
-
     services.logind.lidSwitchExternalPower = "lock";
 
     hardware.pulseaudio.enable = false;

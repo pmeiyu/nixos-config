@@ -42,8 +42,6 @@
 
   ## Hardware
 
-  powerManagement.cpuFreqGovernor = "performance";
-
   hardware.bluetooth.enable = true;
 
 
