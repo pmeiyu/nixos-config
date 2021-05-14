@@ -16,6 +16,10 @@
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.overlay-networks.enable = true;
+  my.snapper = {
+    enable = true;
+    enable-home = true;
+  };
   my.syncthing.enable = true;
   my.virtualization.enable = true;
 
