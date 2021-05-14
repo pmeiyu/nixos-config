@@ -8,7 +8,7 @@ in
 
   config = mkIf cfg.enable {
     security.acme.acceptTerms = true;
-    security.acme.email = "acme@pengmeiyu.com";
+    security.acme.email = "acme@xqzp.net";
 
     services.nginx = {
       enable = true;

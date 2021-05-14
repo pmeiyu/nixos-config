@@ -160,7 +160,7 @@
   services.guix.enable = true;
 
   services.nginx = {
-    virtualHosts."earth.pengmeiyu.com" = {
+    virtualHosts."earth.xqzp.net" = {
       listen = [
         { addr = "*"; port = 443; ssl = true; }
         { addr = "[::]"; port = 443; ssl = true; }
@@ -181,8 +181,8 @@
         '';
       };
       extraConfig = ''
-        access_log /var/log/nginx/earth.pengmeiyu.com.access.log;
-        error_log /var/log/nginx/earth.pengmeiyu.com.error.log;
+        access_log /var/log/nginx/earth.access.log;
+        error_log /var/log/nginx/earth.error.log;
       '';
     };
   };

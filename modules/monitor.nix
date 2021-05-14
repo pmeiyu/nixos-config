@@ -53,7 +53,7 @@ in
         host = "localhost:25";
         user = "bot";
         password = "";
-        fromAddress = "${config.networking.hostName}+grafana@pengmeiyu.com";
+        fromAddress = "${config.networking.hostName}+grafana@xqzp.net";
       };
     };
 
