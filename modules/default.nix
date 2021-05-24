@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./cloudflared.nix
     ./common
     ./deluge.nix
     ./desktop-gui.nix
