@@ -11,6 +11,12 @@ in
 
     services.samba = {
       enable = true;
+      extraConfig = ''
+        client min protocol = SMB3_00
+
+        load printers = no
+        printcap name = /dev/null
+      '';
       shares = {
         homes = {
           "valid users" = "%S";
