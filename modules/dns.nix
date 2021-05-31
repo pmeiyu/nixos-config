@@ -128,6 +128,7 @@ in
         ];
         server-https = [
           "https://cloudflare-dns.com/dns-query -group global gfwlist"
+          "https://doh.opendns.com/dns-query -group global gfwlist"
           "https://dns.tuna.tsinghua.edu.cn:8443/resolve -group china -exclude-default-group"
         ];
         cache-size = 0;
