@@ -16,7 +16,7 @@ in
       virtualHosts.localhost = {
         default = mkDefault true;
         locations."/" = {
-          root = "/srv/www/default";
+          root = "/srv/http/default";
           index = "index.html";
         };
         locations."/nginx_status" = {
@@ -34,8 +34,9 @@ in
     system.activationScripts.my-nginx = ''
       mkdir -p /var/log/nginx && chown -R nginx:nginx /var/log/nginx
 
-      mkdir -p /srv/www/default
-      [ -f /srv/www/default/index.html ] || touch /srv/www/default/index.html
+      defaultDir=/srv/http/default
+      mkdir -p $defaultDir
+      [ -f $defaultDir/index.html ] || touch $defaultDir/index.html
     '';
   };
 }
