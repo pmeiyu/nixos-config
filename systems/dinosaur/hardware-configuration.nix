@@ -28,7 +28,7 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/2d65633a-a5d4-48b9-aef8-e26fef389f26";
     fsType = "btrfs";
-    options = [ "compress=zstd" "noatime" ];
+    options = [ "compress=zstd:6" "noatime" ];
   };
 
   boot.initrd.luks.devices."st-1" = {
@@ -52,7 +52,7 @@
   fileSystems."/srv/store" = {
     device = "/dev/disk/by-uuid/1c78a577-61a2-41d5-9cf5-fc5e5085d9a7";
     fsType = "btrfs";
-    options = [ "compress=zstd" "noatime" ];
+    options = [ "compress=zstd:9" "noatime" ];
   };
 
   swapDevices = [ ];

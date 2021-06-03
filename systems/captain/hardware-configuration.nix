@@ -33,7 +33,7 @@
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = [ "compress=zstd" "noatime" ];
+    options = [ "compress=zstd:6" "noatime" ];
   };
 
   fileSystems."/tmp" = {
