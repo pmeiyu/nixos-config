@@ -137,6 +137,11 @@
 
   ## Programs
 
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
+  };
+
   environment.systemPackages = with pkgs; [
     certbot
     edac-utils
