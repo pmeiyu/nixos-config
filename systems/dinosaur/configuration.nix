@@ -115,6 +115,7 @@
     extraPackages = [ pkgs.iproute pkgs.ipset ];
     extraCommands = ''
       ip6tables -w -I INPUT -p esp -j ACCEPT
+      ip6tables -w -I INPUT -p gre -j ACCEPT
 
       ipset create -exist china4 hash:ip family inet
       ipset create -exist china6 hash:ip family inet6
@@ -125,6 +126,7 @@
     '';
     extraStopCommands = ''
       ip6tables -w -D INPUT -p esp -j ACCEPT
+      ip6tables -w -D INPUT -p gre -j ACCEPT
 
       ipset flush china4
       ipset flush china6
