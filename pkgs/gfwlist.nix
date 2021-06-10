@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, format ? "raw", upstream-dns ? "8.8.8.8" }:
+{ lib, stdenv, fetchFromGitHub, format ? "raw", upstream-dns ? "8.8.8.8" }:
 
 stdenv.mkDerivation rec {
   pname = "gfwlist";
@@ -47,7 +47,7 @@ stdenv.mkDerivation rec {
     cp -rv build/* $out
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "gfwlist";
     homepage = "https://github.com/gfwlist/gfwlist";
     license = licenses.lgpl21;

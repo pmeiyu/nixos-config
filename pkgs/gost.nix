@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, buildGoModule }:
+{ lib, stdenv, fetchFromGitHub, buildGoModule }:
 
 buildGoModule rec {
   pname = "gost";
@@ -13,7 +13,7 @@ buildGoModule rec {
 
   vendorSha256 = "1cgb957ipkiix3x0x84c77a1i8l679q3kqykm1lhb4f19x61dqjh";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A simple tunnel written in golang";
     homepage = "https://github.com/ginuerzh/gost";
     license = licenses.mit;

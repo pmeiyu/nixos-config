@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
   pname = "udpspeeder";
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
     install -v -D speederv2 $out/bin/udpspeeder
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "UDP tunnel with forward error correction";
     homepage = "https://github.com/wangyu-/UDPspeeder/";
     license = licenses.mit;

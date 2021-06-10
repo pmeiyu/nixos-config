@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, buildGoModule }:
+{ lib, stdenv, fetchFromGitHub, buildGoModule }:
 
 buildGoModule rec {
   pname = "go-shadowsocks2";
@@ -13,7 +13,7 @@ buildGoModule rec {
 
   vendorSha256 = "0iyak8af708h3rdrslndladbcjrix35j3rlhpsb8ljchqp09lksg";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Next-generation Shadowsocks in Go";
     homepage = "https://github.com/shadowsocks/go-shadowsocks2";
     license = licenses.asl20;

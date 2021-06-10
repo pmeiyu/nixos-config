@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
   pname = "hosts";
@@ -72,7 +72,7 @@ stdenv.mkDerivation rec {
     cp -rv build/* $out
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "DNS hosts file";
     platforms = platforms.all;
   };

@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
     cp -rv build/* $out
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "china list";
     homepage = "https://github.com/felixonmars/dnsmasq-china-list";
     license = licenses.wtfpl;

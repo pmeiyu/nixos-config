@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
   pname = "vlmcsd";
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     install -v -D -m 644 man/*.8 -t $out/share/man/man8
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "KMS Emulator in C";
     homepage = "https://github.com/Wind4/vlmcsd";
     platforms = platforms.all;

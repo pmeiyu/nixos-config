@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, buildGoModule }:
+{ lib, stdenv, fetchFromGitHub, buildGoModule }:
 
 buildGoModule rec {
   pname = "kcptun";
@@ -18,7 +18,7 @@ buildGoModule rec {
     mv $out/bin/server $out/bin/kcptun-server
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Stable and secure tunnel with multiplexing and FEC";
     homepage = "https://github.com/xtaci/kcptun";
     license = licenses.mit;
