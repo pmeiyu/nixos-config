@@ -167,9 +167,11 @@
   services.nginx = {
     virtualHosts."earth.xqzp.net" = {
       listen = [
-        { addr = "*"; port = 443; ssl = true; }
+        { addr = "0.0.0.0"; port = 80; ssl = false; }
+        { addr = "[::]"; port = 80; ssl = false; }
+        { addr = "0.0.0.0"; port = 443; ssl = true; }
         { addr = "[::]"; port = 443; ssl = true; }
-        { addr = "*"; port = 8443; ssl = true; }
+        { addr = "0.0.0.0"; port = 8443; ssl = true; }
         { addr = "[::]"; port = 8443; ssl = true; }
       ];
       forceSSL = true;
