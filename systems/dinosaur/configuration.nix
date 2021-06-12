@@ -4,7 +4,7 @@
   imports = [
     ../..
     ../../snippets/cpu/amd.nix
-    ../../snippets/gpu/amd.nix
+    ../../snippets/gpu/nvidia.nix
     ../../snippets/development.nix
     ./hardware-configuration.nix
     ./private.nix
@@ -83,8 +83,8 @@
   boot.kernelParams = [
     "amd_iommu=on"
 
-    # Fix AMD Radeon RX 5500 XT quirk.
-    "pci=noats"
+    # Fix GPU PCI passthrough bug.
+    "video=efifb:off"
   ];
 
   ## Environment
