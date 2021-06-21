@@ -106,6 +106,9 @@ in
     security.pki.certificateFiles = [ ./PMY-CA.pem ];
     security.pki.caCertificateBlacklist = [ "CFCA EV ROOT" ];
 
+    environment.etc."pki/PMY-CA.pem".source = ./PMY-CA.pem;
+
+
     ## Network
 
     networking.firewall = {
