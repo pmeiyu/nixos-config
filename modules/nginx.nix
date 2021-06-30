@@ -12,12 +12,25 @@ in
 
     services.nginx = {
       enable = true;
+      additionalModules = [ pkgs.nginxModules.echo ];
       resolver.addresses = [ "[::1]" ];
       virtualHosts.localhost = {
         default = mkDefault true;
         locations."/" = {
           root = "/srv/http/default";
           index = "index.html";
+        };
+        locations."/echo" = {
+          extraConfig = ''
+            echo -n $echo_client_request_headers;
+            echo_request_body;
+          '';
+        };
+        locations."/ip" = {
+          extraConfig = ''
+            default_type text/plain;
+            return 200 "$remote_addr\n";
+          '';
         };
         locations."/nginx_status" = {
           extraConfig = ''
