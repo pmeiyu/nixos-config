@@ -15,6 +15,5 @@ with pkgs; {
   hosts = callPackage ./hosts.nix { };
   kcptun = callPackage ./kcptun.nix { };
   udpspeeder = callPackage ./udpspeeder.nix { };
-  v2ray-plugin = callPackage ./v2ray-plugin.nix { };
   vlmcsd = callPackage ./vlmcsd.nix { };
 }
