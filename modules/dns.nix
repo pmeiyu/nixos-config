@@ -25,6 +25,8 @@ in
     networking.nameservers = [ "::1" ];
     networking.networkmanager.dns = mkDefault "none";
 
+    services.nginx.resolver.addresses = [ "[::1]" ];
+
     services.unbound = {
       enable = true;
       enableRootTrustAnchor = cfg.dnssec.enable;

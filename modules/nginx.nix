@@ -13,7 +13,7 @@ in
     services.nginx = {
       enable = true;
       additionalModules = [ pkgs.nginxModules.echo ];
-      resolver.addresses = [ "[::1]" ];
+
       virtualHosts.localhost = {
         default = mkDefault true;
         locations."/" = {
