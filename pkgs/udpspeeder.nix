@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "udpspeeder";
-  version = "20190121.0";
+  version = "20210116.0";
 
   src = fetchFromGitHub {
     owner = "wangyu-";
     repo = "UDPspeeder";
     rev = version;
-    sha256 = "1fjcbypxgmmamq796alqx52n6is70q55bdfzskv9c1320rbcv9ir";
+    sha256 = "0ki8h2is2j0in55dq7z14rd8f7wi95s5izqyjbiyqdv250ji9jzh";
   };
 
   patchPhase = ''
