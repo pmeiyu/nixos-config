@@ -12,7 +12,8 @@ in
 
     services.nginx = {
       enable = true;
-      additionalModules = [ pkgs.nginxModules.echo ];
+      package = pkgs.openresty;
+      additionalModules = with pkgs.nginxModules; [ ];
 
       virtualHosts.localhost = {
         default = mkDefault true;
