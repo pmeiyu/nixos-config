@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "kcptun";
-  version = "20200701";
+  version = "20210624";
 
   src = fetchFromGitHub {
     owner = "xtaci";
     repo = "kcptun";
     rev = "v${version}";
-    sha256 = "1icw6ih31h1hwkx7mz717d6y490fpmawvibaiw4vac8xisq32613";
+    sha256 = "0x71hgipw826lkz9z9rp9qhkpym5006wv5grlpj64vvn3yp8wvrg";
   };
 
-  vendorSha256 = "1gdikcpb6cgdacmb725nyvxijv2ccm4v0p8chsk57m5p62zb4cm5";
+  vendorSha256 = null;
 
   postInstall = ''
     mv $out/bin/client $out/bin/kcptun-client
