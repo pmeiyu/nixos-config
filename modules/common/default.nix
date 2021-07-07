@@ -38,6 +38,8 @@ in
 
     ## Environment
 
+    networking.domain = mkDefault "xqzp.net";
+
     time.timeZone = "Asia/Shanghai";
 
     environment.variables = lib.mkDefault {
