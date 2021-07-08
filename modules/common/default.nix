@@ -155,10 +155,10 @@ in
       file
       fzf
       git
-      gnupg
       gotop
       htop
       iptables
+      jq
       lsof
       lzip
       home-manager

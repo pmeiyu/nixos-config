@@ -117,7 +117,6 @@ in
       imagemagick7
       iptables
       iw
-      jq
       libnotify
       lolcat
       mkpasswd
@@ -129,7 +128,6 @@ in
       ngrep
       nixpkgs-fmt
       ntfsprogs
-      parallel
       parted
       pciutils
       progress
