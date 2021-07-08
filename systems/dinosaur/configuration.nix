@@ -182,15 +182,8 @@
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        extraConfig = ''
-          proxy_pass http://localhost;
-
-          # Proxy WebSocket
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection $connection_upgrade;
-          proxy_read_timeout 86400;
-        '';
+        proxyPass = "http://localhost";
+        proxyWebsockets = true;
       };
       extraConfig = ''
         access_log /var/log/nginx/earth.access.log;

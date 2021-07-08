@@ -14,6 +14,7 @@ in
       enable = true;
       package = pkgs.openresty;
       additionalModules = with pkgs.nginxModules; [ ];
+      recommendedProxySettings = true;
 
       virtualHosts.localhost = {
         default = mkDefault true;

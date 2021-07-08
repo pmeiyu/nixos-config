@@ -31,15 +31,10 @@ in
 
     services.nginx = {
       virtualHosts.localhost.locations."/weechat/" = {
+        proxyPass = "http://localhost:${toString cfg.relay.port}";
+        proxyWebsockets = true;
         extraConfig = ''
           access_log off;
-          proxy_pass http://localhost:${toString cfg.relay.port};
-
-          # Proxy WebSocket
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection $connection_upgrade;
-          proxy_read_timeout 86400;
         '';
       };
     };
