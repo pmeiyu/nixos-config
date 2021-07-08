@@ -51,6 +51,13 @@
     "nct6775"
   ];
 
+  boot.kernelParams = [
+    "intel_iommu=on"
+
+    # Fix GPU PCI passthrough bug.
+    "video=efifb:off"
+  ];
+
 
   ## Environment
 
