@@ -122,6 +122,11 @@
   services.guix.enable = true;
   services.printing.enable = true;
 
+  services.clamav = {
+    daemon.enable = true;
+    updater.enable = true;
+  };
+
   # services.kubernetes = {
   #   roles = [ "master" "node" ];
   #   masterAddress = "localhost";

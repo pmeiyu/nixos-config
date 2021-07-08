@@ -162,6 +162,11 @@
     defaultWindowManager = "i3";
   };
 
+  services.clamav = {
+    daemon.enable = true;
+    updater.enable = true;
+  };
+
   services.guix.enable = true;
 
   services.nginx = {
