@@ -22,7 +22,7 @@ in
 
     ## Nix
 
-    system.stateVersion = mkDefault "21.03";
+    system.stateVersion = mkDefault "9999.99";
 
     nix.binaryCaches = [
       "https://mirror.sjtu.edu.cn/nix-channels/store"
