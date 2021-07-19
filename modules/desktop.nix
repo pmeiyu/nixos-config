@@ -102,9 +102,11 @@ in
     };
 
     environment.systemPackages = with pkgs; [
+      _7zz
       alsaUtils
       binutils
       btrfs-progs
+      compsize
       cowsay
       cryptsetup
       dosfstools
