@@ -7,6 +7,11 @@ in
   options = {
     my.hotspot = {
       enable = mkEnableOption "Enable WiFi hotspot.";
+      interface = mkOption {
+        type = types.str;
+        default = "wlan0";
+        description = "Network interface.";
+      };
       ssid = mkOption {
         type = types.str;
         description = "SSID.";
@@ -19,11 +24,6 @@ in
         type = types.enum [ 4 5 6 ];
         default = 4;
         description = "WiFi version.";
-      };
-      interface = mkOption {
-        type = types.str;
-        default = "wlan0";
-        description = "Network interface.";
       };
       channel = mkOption {
         type = types.int;

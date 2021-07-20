@@ -16,10 +16,10 @@
   my.gotify.enable = true;
   my.hotspot = {
     enable = true;
+    interface = "wlan0";
     ssid = "Castle";
     password = lib.mkDefault "12345678";
     version = 4;
-    interface = "wlan0";
     channel = 6;
     countryCode = "US";
     ht_capab = "[HT40+][SHORT-GI-40][RX-STBC1]";
