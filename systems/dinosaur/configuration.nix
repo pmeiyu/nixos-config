@@ -22,7 +22,7 @@
     interface = "wlan0";
     channel = 6;
     countryCode = "US";
-    ht_capab = "[HT40+][SHORT-GI-40][RX-STBC1][TX-STBC]";
+    ht_capab = "[HT40+][SHORT-GI-40][RX-STBC1]";
     block.ad = true;
   };
   my.hydroxide.enable = true;
