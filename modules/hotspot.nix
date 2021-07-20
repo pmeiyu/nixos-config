@@ -119,7 +119,7 @@ in
       '';
     };
 
-    networking.networkmanager.unmanaged = [ cfg.interface ];
+    networking.networkmanager.unmanaged = [ "interface-name:${cfg.interface}" ];
     networking.interfaces."${cfg.interface}" = {
       useDHCP = false;
       ipv4.addresses = [{
