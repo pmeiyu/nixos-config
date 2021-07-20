@@ -182,8 +182,10 @@
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        proxyPass = "http://localhost";
         proxyWebsockets = true;
+        extraConfig = ''
+          proxy_pass http://localhost;
+        '';
       };
       extraConfig = ''
         access_log /var/log/nginx/earth.access.log;
