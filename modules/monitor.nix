@@ -30,6 +30,10 @@ in
     my.monitor.server.enable = mkIf cfg.enable true;
     my.monitor.client.enable = mkIf cfg.enable true;
 
+    environment.systemPackages = with pkgs; mkIf cfg.server.enable [
+      config.services.influxdb.package
+    ];
+
     services.grafana = mkIf cfg.server.enable {
       enable = true;
       port = 8300;
