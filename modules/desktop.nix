@@ -113,26 +113,22 @@ in
       efibootmgr
       espeak
       ffmpeg
+      file
       fortune
       fuse
       gnumake
-      gotify-cli
       imagemagick7
-      iptables
       iw
       libnotify
       lolcat
       mkpasswd
       mpc_cli
       mpd
+      ncdu
       neofetch
-      nethogs
-      nftables
-      ngrep
       nixpkgs-fmt
       ntfsprogs
       parted
-      pciutils
       progress
       pulseaudio
       ripgrep
@@ -143,7 +139,6 @@ in
       strace
       telnet
       unzip
-      usbutils
       xdg-user-dirs
       xdg_utils
 
@@ -151,8 +146,10 @@ in
       dmidecode
       lm_sensors
       nvme-cli
+      pciutils
       powertop
       smartmontools
+      usbutils
     ];
 
 

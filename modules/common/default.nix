@@ -149,17 +149,15 @@ in
       curl
       dnsutils
       fd
-      file
       fzf
       git
-      gotop
+      home-manager
       htop
       iptables
       jq
       lsof
       lzip
-      home-manager
-      ncdu
+      nftables
       nmap
       openssl
       psmisc
