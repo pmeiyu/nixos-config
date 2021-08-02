@@ -4,7 +4,11 @@ with lib;
 let cfg = config.my.emacs;
 in
 {
-  options = { my.emacs = { enable = mkEnableOption "Enable emacs."; }; };
+  options = {
+    my.emacs = {
+      enable = mkEnableOption "Enable emacs.";
+    };
+  };
 
   config = mkIf cfg.enable {
     nixpkgs.config.packageOverrides = pkgs: rec {
@@ -19,7 +23,7 @@ in
         (with epkgs.melpaStablePackages; [
           (pkgs.runCommand "default.el" { } ''
             mkdir -p $out/share/emacs/site-lisp
-            cp ${myEmacsConfig} $out/share/emacs/site-lisp/default.el
+            cp ${my-emacs-config} $out/share/emacs/site-lisp/default.el
           '')
           nix-mode
           use-package
@@ -36,7 +40,7 @@ in
       aspellDicts.en
       aspellDicts.en-computers
       aspellDicts.en-science
-      emacs
+      my-emacs
     ];
   };
 }
