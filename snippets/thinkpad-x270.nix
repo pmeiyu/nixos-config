@@ -37,12 +37,16 @@
     enable = true;
     settings = {
       # Internal battery
-      START_CHARGE_THRESH_BAT0 = 70;
-      STOP_CHARGE_THRESH_BAT0 = 80;
+      START_CHARGE_THRESH_BAT0 = lib.mkDefault 70;
+      STOP_CHARGE_THRESH_BAT0 = lib.mkDefault 80;
 
       # Replaceable battery
-      START_CHARGE_THRESH_BAT1 = 70;
-      STOP_CHARGE_THRESH_BAT1 = 80;
+      START_CHARGE_THRESH_BAT1 = lib.mkDefault 70;
+      STOP_CHARGE_THRESH_BAT1 = lib.mkDefault 80;
+
+      # CPU
+      CPU_SCALING_GOVERNOR_ON_AC = lib.mkDefault "powersave";
+      CPU_SCALING_GOVERNOR_ON_BAT = lib.mkDefault "powersave";
     };
   };
 
