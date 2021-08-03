@@ -18,6 +18,9 @@ in
           proxy_pass http://localhost:${toString config.services.deluge.web.port}/;
           proxy_set_header X-Deluge-Base "/deluge/";
           add_header X-Frame-Options SAMEORIGIN;
+
+          # Allow uploading large torrent files.
+          client_max_body_size 10M;
         '';
       };
     };
