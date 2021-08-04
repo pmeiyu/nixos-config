@@ -17,15 +17,11 @@ in
 
     nix.binaryCachePublicKeys = [ ];
 
-    # Enable flakes.
-    nix.package = pkgs.nixFlakes;
-    nix.extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
 
     ## Boot
 
     boot.cleanTmpDir = true;
+
 
     ## Kernel
 
@@ -35,6 +31,7 @@ in
       "net.ipv4.tcp_congestion_control" = "bbr";
     };
 
+
     ## Environment
 
     time.timeZone = "Asia/Shanghai";
@@ -43,6 +40,7 @@ in
       EDITOR = "zile";
       VISUAL = "zile";
     };
+
 
     ## User accounts
 
@@ -100,6 +98,7 @@ in
 
     environment.etc."tmux.conf" = { source = ./tmux.conf; };
 
+
     ## Certificates
 
     security.pki.certificateFiles = [ ./PMY-CA.pem ];
@@ -117,6 +116,7 @@ in
       allowedUDPPorts = [ ];
     };
 
+
     ## Services
 
     services.journald.extraConfig = ''
@@ -129,6 +129,7 @@ in
       enable = true;
       passwordAuthentication = false;
     };
+
 
     ## Programs
 
