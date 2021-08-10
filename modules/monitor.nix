@@ -9,15 +9,10 @@ in
       enable = mkEnableOption "Enable monitor server and client.";
       server = {
         enable = mkEnableOption "Enable monitor server.";
-        influxdb-url-prefix = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-          description = "Nginx proxy prefix for InfluxDB.";
-        };
       };
       client = {
         enable = mkEnableOption "Enable monitor client.";
-        outputs.influxdb-url = mkOption {
+        outputs.influxdb.url = mkOption {
           type = types.str;
           default = "http://localhost:8086";
           description = "InfluxDB URL.";
@@ -30,7 +25,7 @@ in
     my.monitor.server.enable = mkIf cfg.enable true;
     my.monitor.client.enable = mkIf cfg.enable true;
 
-    environment.systemPackages = with pkgs; mkIf cfg.server.enable [
+    environment.systemPackages = mkIf cfg.server.enable [
       config.services.influxdb.package
     ];
 
@@ -40,8 +35,12 @@ in
       domain = "localhost";
       protocol = "http";
       rootUrl = "%(protocol)s://%(domain)s/grafana/";
-      extraOptions = { SERVER_SERVE_FROM_SUB_PATH = "true"; };
 
+      extraOptions = {
+        SERVER_SERVE_FROM_SUB_PATH = "true";
+      };
+
+      analytics.reporting.enable = false;
       provision = {
         enable = true;
         datasources = [{
@@ -67,7 +66,9 @@ in
 
     services.influxdb = mkIf cfg.server.enable {
       enable = true;
-      extraConfig = { reporting-disabled = true; };
+      extraConfig = {
+        reporting-disabled = true;
+      };
     };
 
     services.nginx = mkIf cfg.server.enable {
@@ -75,12 +76,11 @@ in
       virtualHosts.localhost.locations = {
         "/grafana/" = {
           proxyPass =
-            "http://127.0.0.1:${toString config.services.grafana.port}";
+            "http://localhost:${toString config.services.grafana.port}";
         };
-      } // optionalAttrs (!isNull cfg.server.influxdb-url-prefix) {
-        "${cfg.influxdb-url-prefix}" = {
+        "/influxdb/" = {
           extraConfig = ''
-            proxy_pass http://127.0.0.1:8086/;
+            proxy_pass http://localhost:8086/;
           '';
         };
       };
@@ -91,16 +91,14 @@ in
       extraConfig = {
         agent = {
           interval = "30s";
-          collection_jitter = "1s";
+          collection_jitter = "2s";
           flush_interval = "60s";
           flush_jitter = "10s";
         };
         outputs = {
           influxdb = {
-            urls = [ cfg.client.outputs.influxdb-url ];
+            urls = [ cfg.client.outputs.influxdb.url ];
             database = "telegraf";
-            timeout = "30s";
-            content_encoding = "gzip";
           };
         };
         inputs = {
@@ -123,14 +121,12 @@ in
           # nginx = { urls = [ "http://localhost/nginx_status" ]; };
           # http_response = { urls = [ "http://localhost/" ]; };
           # ping = { urls = [ "9.9.9.9" ]; };
-        } // optionalAttrs (cfg.server.enable) { influxdb = { }; }
-        // optionalAttrs (config.my.desktop.enable) {
+        } // optionalAttrs (config.my.desktop.enable) {
           sensors = { };
           smart = {
-            path = "${
-                  pkgs.writeShellScriptBin "smartctl"
-                  "/run/wrappers/bin/sudo ${pkgs.smartmontools}/bin/smartctl $@"
-                }/bin/smartctl";
+            path_nvme = "${pkgs.nvme-cli}/bin/nvme";
+            path_smartctl = "${pkgs.smartmontools}/bin/smartctl";
+            use_sudo = true;
           };
           temp = { };
           wireless = { };
@@ -139,13 +135,24 @@ in
     };
 
     systemd.services.telegraf.path =
-      mkIf (cfg.client.enable && config.my.desktop.enable) [ pkgs.lm_sensors ];
+      mkIf (cfg.client.enable && config.my.desktop.enable) [
+        # sudo
+        "/run/wrappers"
+
+        pkgs.lm_sensors
+      ];
     security.sudo.extraRules =
       mkIf (cfg.client.enable && config.my.desktop.enable) [{
-        commands = [{
-          command = "${pkgs.smartmontools}/bin/smartctl";
-          options = [ "NOPASSWD" ];
-        }];
+        commands = [
+          {
+            command = "${pkgs.nvme-cli}/bin/nvme";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "${pkgs.smartmontools}/bin/smartctl";
+            options = [ "NOPASSWD" ];
+          }
+        ];
         users = [ "telegraf" ];
       }];
   };
