@@ -59,10 +59,10 @@
       DEVNAME=hwmon1=nct6792
       FCTEMPS=hwmon1/pwm2=hwmon1/temp7_input hwmon1/pwm1=hwmon1/temp3_input hwmon1/pwm3=hwmon1/temp3_input
       FCFANS=hwmon1/pwm2=hwmon1/fan2_input hwmon1/pwm1=hwmon1/fan1_input hwmon1/pwm3=hwmon1/fan3_input
-      MINTEMP=hwmon1/pwm2=30 hwmon1/pwm1=40 hwmon1/pwm3=40
+      MINTEMP=hwmon1/pwm2=40 hwmon1/pwm1=50 hwmon1/pwm3=50
       MAXTEMP=hwmon1/pwm2=70 hwmon1/pwm1=60 hwmon1/pwm3=60
       MINSTART=hwmon1/pwm2=20 hwmon1/pwm1=20 hwmon1/pwm3=20
-      MINSTOP=hwmon1/pwm2=0 hwmon1/pwm1=50 hwmon1/pwm3=50
+      MINSTOP=hwmon1/pwm2=0 hwmon1/pwm1=40 hwmon1/pwm3=40
       MAXPWM=hwmon1/pwm1=80 hwmon1/pwm3=80
     '';
   };
