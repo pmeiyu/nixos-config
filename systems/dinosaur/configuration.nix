@@ -163,7 +163,7 @@
   };
 
   services.clamav = {
-    daemon.enable = true;
+    daemon.enable = false;
     updater.enable = true;
   };
 
