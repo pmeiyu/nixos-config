@@ -29,22 +29,30 @@
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
   };
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/2d65633a-a5d4-48b9-aef8-e26fef389f26";
-    fsType = "btrfs";
-    options = [ "compress=zstd:6" "noatime" ];
-  };
 
   boot.initrd.luks.devices."store" = {
     device = "/dev/disk/by-uuid/7ea92fb8-25e8-4616-ba14-11b50589978b";
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
   };
+
+  fileSystems."/" = {
+    device = "/dev/mapper/root";
+    fsType = "btrfs";
+    options = [ "compress=zstd:6" "noatime" ];
+  };
+
   fileSystems."/srv/store" = {
     device = "/dev/mapper/store";
     fsType = "btrfs";
     options = [ "compress=zstd:9" "noatime" ];
   };
 
-  swapDevices = [ ];
+  swapDevices = [
+    {
+      device = "/dev/disk/by-partuuid/fbdb6004-6344-7f47-a566-12b519e22f4e";
+      discardPolicy = "both";
+      randomEncryption.enable = true;
+    }
+  ];
 }
