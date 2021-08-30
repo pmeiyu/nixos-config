@@ -20,7 +20,14 @@
   boot.extraModulePackages = [ ];
 
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/baa6c224-1705-455c-91f2-48cf34d6a4ed";
+    device = "/dev/disk/by-uuid/19ce3347-91dc-46db-98a8-76905e42b782";
+    allowDiscards = true;
+    fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
+  };
+
+  boot.initrd.luks.devices."root-2" = {
+    device = "/dev/disk/by-uuid/28349042-36bd-4716-a349-aee3978aaaf1";
     allowDiscards = true;
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
@@ -34,14 +41,14 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/AA45-BE8E";
+    device = "/dev/disk/by-uuid/3028-FA3F";
     fsType = "vfat";
   };
 
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = [ "compress=zstd:6" "noatime" ];
+    options = [ "compress=zstd:9" "noatime" ];
   };
 
   fileSystems."/home" = {
@@ -53,13 +60,21 @@
   fileSystems."/srv" = {
     device = "/dev/mapper/store";
     fsType = "btrfs";
-    options = [ "compress=zstd:6" "noatime" "subvol=srv" ];
+    options = [ "compress=zstd:9" "noatime" "subvol=srv" ];
   };
 
-  swapDevices = [{
-    device = "/dev/disk/by-partuuid/7fd9f33b-6571-3343-a9a9-90dd7b992d65";
-    randomEncryption.enable = true;
-  }];
+  swapDevices = [
+    {
+      device = "/dev/disk/by-partuuid/f0d2575a-b8ba-904b-a6fa-3737f07a0d08";
+      randomEncryption.enable = true;
+      discardPolicy = "both";
+    }
+    {
+      device = "/dev/disk/by-partuuid/361950b3-c225-754c-9888-3f17c65c1ebc";
+      randomEncryption.enable = true;
+      discardPolicy = "both";
+    }
+  ];
 
   nix.maxJobs = lib.mkDefault 4;
 }
