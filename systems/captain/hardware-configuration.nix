@@ -41,5 +41,5 @@
     fsType = "tmpfs";
   };
 
-  swapDevices = [{ device = "/dev/mapper/swap"; }];
+  swapDevices = [{ device = "/dev/mapper/swap"; discardPolicy = "both"; }];
 }
