@@ -113,7 +113,7 @@ in
       enable = true;
       allowPing = true;
       allowedTCPPorts = [ 80 443 ];
-      allowedUDPPorts = [ ];
+      allowedUDPPorts = [ 443 ];
     };
 
 
