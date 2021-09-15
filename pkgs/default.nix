@@ -1,4 +1,6 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> { }
+, mypkgs ? import (builtins.fetchTarball "https://github.com/pmeiyu/nixpkgs/archive/master.tar.gz") { }
+}:
 
 with pkgs; {
   data = import ./data;
