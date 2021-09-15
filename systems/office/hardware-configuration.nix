@@ -19,6 +19,13 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/3028-FA3F";
+    fsType = "vfat";
+  };
+
+
   boot.initrd.luks.devices."root" = {
     device = "/dev/disk/by-uuid/19ce3347-91dc-46db-98a8-76905e42b782";
     allowDiscards = true;
@@ -33,46 +40,36 @@
     keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
   };
 
-  boot.initrd.luks.devices."store" = {
-    device = "/dev/disk/by-uuid/47a2fa95-920c-4167-9243-f68375909ccd";
-    allowDiscards = true;
-    fallbackToPassword = true;
-    keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/3028-FA3F";
-    fsType = "vfat";
-  };
-
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "compress=zstd:9" "noatime" ];
   };
 
-  fileSystems."/home" = {
-    device = "/dev/mapper/store";
-    fsType = "btrfs";
-    options = [ "compress=zstd:6" "noatime" "subvol=home" ];
-  };
 
   fileSystems."/srv" = {
     device = "/dev/mapper/store";
     fsType = "btrfs";
     options = [ "compress=zstd:9" "noatime" "subvol=srv" ];
+    encrypted = {
+      enable = true;
+      label = "store";
+      blkDev = "/dev/disk/by-uuid/47a2fa95-920c-4167-9243-f68375909ccd";
+      keyFile = "/mnt-root/etc/secrets/store.key";
+    };
   };
+
 
   swapDevices = [
     {
       device = "/dev/disk/by-partuuid/f0d2575a-b8ba-904b-a6fa-3737f07a0d08";
-      randomEncryption.enable = true;
       discardPolicy = "both";
+      randomEncryption.enable = true;
     }
     {
       device = "/dev/disk/by-partuuid/361950b3-c225-754c-9888-3f17c65c1ebc";
-      randomEncryption.enable = true;
       discardPolicy = "both";
+      randomEncryption.enable = true;
     }
   ];
 
