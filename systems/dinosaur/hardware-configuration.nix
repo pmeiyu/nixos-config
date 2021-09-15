@@ -15,7 +15,7 @@
     "xhci_pci"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/boot" = {
@@ -23,15 +23,10 @@
     fsType = "vfat";
   };
 
+
   boot.initrd.luks.devices."root" = {
     device = "/dev/disk/by-uuid/956ade2b-027b-48e2-82f7-b9591186d7e2";
     allowDiscards = true;
-    fallbackToPassword = true;
-    keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
-  };
-
-  boot.initrd.luks.devices."store" = {
-    device = "/dev/disk/by-uuid/7ea92fb8-25e8-4616-ba14-11b50589978b";
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
   };
@@ -42,11 +37,32 @@
     options = [ "compress=zstd:6" "noatime" ];
   };
 
+
   fileSystems."/srv/store" = {
     device = "/dev/mapper/store";
     fsType = "btrfs";
     options = [ "compress=zstd:9" "noatime" ];
+    encrypted = {
+      enable = true;
+      label = "store";
+      blkDev = "/dev/disk/by-uuid/7ea92fb8-25e8-4616-ba14-11b50589978b";
+      keyFile = "/mnt-root/etc/secrets/archive.key";
+    };
   };
+
+
+  fileSystems."/srv/archive" = {
+    device = "/dev/mapper/archive";
+    fsType = "btrfs";
+    options = [ "compress=zstd:9" "noatime" ];
+    encrypted = {
+      enable = true;
+      label = "archive";
+      blkDev = "/dev/disk/by-uuid/7da40a3e-cad4-42b9-bca6-18d30aecbec6";
+      keyFile = "/mnt-root/etc/secrets/archive.key";
+    };
+  };
+
 
   swapDevices = [
     {

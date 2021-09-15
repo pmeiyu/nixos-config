@@ -3,8 +3,7 @@
 {
   imports = [
     ../..
-    ../../snippets/cpu/amd.nix
-    ../../snippets/gpu/nvidia.nix
+    ../../snippets/cpu/intel.nix
     ../../snippets/development.nix
     ./hardware-configuration.nix
     ./private.nix
@@ -22,7 +21,7 @@
     version = 4;
     channel = 6;
     countryCode = "US";
-    ht_capab = "[HT40+][SHORT-GI-40][RX-STBC1]";
+    ht_capab = "[HT40+][RX-STBC1]";
     block.ad = true;
   };
   my.hydroxide.enable = true;
@@ -55,15 +54,15 @@
     enable = true;
     config = ''
       INTERVAL=10
-      DEVPATH=hwmon1=devices/platform/nct6775.656
-      DEVNAME=hwmon1=nct6792
-      FCTEMPS=hwmon1/pwm2=hwmon1/temp7_input hwmon1/pwm1=hwmon1/temp3_input hwmon1/pwm3=hwmon1/temp3_input
-      FCFANS=hwmon1/pwm2=hwmon1/fan2_input hwmon1/pwm1=hwmon1/fan1_input hwmon1/pwm3=hwmon1/fan3_input
-      MINTEMP=hwmon1/pwm2=40 hwmon1/pwm1=50 hwmon1/pwm3=50
-      MAXTEMP=hwmon1/pwm2=70 hwmon1/pwm1=60 hwmon1/pwm3=60
-      MINSTART=hwmon1/pwm2=20 hwmon1/pwm1=20 hwmon1/pwm3=20
-      MINSTOP=hwmon1/pwm2=0 hwmon1/pwm1=40 hwmon1/pwm3=40
-      MAXPWM=hwmon1/pwm1=80 hwmon1/pwm3=80
+      DEVPATH=hwmon2=devices/platform/nct6775.656
+      DEVNAME=hwmon2=nct6798
+      FCTEMPS=hwmon2/pwm2=hwmon2/temp2_input hwmon2/pwm1=hwmon2/temp7_input hwmon2/pwm7=hwmon2/temp7_input
+      FCFANS=hwmon2/pwm2=hwmon2/fan2_input hwmon2/pwm1=hwmon2/fan1_input hwmon2/pwm7=hwmon2/fan7_input
+      MINTEMP=hwmon2/pwm2=30 hwmonn2/pwm1=50 hwmon2/pwm7=50
+      MAXTEMP=hwmon2/pwm2=70 hwmon2/pwm1=60 hwmon2/pwm7=60
+      MINSTART=hwmon2/pwm2=20 hwmon2/pwm1=20 hwmon2/pwm7=20
+      MINSTOP=hwmon2/pwm2=0 hwmon2/pwm1=40 hwmon2/pwm7=40
+      MAXPWM=hwmon2/pwm2=150 hwmon2/pwm1=80 hwmon2/pwm7=80
     '';
   };
 
@@ -72,7 +71,7 @@
   boot.kernelModules = [
     "acpi_call"
 
-    # For Nuvoton NCT6792D Super IO Sensors on motherboard.
+    # Nuvoton sensor
     "nct6775"
 
     # VFIO
@@ -81,7 +80,7 @@
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
   boot.kernelParams = [
-    "amd_iommu=on"
+    "intel_iommu=on"
 
     # Fix GPU PCI passthrough bug.
     "video=efifb:off"
