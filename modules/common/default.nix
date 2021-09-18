@@ -77,7 +77,10 @@ in
         shell = pkgs.zsh;
         openssh.authorizedKeys.keys = authorizedKeys;
       };
-      guest = { isSystemUser = true; };
+      guest = {
+        isSystemUser = true;
+        group = "users";
+      };
     };
     security.pam.enableSSHAgentAuth = true;
     security.sudo.wheelNeedsPassword = false;
