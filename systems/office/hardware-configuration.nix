@@ -40,6 +40,13 @@
     keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
   };
 
+  boot.initrd.luks.devices."root-3" = {
+    device = "/dev/disk/by-uuid/416a8417-61b2-406d-b298-34f59ffc2a6a";
+    allowDiscards = true;
+    fallbackToPassword = true;
+    keyFile = "/dev/disk/by-partuuid/b0457298-68bd-4e85-9420-542edcea9811";
+  };
+
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
@@ -68,6 +75,11 @@
     }
     {
       device = "/dev/disk/by-partuuid/361950b3-c225-754c-9888-3f17c65c1ebc";
+      discardPolicy = "both";
+      randomEncryption.enable = true;
+    }
+    {
+      device = "/dev/disk/by-partuuid/055d56a9-871c-484d-a728-f8891ddcab95";
       discardPolicy = "both";
       randomEncryption.enable = true;
     }
