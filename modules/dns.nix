@@ -50,7 +50,7 @@ in
           do-not-query-localhost = false;
 
           domain-insecure = [ "home" "lan" "tinc" ];
-          private-domain = [ "home" "lan" "tinc" ];
+          private-domain = [ "home" "lan" "tinc" "xqzp.net" ];
           private-address = [
             "10.0.0.0/8"
             "169.254.0.0/16"
@@ -142,6 +142,9 @@ in
         dualstack-ip-selection = mkDefault false;
         log-level = mkDefault "warn";
         audit-enable = mkDefault cfg.log.enable;
+        nameserver = [
+          "/xqzp.net/china"
+        ];
         conf-file = optionals cfg.chinalist.enable [
           "${pkgs.chinalist-smartdns}/accelerated-domains.china.smartdns.conf"
           "${pkgs.chinalist-smartdns}/apple.china.smartdns.conf"
@@ -182,6 +185,7 @@ in
           "1.1.1.1:53"
           "8.8.8.8:53"
           "9.9.9.9:53"
+          "114.114.114.114:53"
         ];
         ipv6_servers = true;
         cache = false;
