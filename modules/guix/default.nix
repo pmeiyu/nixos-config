@@ -29,9 +29,9 @@ in
       substitute-urls = mkOption {
         type = types.listOf types.str;
         default = [
-          "https://mirror.sjtu.edu.cn/guix"
-          "https://ci.guix.gnu.org"
-          "https://bordeaux.guix.gnu.org"
+          "https://mirror.sjtu.edu.cn/guix/"
+          "https://ci.guix.gnu.org/"
+          "https://bordeaux.guix.gnu.org/"
         ];
         description = "List of substitute URLs.";
       };

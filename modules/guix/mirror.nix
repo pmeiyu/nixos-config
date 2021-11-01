@@ -3,8 +3,7 @@
 with lib;
 let
   cfg = config.services.guix.mirror;
-  upstream-domain =
-    elemAt (splitString "/" (elemAt (splitString ":" cfg.upstream) 1)) 2;
+  upstream-domain = elemAt (splitString "/" cfg.upstream) 2;
 in
 {
   options = {
@@ -12,19 +11,19 @@ in
       enable = mkEnableOption "Enable Guix mirror";
       domain = mkOption {
         type = types.str;
-        default = "guix.mirror.lan";
+        default = "localhost";
         description = "Domain name.";
       };
       upstream = mkOption {
-        type = types.strMatching "https?://.+";
-        default = "https://ci.guix.gnu.org";
+        type = types.strMatching "https?://.+/";
+        default = "https://ci.guix.gnu.org/";
         description = "Upstream substitute server.";
       };
-      apply-to-self = mkOption {
+      apply-to-guix-daemon = mkOption {
         type = types.bool;
         default = true;
         description =
-          "Apply this mirror as a substitute server to the machine itself.";
+          "Apply this mirror as a substitute server to guix-daemon.";
       };
       cache-directory = mkOption {
         type = types.str;
@@ -50,7 +49,9 @@ in
       127.0.0.1 ${cfg.domain}
     '';
 
-    services.guix.substitute-urls = [ "http://${cfg.domain}" ];
+    services.guix.substitute-urls = optionals cfg.apply-to-guix-daemon [
+      "http://${cfg.domain}/guix/"
+    ];
 
     services.nginx = {
       enable = true;
@@ -65,7 +66,7 @@ in
       '';
 
       virtualHosts."${cfg.domain}" = {
-        locations."/" = {
+        locations."/guix/" = {
           extraConfig = ''
             proxy_pass ${cfg.upstream};
             proxy_ssl_server_name on;
@@ -85,7 +86,7 @@ in
             proxy_ignore_headers Set-Cookie;
           '';
         };
-        extraConfig = ''
+        extraConfig = optionalString (cfg.domain != "localhost") ''
           access_log /var/log/nginx/${cfg.domain}.access.log;
           error_log /var/log/nginx/${cfg.domain}.error.log;
         '';
@@ -94,7 +95,7 @@ in
 
     systemd.services.nginx.serviceConfig.ReadWritePaths = cfg.cache-directory;
 
-    system.activationScripts.my-guix-mirror = ''
+    system.activationScripts.nginx-guix-mirror = ''
       mkdir -p ${cfg.cache-directory} && \
       chown nginx:nginx ${cfg.cache-directory}
     '';
