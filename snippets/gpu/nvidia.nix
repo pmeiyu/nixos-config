@@ -3,5 +3,5 @@
 {
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  programs.sway.extraOptions = [ "--my-next-gpu-wont-be-nvidia" ];
+  programs.sway.extraOptions = [ "--unsupported-gpu" ];
 }
