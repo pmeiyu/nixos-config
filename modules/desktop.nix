@@ -72,6 +72,12 @@ in
       pulse.enable = true;
     };
 
+    security.tpm2 = {
+      enable = true;
+      abrmd.enable = true;
+      pkcs11.enable = true;
+    };
+
 
     ## Environment
 
@@ -141,6 +147,7 @@ in
       stow
       strace
       telnet
+      tpm2-tools
       unzip
       xdg-user-dirs
       xdg_utils
