@@ -16,6 +16,7 @@ in
       chinalist.enable = mkDefault true;
       gfwlist.enable = mkDefault true;
       ipset.enable = mkDefault true;
+      log.enable = mkDefault true;
     };
     my.emacs.enable = true;
 

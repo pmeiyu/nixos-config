@@ -45,8 +45,9 @@ in
             "::1/128 allow"
           ];
 
-          cache-min-ttl = 600;
+          cache-min-ttl = 60;
           cache-max-negative-ttl = 60;
+          serve-expired = true;
           do-not-query-localhost = false;
 
           domain-insecure = [ "home" "lan" "tinc" ];
@@ -77,6 +78,10 @@ in
             "127.0.0.0/8 block-social"
             "::1 block-social"
           ]);
+
+          log-replies = cfg.log.enable;
+          log-local-actions = cfg.log.enable;
+          log-servfail = cfg.log.enable;
         };
 
         include = [
@@ -141,7 +146,6 @@ in
         force-AAAA-SOA = cfg.block.ipv6;
         dualstack-ip-selection = mkDefault false;
         log-level = mkDefault "warn";
-        audit-enable = mkDefault cfg.log.enable;
         nameserver = [
           "/xqzp.net/china"
         ];
