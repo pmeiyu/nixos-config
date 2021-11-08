@@ -5,13 +5,22 @@
 with pkgs; {
   data = import ./data;
   chinalist = callPackage ./dnsmasq-china-list.nix { format = "raw"; };
+  chinalist-dnsmasq = callPackage ./dnsmasq-china-list.nix {
+    format = "dnsmasq";
+    enable-nftset = true;
+  };
   chinalist-smartdns = callPackage ./dnsmasq-china-list.nix {
     format = "smartdns";
     upstream-dns = "china";
-    enable-ipset = true;
   };
   gfwlist = callPackage ./gfwlist.nix { format = "raw"; };
-  gfwlist-smartdns = callPackage ./gfwlist.nix { format = "smartdns"; };
+  gfwlist-dnsmasq = callPackage ./gfwlist.nix {
+    format = "dnsmasq";
+    enable-nftset = true;
+  };
+  gfwlist-smartdns = callPackage ./gfwlist.nix {
+    format = "smartdns";
+  };
   go-shadowsocks2 = callPackage ./go-shadowsocks2.nix { };
   gost = callPackage ./gost.nix { };
   hosts = callPackage ./hosts.nix { };

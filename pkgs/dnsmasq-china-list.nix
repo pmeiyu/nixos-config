@@ -4,6 +4,7 @@
 , format ? "raw"
 , upstream-dns ? "114.114.114.114"
 , enable-ipset ? false
+, enable-nftset ? false
 }:
 
 stdenv.mkDerivation rec {
@@ -31,8 +32,18 @@ stdenv.mkDerivation rec {
       ;;
     smartdns)
       for i in accelerated-domains.china apple.china google.china; do
-          awk '{print "ipset /" $0 "/china4"}' $i.raw.txt \
+          awk '{print "ipset /" $0 "/#4:china4,#6:china6"}' $i.raw.txt \
               >build/$i.${format}.ipset.conf
+      done
+      ;;
+    esac
+  '') + (lib.optionalString enable-nftset ''
+    case ${format} in
+    dnsmasq)
+      for i in accelerated-domains.china apple.china google.china; do
+          awk '{print "nftset=/" $0 "/4#inet#filter#china4";
+                print "nftset=/" $0 "/6#inet#filter#china6"}' $i.raw.txt \
+              >build/$i.${format}.nftset.conf
       done
       ;;
     esac
