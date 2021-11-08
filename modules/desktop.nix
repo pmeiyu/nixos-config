@@ -142,6 +142,7 @@ in
       pulseaudio
       ripgrep
       sl
+      sqlar
       sqlite
       sshfs-fuse
       stow
