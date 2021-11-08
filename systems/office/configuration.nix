@@ -82,12 +82,6 @@
       from = 8000;
       to = 8999;
     }];
-    extraCommands = ''
-      ip6tables -w -I INPUT -p esp -j ACCEPT
-    '';
-    extraStopCommands = ''
-      ip6tables -w -D INPUT -p esp -j ACCEPT
-    '';
   };
 
   # Fix network issue.

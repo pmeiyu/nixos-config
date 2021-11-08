@@ -23,14 +23,6 @@ in
       allowPing = true;
       allowedTCPPorts = [ 80 443 ];
       allowedUDPPorts = [ 443 ];
-      extraCommands = ''
-        iptables -w -A OUTPUT -p tcp -m tcp --dport 25 -j REJECT
-        ip6tables -w -A OUTPUT -p tcp -m tcp --dport 25 -j REJECT
-      '';
-      extraStopCommands = ''
-        iptables -w -D OUTPUT -p tcp -m tcp --dport 25 -j REJECT
-        ip6tables -w -D OUTPUT -p tcp -m tcp --dport 25 -j REJECT
-      '';
     };
   };
 }
