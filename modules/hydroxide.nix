@@ -11,7 +11,7 @@ in
       description = "hydroxide";
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.hydroxide}/bin/hydroxide -carddav-port 2806 serve";
+        ExecStart = "${pkgs.hydroxide}/bin/hydroxide -disable-carddav serve";
         User = "meiyu";
       };
     };
