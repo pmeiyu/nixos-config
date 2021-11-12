@@ -29,9 +29,9 @@
 
   ## Nix
 
-  system.autoUpgrade.enable = true;
+  nix.autoOptimiseStore = true;
 
-  nix.maxJobs = 8;
+  system.autoUpgrade.enable = true;
 
 
   ## Boot loader

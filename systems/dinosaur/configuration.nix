@@ -39,10 +39,6 @@
   my.virtualization.enable = true;
   my.weechat.enable = true;
 
-  ## Nix
-
-  nix.maxJobs = 8;
-
   ## Boot loader
 
   boot.loader.systemd-boot.enable = true;

@@ -23,10 +23,6 @@
   my.syncthing.enable = true;
   my.virtualization.enable = true;
 
-  ## Nix
-
-  nix.maxJobs = 4;
-
   ## Boot loader
 
   boot.loader.systemd-boot.enable = true;
