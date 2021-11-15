@@ -22,6 +22,5 @@ buildGoModule rec {
     description = "Stable and secure tunnel with multiplexing and FEC";
     homepage = "https://github.com/xtaci/kcptun";
     license = licenses.mit;
-    platforms = platforms.all;
   };
 }

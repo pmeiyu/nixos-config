@@ -17,6 +17,5 @@ buildGoModule rec {
     description = "Next-generation Shadowsocks in Go";
     homepage = "https://github.com/shadowsocks/go-shadowsocks2";
     license = licenses.asl20;
-    platforms = platforms.all;
   };
 }

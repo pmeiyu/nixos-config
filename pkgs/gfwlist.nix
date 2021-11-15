@@ -73,6 +73,5 @@ stdenv.mkDerivation rec {
     description = "gfwlist";
     homepage = "https://github.com/gfwlist/gfwlist";
     license = licenses.lgpl21;
-    platforms = platforms.all;
   };
 }

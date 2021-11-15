@@ -58,6 +58,5 @@ stdenv.mkDerivation rec {
     description = "china list";
     homepage = "https://github.com/felixonmars/dnsmasq-china-list";
     license = licenses.wtfpl;
-    platforms = platforms.all;
   };
 }

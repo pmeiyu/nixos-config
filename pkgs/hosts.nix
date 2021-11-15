@@ -74,6 +74,5 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "DNS hosts file";
-    platforms = platforms.all;
   };
 }

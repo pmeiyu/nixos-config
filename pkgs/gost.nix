@@ -19,6 +19,5 @@ buildGoModule rec {
     description = "A simple tunnel written in golang";
     homepage = "https://github.com/ginuerzh/gost";
     license = licenses.mit;
-    platforms = platforms.all;
   };
 }
