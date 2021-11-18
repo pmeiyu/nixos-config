@@ -99,8 +99,6 @@ in
       fi
     '';
 
-    environment.etc."tmux.conf" = { source = ./tmux.conf; };
-
 
     ## Certificates
 
@@ -147,8 +145,10 @@ in
     programs.iotop.enable = true;
     programs.mosh.enable = true;
     programs.mtr.enable = true;
-    programs.tmux.enable = true;
     programs.zsh.enable = true;
+
+    programs.tmux.enable = true;
+    programs.tmux.extraConfig = readFile ./tmux.conf;
 
     environment.systemPackages = with pkgs; [
       curl
