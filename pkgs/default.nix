@@ -3,7 +3,8 @@
 }:
 
 with pkgs; {
-  data = import ./data;
+  mypkgs = mypkgs;
+  data = callPackage ./data { };
   chinalist = callPackage ./dnsmasq-china-list.nix { format = "raw"; };
   chinalist-dnsmasq = callPackage ./dnsmasq-china-list.nix {
     format = "dnsmasq";

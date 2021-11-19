@@ -1,3 +1,5 @@
+{ callPackage }:
+
 {
-  ip = import ./ip.nix;
+  ip = callPackage ./ip { };
 }
