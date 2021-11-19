@@ -22,7 +22,6 @@ with pkgs; {
   gfwlist-smartdns = callPackage ./gfwlist.nix {
     format = "smartdns";
   };
-  go-shadowsocks2 = callPackage ./go-shadowsocks2.nix { };
   gost = callPackage ./gost.nix { };
   hosts = callPackage ./hosts.nix { };
   kcptun = callPackage ./kcptun.nix { };
