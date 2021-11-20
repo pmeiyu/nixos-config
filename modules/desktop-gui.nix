@@ -5,9 +5,7 @@ let cfg = config.my.desktop.gui;
 in
 {
   options = {
-    my.desktop.gui = {
-      enable = mkEnableOption "Enable Graphical configurations.";
-    };
+    my.desktop.gui.enable = mkEnableOption "Enable Graphical configurations.";
   };
 
   config = mkIf cfg.enable {
@@ -34,6 +32,7 @@ in
       enabled = "ibus";
       ibus.engines = with pkgs.ibus-engines; [ rime ];
     };
+
 
     ## Programs
 
@@ -65,6 +64,7 @@ in
       wl-clipboard
       ydotool
     ];
+
 
     ## Services
 

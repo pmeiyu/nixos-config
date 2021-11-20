@@ -4,7 +4,9 @@ with lib;
 let cfg = config.my.mpd;
 in
 {
-  options.my.mpd.enable = mkEnableOption "Enable MPD.";
+  options = {
+    my.mpd.enable = mkEnableOption "Enable MPD.";
+  };
 
   config = mkIf cfg.enable {
     systemd.services.mpd = {

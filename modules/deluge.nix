@@ -4,7 +4,9 @@ with lib;
 let cfg = config.my.deluge;
 in
 {
-  options = { my.deluge = { enable = mkEnableOption "Enable Deluge."; }; };
+  options = {
+    my.deluge.enable = mkEnableOption "Enable Deluge.";
+  };
 
   config = mkIf cfg.enable {
     services.deluge = {

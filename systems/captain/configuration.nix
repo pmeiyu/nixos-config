@@ -23,14 +23,17 @@
   my.syncthing.enable = true;
   my.virtualization.enable = true;
 
+
   ## Boot loader
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+
   ## Environment
 
   networking.hostName = "captain";
+
 
   ## Network
 
@@ -46,11 +49,13 @@
     allowedTCPPorts = [ ];
   };
 
+
   ## Programs
 
   programs.wireshark.enable = true;
 
   environment.systemPackages = with pkgs; [ ];
+
 
   ## Services
 

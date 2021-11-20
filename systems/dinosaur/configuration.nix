@@ -39,10 +39,12 @@
   my.virtualization.enable = true;
   my.weechat.enable = true;
 
+
   ## Boot loader
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
 
   ## Hardware
 
@@ -62,7 +64,12 @@
     '';
   };
 
+
   ## Kernel
+
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    acpi_call
+  ];
 
   boot.kernelModules = [
     "acpi_call"
@@ -73,7 +80,6 @@
     # VFIO
     "vfio_pci"
   ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
   boot.kernelParams = [
     "intel_iommu=on"
@@ -82,9 +88,11 @@
     "video=efifb:off"
   ];
 
+
   ## Environment
 
   networking.hostName = "dinosaur";
+
 
   ## User accounts
 
@@ -95,6 +103,7 @@
       shell = pkgs.shadow;
     };
   };
+
 
   ## Network
 
@@ -117,6 +126,7 @@
     '';
   };
 
+
   ## Programs
 
   programs.wireshark = {
@@ -132,6 +142,7 @@
     libmbim
     minicom
   ];
+
 
   ## Services
 

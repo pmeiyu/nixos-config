@@ -4,7 +4,9 @@ with lib;
 let cfg = config.my.nginx;
 in
 {
-  options = { my.nginx = { enable = mkEnableOption "Enable Nginx."; }; };
+  options = {
+    my.nginx.enable = mkEnableOption "Enable Nginx.";
+  };
 
   config = mkIf cfg.enable {
     security.acme.acceptTerms = true;

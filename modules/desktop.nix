@@ -5,7 +5,7 @@ let cfg = config.my.desktop;
 in
 {
   options = {
-    my.desktop = { enable = mkEnableOption "Enable desktop configurations."; };
+    my.desktop.enable = mkEnableOption "Enable desktop configurations.";
   };
 
   config = mkIf cfg.enable {
@@ -101,6 +101,7 @@ in
 
 
     ## Programs
+
     programs.gnupg.agent.enable = true;
     programs.gnupg.agent.enableSSHSupport = true;
     programs.zsh.ohMyZsh = {

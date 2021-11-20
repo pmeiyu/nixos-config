@@ -9,7 +9,7 @@ let
 in
 {
   options = {
-    my.common = { enable = mkEnableOption "Enable common configurations."; };
+    my.common.enable = mkEnableOption "Enable common configurations.";
   };
 
   config = mkIf cfg.enable {

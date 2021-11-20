@@ -20,6 +20,7 @@
   my.samba.enable = true;
   my.weechat.enable = true;
 
+
   ## Boot loader
 
   boot.loader.raspberryPi = {
@@ -33,13 +34,16 @@
     '';
   };
 
+
   ## Kernel
 
   boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
+
   ## Environment
 
   networking.hostName = "pi";
+
 
   ## Network
 
@@ -55,12 +59,14 @@
     };
   };
 
+
   ## Programs
 
   environment.systemPackages = with pkgs; [
     iw
     raspberrypi-tools
   ];
+
 
   ## Services
 

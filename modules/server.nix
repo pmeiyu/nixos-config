@@ -5,7 +5,7 @@ let cfg = config.my.server;
 in
 {
   options = {
-    my.server = { enable = mkEnableOption "Enable server configurations."; };
+    my.server.enable = mkEnableOption "Enable server configurations.";
   };
 
   config = mkIf cfg.enable {

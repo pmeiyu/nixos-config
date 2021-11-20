@@ -5,7 +5,7 @@ let cfg = config.my.gnome-flashback;
 in
 {
   options = {
-    my.gnome-flashback = { enable = mkEnableOption "Enable Gnome flashback."; };
+    my.gnome-flashback.enable = mkEnableOption "Enable Gnome flashback.";
   };
 
   config = mkIf cfg.enable {

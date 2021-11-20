@@ -5,7 +5,7 @@ let cfg = config.services.vlmcsd;
 in
 {
   options = {
-    services.vlmcsd = { enable = mkEnableOption "Enable vlmcsd."; };
+    services.vlmcsd.enable = mkEnableOption "Enable vlmcsd.";
   };
 
   config = mkIf cfg.enable {

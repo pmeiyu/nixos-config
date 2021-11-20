@@ -4,7 +4,9 @@ with lib;
 let cfg = config.my.hydroxide;
 in
 {
-  options.my.hydroxide.enable = mkEnableOption "Enable hydroxide.";
+  options = {
+    my.hydroxide.enable = mkEnableOption "Enable hydroxide.";
+  };
 
   config = mkIf cfg.enable {
     systemd.services.hydroxide = {

@@ -4,7 +4,9 @@ with lib;
 let cfg = config.my.samba;
 in
 {
-  options = { my.samba = { enable = mkEnableOption "Enable Samba."; }; };
+  options = {
+    my.samba.enable = mkEnableOption "Enable Samba.";
+  };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ samba ];
