@@ -57,7 +57,7 @@
   fileSystems."/srv" = {
     device = "/dev/mapper/store";
     fsType = "btrfs";
-    options = [ "compress=zstd:9" "noatime" "subvol=srv" ];
+    options = [ "compress=zstd:9" "noatime" ];
     encrypted = {
       enable = true;
       label = "store";
