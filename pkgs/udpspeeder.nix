@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
     sha256 = "0ki8h2is2j0in55dq7z14rd8f7wi95s5izqyjbiyqdv250ji9jzh";
   };
 
-  patchPhase = ''
+  postPatch = ''
     substituteInPlace makefile \
        --replace '$(shell git rev-parse HEAD)' '${version}' \
        --replace "-static" ""
