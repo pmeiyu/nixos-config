@@ -137,7 +137,7 @@ in
 
     nixpkgs.config.packageOverrides = pkgs: rec {
       my-python = pkgs.python3.withPackages
-        (python-packages: with python-packages; [ pytz requests ]);
+        (python-packages: with python-packages; [ requests ]);
     };
 
     programs.fish.enable = true;
