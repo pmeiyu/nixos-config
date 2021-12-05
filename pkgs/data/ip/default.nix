@@ -25,13 +25,11 @@ rec {
   # Emacs
   v4.emacs = [
     # elpa.gnu.org
+    # elpa.nongnu.org
     "209.51.188.89"
 
     # melpa.org
     "178.128.185.1"
-
-    # orgmode.org
-    "146.185.138.54"
   ];
 
   # Google
