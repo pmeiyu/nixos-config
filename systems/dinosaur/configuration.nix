@@ -37,6 +37,7 @@
   };
   my.syncthing.enable = true;
   my.virtualization.enable = true;
+  my.webdav.enable = true;
   my.weechat.enable = true;
 
 

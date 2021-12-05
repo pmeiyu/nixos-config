@@ -26,6 +26,7 @@
     ./tun2socks.nix
     ./virtualization.nix
     ./vlmcsd.nix
+    ./webdav.nix
     ./weechat.nix
   ];
 }
