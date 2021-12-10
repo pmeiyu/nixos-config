@@ -64,6 +64,8 @@ in
 
     services.logind.lidSwitchExternalPower = "lock";
 
+    hardware.gpgSmartcards.enable = true;
+
     hardware.pulseaudio.enable = false;
     services.pipewire = {
       enable = true;
