@@ -13,5 +13,5 @@
 
   services.postgresql.enable = true;
 
-  services.redis.enable = true;
+  services.redis.servers."".enable = true;
 }
