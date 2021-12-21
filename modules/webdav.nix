@@ -42,8 +42,11 @@ in
       settings = {
         server.listen = [ "127.0.0.1:4918" "[::1]:4918" ];
         accounts = {
-          auth-type = "htpasswd.default";
           acct-type = "unix";
+          auth-type = "htpasswd.default";
+        };
+        unix = {
+          supplementary-groups = true;
         };
         htpasswd.default = {
           htpasswd = "/etc/secrets/webdav";
