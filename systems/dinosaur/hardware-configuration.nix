@@ -26,9 +26,9 @@
 
   boot.initrd.luks.devices."root" = {
     device = "/dev/disk/by-uuid/956ade2b-027b-48e2-82f7-b9591186d7e2";
+    keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
     allowDiscards = true;
     fallbackToPassword = true;
-    keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
   };
 
   fileSystems."/" = {
@@ -51,16 +51,31 @@
   };
 
 
+  boot.initrd.luks.devices."archive-1" = {
+    device = "/dev/disk/by-uuid/7da40a3e-cad4-42b9-bca6-18d30aecbec6";
+    keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
+    allowDiscards = true;
+    fallbackToPassword = true;
+  };
+
+  boot.initrd.luks.devices."archive-2" = {
+    device = "/dev/disk/by-uuid/21458655-7fb6-468e-aab6-b8111b8566f4";
+    keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
+    allowDiscards = true;
+    fallbackToPassword = true;
+  };
+
+  boot.initrd.luks.devices."archive-3" = {
+    device = "/dev/disk/by-uuid/1ec72268-78de-4c56-98d4-3fd7185aaa5c";
+    keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
+    allowDiscards = true;
+    fallbackToPassword = true;
+  };
+
   fileSystems."/srv/archive" = {
-    device = "/dev/mapper/archive";
+    device = "/dev/mapper/archive-1";
     fsType = "btrfs";
     options = [ "compress=zstd:9" "noatime" ];
-    encrypted = {
-      enable = true;
-      label = "archive";
-      blkDev = "/dev/disk/by-uuid/7da40a3e-cad4-42b9-bca6-18d30aecbec6";
-      keyFile = "/mnt-root/etc/secrets/archive.key";
-    };
   };
 
 
