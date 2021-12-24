@@ -116,11 +116,6 @@
   services.xserver.windowManager.dwm.enable = true;
   services.xserver.windowManager.stumpwm.enable = true;
 
-  services.xrdp = {
-    enable = true;
-    defaultWindowManager = "i3";
-  };
-
   services.blueman.enable = true;
   services.dictd.enable = true;
   services.guix.enable = true;

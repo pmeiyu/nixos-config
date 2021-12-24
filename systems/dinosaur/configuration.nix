@@ -149,11 +149,6 @@
 
   services.xserver.desktopManager.gnome.enable = true;
 
-  services.xrdp = {
-    enable = true;
-    defaultWindowManager = "i3";
-  };
-
   services.clamav = {
     daemon.enable = false;
     updater.enable = true;

@@ -78,10 +78,6 @@ in
       enable = true;
       autoSuspend = mkDefault false;
     };
-    services.xserver.windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs; [ i3status i3lock picom rofi scrot xclip ];
-    };
     programs.sway = {
       enable = true;
       extraPackages = with pkgs; [ swaybg swayidle swaylock xwayland ];
