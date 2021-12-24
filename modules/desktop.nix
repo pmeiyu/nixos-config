@@ -106,6 +106,7 @@ in
 
     programs.gnupg.agent.enable = true;
     programs.gnupg.agent.enableSSHSupport = true;
+
     programs.zsh.ohMyZsh = {
       enable = true;
       plugins = [ "git" ];
@@ -118,7 +119,6 @@ in
       binutils
       btrfs-progs
       compsize
-      cowsay
       cryptsetup
       dosfstools
       efibootmgr
@@ -136,6 +136,7 @@ in
       mpc_cli
       mpd
       ncdu
+      neo-cowsay
       neofetch
       nixpkgs-fmt
       ntfsprogs
