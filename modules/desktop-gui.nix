@@ -40,28 +40,27 @@ in
 
     environment.systemPackages = with pkgs; [
       brightnessctl
-
-      alacritty
       evince
       firefox-esr
+      foot
       grim
       imv
       keepassxc
       mako
       mpv
-      networkmanagerapplet
       rofi
       screenkey
       slurp
       sqlitebrowser
       swappy
-      termite
       vlc
       waybar
+      wayland-utils
       waypipe
       wev
       wf-recorder
       wl-clipboard
+      wlrctl
       ydotool
     ];
 
