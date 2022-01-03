@@ -44,6 +44,10 @@ in
 
     ## User accounts
 
+    system.activationScripts.my-user-accounts = ''
+      ${pkgs.systemd}/bin/loginctl enable-linger meiyu
+    '';
+
     users.mutableUsers = false;
     users.users = {
       root = {
