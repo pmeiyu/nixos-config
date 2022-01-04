@@ -2,21 +2,21 @@
 
 stdenv.mkDerivation rec {
   pname = "hosts";
-  version = "2021.07.07";
+  version = "2022.01.04";
 
   srcs = [
     (fetchFromGitHub {
       owner = "StevenBlack";
       repo = "hosts";
-      rev = "3.7.13";
-      sha256 = "0z1jw6vhdkifk694gajmg1dcw7sl05x3xl096dvmlw79224s69lx";
+      rev = "3.9.33";
+      hash = "sha256-1IZGeVQPcF+9MwtJBHsaniNBgiGaZO2dfCy+Zom0ADE=";
       name = "stevenblack-hosts";
     })
     (fetchFromGitHub {
       owner = "VeleSila";
       repo = "yhosts";
-      rev = "0c5420334de278f2b38abde5bf46d8eff9a892da";
-      sha256 = "0rk0yzy2b5dj8bavgvv5n3pik9cs09qaz70z2h5nradsjrlcafkp";
+      rev = "a7d448d1799d5144742fc630fe15a166e7338b82";
+      hash = "sha256-2VCoLZ8arXCsFia+5RuLw8uXjy43/5jN9BXQQ/U6Lng=";
       name = "yhosts";
     })
   ];
