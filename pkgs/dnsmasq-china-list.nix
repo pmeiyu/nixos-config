@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation rec {
   pname = "dnsmasq-china-list";
-  version = "2021.04.07";
+  version = "2022.01.04";
 
   src = fetchFromGitHub {
     owner = "felixonmars";
     repo = "dnsmasq-china-list";
-    rev = "0cdcf4abdd077d1dc379650fe9c04f0f19fa3958";
-    sha256 = "5TivzgYqkEguXvqtnh/OdjFCOdq3vWgLn2YORyybdDU=";
+    rev = "44996ac6d8206970e06a99a0a86b2f7f689893cd";
+    hash = "sha256-nUUyCWCxxEExqQ7SJc4tjphWDLYEmkGbuROeK+T03rM=";
   };
 
   buildPhase = ''
