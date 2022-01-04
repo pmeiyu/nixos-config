@@ -180,15 +180,4 @@
       '';
     };
   };
-
-  services.samba = {
-    shares = {
-      srv = {
-        path = "/srv";
-        browseable = true;
-        writable = true;
-        "valid users" = "meiyu";
-      };
-    };
-  };
 }
