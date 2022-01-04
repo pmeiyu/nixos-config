@@ -15,6 +15,7 @@ in
       serviceConfig = {
         ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon --stdout";
         User = "meiyu";
+        Environment = "XDG_RUNTIME_DIR=/run/user/1000";
       };
     };
   };
