@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation rec {
   pname = "gfwlist";
-  version = "2021.07.07";
+  version = "2022.01.04";
 
   src = fetchFromGitHub {
     owner = "gfwlist";
     repo = "gfwlist";
-    rev = "f3b3677c73e833e02fb908aafb52d74e13b9c7dc";
-    sha256 = "0j040ij3934gc6fp3baqyyxlhi6j1v067ykxkk18qfw5i74fwgjz";
+    rev = "75f687284e3e3c8a6205490d2b2ad6ec807d142a";
+    hash = "sha256-Ge0G6DTpuaRZevWfQmKblIGgKLzVeB8DQFnFImgOzcg=";
   };
 
   buildPhase = ''
