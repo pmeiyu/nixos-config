@@ -26,7 +26,7 @@ in
     my.monitor.client.enable = mkIf cfg.enable true;
 
     environment.systemPackages = mkIf cfg.server.enable [
-      config.services.influxdb.package
+      pkgs.influxdb2-cli
     ];
 
     services.grafana = mkIf cfg.server.enable {
@@ -64,9 +64,9 @@ in
     #   enable = true;
     # };
 
-    services.influxdb = mkIf cfg.server.enable {
+    services.influxdb2 = mkIf cfg.server.enable {
       enable = true;
-      extraConfig = {
+      settings = {
         reporting-disabled = true;
       };
     };
@@ -88,6 +88,7 @@ in
 
     services.telegraf = mkIf cfg.client.enable {
       enable = true;
+      environmentFiles = [ "/etc/secrets/telegraf" ];
       extraConfig = {
         agent = {
           interval = "30s";
@@ -96,9 +97,11 @@ in
           flush_jitter = "10s";
         };
         outputs = {
-          influxdb = {
+          influxdb_v2 = {
             urls = [ cfg.client.outputs.influxdb.url ];
-            database = "telegraf";
+            token = "$INFLUX_TOKEN";
+            organization = "default";
+            bucket = "telegraf";
           };
         };
         inputs = {
