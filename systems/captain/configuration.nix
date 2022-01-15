@@ -11,6 +11,7 @@
 
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
+
   my.hydroxide.enable = true;
   my.mpd.enable = true;
   my.network.prefer-ipv4 = true;

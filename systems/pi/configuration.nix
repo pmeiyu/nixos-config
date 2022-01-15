@@ -13,8 +13,9 @@
     hdmi.force-hot-plug = true;
   };
 
-  my.deluge.enable = true;
   my.desktop.enable = true;
+
+  my.deluge.enable = true;
   my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.samba.enable = true;

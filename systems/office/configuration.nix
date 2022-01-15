@@ -10,9 +10,10 @@
     ./private.nix
   ];
 
-  my.deluge.enable = true;
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
+
+  my.deluge.enable = true;
   my.monitor.enable = true;
   my.mpd.enable = true;
   my.network.prefer-ipv4 = true;

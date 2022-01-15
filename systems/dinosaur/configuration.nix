@@ -9,9 +9,10 @@
     ./private.nix
   ];
 
-  my.deluge.enable = true;
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
+
+  my.deluge.enable = true;
   my.gotify.enable = true;
   my.hotspot = {
     enable = true;
