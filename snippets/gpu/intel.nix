@@ -12,8 +12,6 @@
   # Intel GPU hardware acceleration
   hardware.opengl.extraPackages = with pkgs; [
     intel-media-driver
-    libvdpau-va-gl
     vaapiIntel
-    vaapiVdpau
   ];
 }
