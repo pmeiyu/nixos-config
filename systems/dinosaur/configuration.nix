@@ -4,6 +4,7 @@
   imports = [
     ../..
     ../../snippets/cpu/intel.nix
+    ../../snippets/gpu/intel.nix
     ../../snippets/development.nix
     ./hardware-configuration.nix
     ./private.nix
