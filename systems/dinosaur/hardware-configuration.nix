@@ -38,19 +38,6 @@
   };
 
 
-  fileSystems."/srv/store" = {
-    device = "/dev/mapper/store";
-    fsType = "btrfs";
-    options = [ "compress=zstd:9" "noatime" ];
-    encrypted = {
-      enable = true;
-      label = "store";
-      blkDev = "/dev/disk/by-uuid/7ea92fb8-25e8-4616-ba14-11b50589978b";
-      keyFile = "/mnt-root/etc/secrets/archive.key";
-    };
-  };
-
-
   boot.initrd.luks.devices."archive-1" = {
     device = "/dev/disk/by-uuid/7da40a3e-cad4-42b9-bca6-18d30aecbec6";
     keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
