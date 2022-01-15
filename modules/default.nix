@@ -13,6 +13,7 @@
     ./guix
     ./hotspot.nix
     ./hydroxide.nix
+    ./jellyfin.nix
     ./monitor.nix
     ./mpd.nix
     ./network.nix
