@@ -27,6 +27,7 @@
     block.ad = true;
   };
   my.hydroxide.enable = true;
+  my.jellyfin.enable = true;
   my.mpd.enable = true;
   my.monitor.enable = true;
   my.network.prefer-ipv4 = true;
