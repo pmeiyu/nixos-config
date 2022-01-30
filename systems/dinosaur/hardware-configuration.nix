@@ -19,13 +19,13 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/FF8B-5F2E";
+    device = "/dev/disk/by-uuid/EAE0-FEEB";
     fsType = "vfat";
   };
 
 
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/956ade2b-027b-48e2-82f7-b9591186d7e2";
+    device = "/dev/disk/by-uuid/a4661cb5-1a2d-4ca7-a32c-4c1b6e499d9c";
     keyFile = "/dev/disk/by-partuuid/76c03551-6f37-4a52-a112-7f4411716998";
     allowDiscards = true;
     fallbackToPassword = true;
@@ -68,7 +68,7 @@
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/fbdb6004-6344-7f47-a566-12b519e22f4e";
+      device = "/dev/disk/by-partuuid/9fca8820-016f-f243-a75d-3eb509ee6966";
       discardPolicy = "both";
       randomEncryption.enable = true;
     }

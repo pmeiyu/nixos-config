@@ -12,21 +12,21 @@
   boot.extraModulePackages = [ ];
 
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/a4661cb5-1a2d-4ca7-a32c-4c1b6e499d9c";
+    device = "/dev/disk/by-uuid/956ade2b-027b-48e2-82f7-b9591186d7e2";
     allowDiscards = true;
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partlabel/prophet";
   };
 
   boot.initrd.luks.devices."swap" = {
-    device = "/dev/disk/by-uuid/b4fd8d0d-647b-43d9-9975-2dd69412eaa4";
+    device = "/dev/disk/by-uuid/daa59ae4-2785-4be6-b2b1-60176e6b9987";
     allowDiscards = true;
     fallbackToPassword = true;
     keyFile = "/dev/disk/by-partlabel/prophet";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/EAE0-FEEB";
+    device = "/dev/disk/by-uuid/FF8B-5F2E";
     fsType = "vfat";
   };
 
@@ -36,10 +36,10 @@
     options = [ "compress=zstd:6" "noatime" ];
   };
 
-  fileSystems."/tmp" = {
-    device = "tmpfs";
-    fsType = "tmpfs";
-  };
+  # fileSystems."/tmp" = {
+  #   device = "tmpfs";
+  #   fsType = "tmpfs";
+  # };
 
   swapDevices = [{ device = "/dev/mapper/swap"; discardPolicy = "both"; }];
 }

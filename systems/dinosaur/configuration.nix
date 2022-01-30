@@ -52,6 +52,8 @@
 
   ## Hardware
 
+  powerManagement.cpuFreqGovernor = "powersave";
+
   hardware.fancontrol = {
     enable = true;
     config = ''
