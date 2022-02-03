@@ -24,13 +24,6 @@ in
 
     system.stateVersion = mkDefault "9999.99";
 
-    nix.binaryCaches = [
-      "https://mirrors.ustc.edu.cn/nix-channels/store"
-      "https://mirror.sjtu.edu.cn/nix-channels/store"
-      "https://mirrors.bfsu.edu.cn/nix-channels/store/"
-      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
-    ];
-
     system.autoUpgrade = {
       enable = mkDefault false;
       channel = mkDefault "https://nixos.org/channels/nixos-unstable";
@@ -42,7 +35,15 @@ in
       options = mkDefault "--delete-older-than 30d";
     };
 
-    nix.trustedUsers = [ "root" "@wheel" ];
+    nix.settings = {
+      substituters = [
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://mirror.sjtu.edu.cn/nix-channels/store"
+        "https://mirrors.bfsu.edu.cn/nix-channels/store/"
+        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store/"
+      ];
+      trusted-users = [ "root" "@wheel" ];
+    };
 
 
     ## Boot

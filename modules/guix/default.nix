@@ -38,8 +38,8 @@ in
       max-jobs = mkOption {
         type = types.int;
         default =
-          if (builtins.typeOf config.nix.maxJobs) == "int" then
-            config.nix.maxJobs
+          if (builtins.typeOf config.nix.settings.max-jobs) == "int" then
+            config.nix.settings.max-jobs
           else
             4;
         description = "Max number of jobs.";

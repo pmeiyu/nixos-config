@@ -15,7 +15,7 @@ in
   config = mkIf cfg.enable {
     ## Nix
 
-    nix.binaryCachePublicKeys = [ ];
+    nix.settings.trusted-public-keys = [ ];
 
 
     ## Boot
