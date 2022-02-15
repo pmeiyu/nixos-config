@@ -8,7 +8,8 @@
 
   services.mysql = {
     enable = true;
-    package = pkgs.mariadb;
+    package = pkgs.mysql80;
+    settings = { };
   };
 
   services.postgresql.enable = true;
