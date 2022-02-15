@@ -21,9 +21,9 @@
     ssid = "Castle";
     password = lib.mkDefault "12345678";
     version = 4;
-    channel = 6;
+    channel = 13;
     countryCode = "US";
-    ht_capab = "[HT40+][RX-STBC1]";
+    ht_capab = "[HT40-][RX-STBC1]";
     block.ad = true;
   };
   my.hydroxide.enable = true;
