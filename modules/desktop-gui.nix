@@ -40,13 +40,14 @@ in
 
     environment.systemPackages = with pkgs; [
       brightnessctl
+      dunst
       evince
       firefox-esr
       foot
       grim
       imv
+      kanshi
       keepassxc
-      mako
       mpv
       rofi
       screenkey
