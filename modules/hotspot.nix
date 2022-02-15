@@ -67,6 +67,7 @@ in
       channel = cfg.channel;
       countryCode = cfg.countryCode;
       wpaPassphrase = cfg.password;
+      noScan = true;
       extraConfig = ''
         utf8_ssid=1
 
@@ -75,9 +76,16 @@ in
 
         # WPA-PSK = WPA-Personal / WPA2-Personal
         # SAE = WPA3-Personal
-        wpa_key_mgmt=WPA-PSK
+        wpa_key_mgmt=SAE
+
+        # Enable management frame protection (MFP)
+        # 0 = disabled (default)
+        # 1 = optional
+        # 2 = required
+        ieee80211w=2
 
         # CCMP = AES in Counter mode with CBC-MAC (CCMP-128)
+        # GCMP = Galois/counter mode protocol (GCMP-128)
         rsn_pairwise=CCMP
 
         # QoS
