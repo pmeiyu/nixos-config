@@ -62,7 +62,7 @@
   fileSystems."/srv/archive" = {
     device = "/dev/mapper/archive-1";
     fsType = "btrfs";
-    options = [ "compress=zstd:9" "noatime" ];
+    options = [ "compress=zstd:9" "noatime" "nodev" "nosuid" ];
   };
 
 
