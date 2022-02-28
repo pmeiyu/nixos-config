@@ -29,7 +29,7 @@ in
     environment.systemPackages = [
       (pkgs.writeScriptBin "chat" ''
         #!${pkgs.runtimeShell}
-        tmux -L weechat attach -t weechat
+        tmux -S /tmp/tmux-${toString config.users.users.meiyu.uid}/default attach -t weechat
       '')
     ];
 
@@ -38,10 +38,8 @@ in
         Type = "oneshot";
         User = "meiyu";
         RemainAfterExit = "yes";
-        ExecStart =
-          "${pkgs.tmux}/bin/tmux -T 256 -L weechat new-session -d -s weechat ${pkgs.weechat}/bin/weechat";
-        ExecStop = "${pkgs.tmux}/bin/tmux -L weechat kill-session -t weechat";
-        Environment = "TMUX_TMPDIR=/run/user/1000";
+        ExecStart = "${pkgs.tmux}/bin/tmux -T 256 new-session -d -s weechat ${pkgs.weechat}/bin/weechat";
+        ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t weechat";
       };
       wants = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
