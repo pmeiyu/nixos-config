@@ -129,6 +129,7 @@ in
       fuse
       gnumake
       imagemagick7
+      inetutils
       iw
       libnotify
       lolcat
@@ -150,7 +151,6 @@ in
       sshfs-fuse
       stow
       strace
-      telnet
       tpm2-tools
       unzip
       xdg-user-dirs
