@@ -53,7 +53,7 @@ in
       root = {
         # Generate hashed password: `mkpasswd -m sha-512`
         hashedPassword = null;
-        passwordFile = "/etc/password";
+        passwordFile = "/etc/secrets/password";
 
         shell = pkgs.zsh;
         openssh.authorizedKeys.keys = authorizedKeys;
