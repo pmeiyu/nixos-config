@@ -9,17 +9,12 @@
   boot.kernelModules = [ "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
-  boot.kernelParams = [
-    # Disable "Panel Self Refresh".  Fix random freezes.
-    "i915.enable_psr=0"
-  ];
-
   environment.systemPackages = with pkgs; [
     # WWAN utilities
     libmbim
-    libqmi
-    minicom
   ];
+
+  hardware.video.hidpi.enable = true;
 
   hardware.bluetooth.enable = true;
 

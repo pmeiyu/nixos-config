@@ -4,7 +4,7 @@
   imports = [
     ../..
     ../../snippets/development.nix
-    ../../snippets/thinkpad-x270.nix
+    ../../snippets/thinkpad.nix
     ./hardware-configuration.nix
     ./private.nix
   ];
