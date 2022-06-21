@@ -60,11 +60,7 @@
 * Install NixOS using nixos-lustrate
 ** Install Nix
    #+begin_src sh
-     groupadd nixbld -g 30000
-     for i in {1..10}; do useradd -c "Nix build user $i" -d /var/empty -g nixbld -G nixbld -M -N -r -s "$(which nologin)" nixbld$i; done
-
-     curl https://nixos.org/nix/install | sh
-     source ~/.nix-profile/etc/profile.d/nix.sh
+     sh <(curl -L https://nixos.org/nix/install) --daemon
    #+end_src
 
 ** Generate NixOS config
@@ -72,7 +68,7 @@
      # install nixos-generate-config
      nix-env -iE "_: with import <nixpkgs/nixos> { configuration = {}; }; with config.system.build; [ nixos-generate-config nixos-install nixos-enter ]"
 
-     nixos-generate-config --root /
+     nixos-generate-config
    #+end_src
 
 ** Install the system
