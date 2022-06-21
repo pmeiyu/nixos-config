@@ -58,6 +58,11 @@ in
     boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
     boot.kernelParams = [ "boot.shell_on_fail" ];
 
+    boot.kernel.sysctl = {
+      # Be SSD friendly.
+      "vm.swappiness" = mkDefault 10;
+    };
+
 
     ## Hardware
 
