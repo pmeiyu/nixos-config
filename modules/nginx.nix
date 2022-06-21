@@ -14,8 +14,8 @@ in
 
     services.nginx = {
       enable = true;
-      package = pkgs.openresty;
-      additionalModules = with pkgs.nginxModules; [ ];
+      package = pkgs.nginx;
+      additionalModules = with pkgs.nginxModules; [ echo ];
       recommendedProxySettings = true;
 
       virtualHosts.localhost = {
