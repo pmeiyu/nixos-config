@@ -49,6 +49,7 @@ in
           supplementary-groups = true;
         };
         htpasswd.default = {
+          # htpasswd -B -c /etc/secrets/webdav USERNAME
           htpasswd = "/etc/secrets/webdav";
         };
         location = [
