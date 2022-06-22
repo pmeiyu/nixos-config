@@ -17,6 +17,10 @@ in
 
     nix.settings.trusted-public-keys = [ ];
 
+    nix.extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+
 
     ## Boot
 
