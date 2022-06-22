@@ -15,7 +15,19 @@ in
   config = mkIf cfg.enable {
     ## Nix
 
-    nix.settings.trusted-public-keys = [ ];
+    nix.settings = {
+      substituters = [
+        "https://cache.nixos.org/"
+        "https://nix-community.cachix.org"
+        "https://pmy.cachix.org"
+      ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "pmy.cachix.org-1:E9ExJaENh8OOqBxWdel0EcSGY4MOGikB+36IuPvs6Hw="
+      ];
+      trusted-users = [ "root" "@wheel" ];
+      allowed-users = [ "root" "@wheel" "@users" ];
+    };
 
     nix.extraOptions = ''
       experimental-features = nix-command flakes
