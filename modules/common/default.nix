@@ -120,7 +120,7 @@ in
 
     networking.firewall = {
       enable = true;
-      extraPackages = [ pkgs.iproute pkgs.nftables ];
+      extraPackages = with pkgs; [ iproute nftables ];
       allowPing = true;
       allowedTCPPorts = [ 80 443 ];
       allowedUDPPorts = [ 443 ];
