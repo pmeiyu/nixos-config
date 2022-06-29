@@ -22,7 +22,6 @@ with pkgs; {
   gfwlist-smartdns = callPackage ./gfwlist.nix {
     format = "smartdns";
   };
-  gost = callPackage ./gost.nix { };
   hosts = callPackage ./hosts.nix { };
   kcptun = callPackage ./kcptun.nix { };
   udpspeeder = callPackage ./udpspeeder.nix { };
