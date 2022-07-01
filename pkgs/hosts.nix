@@ -46,6 +46,20 @@ stdenv.mkDerivation rec {
         uniq >>build/$i
     done
 
+    ## RouteDNS
+
+    mkdir -p build/routedns
+
+    for i in ad fakenews gambling porn social; do
+        awk '!/^#|^ *$/' build/$i | \
+        # Split and reverse domain names.
+        awk -F"." '{for(i=NF; i>1; i--) printf "%s ", $i; print $i}' | \
+        sort | uniq | \
+        # Restore domain names.
+        awk '{for(i=NF; i>1; i--) printf "%s.", $i; print $i}' | \
+        awk '{print "." $0}' >>build/routedns/$i
+    done
+
     ## Unbound config
 
     mkdir -p build/unbound
@@ -73,6 +87,6 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    description = "DNS hosts file";
+    description = "Domain names";
   };
 }
