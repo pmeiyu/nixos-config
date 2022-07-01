@@ -10,9 +10,8 @@ with pkgs; {
     format = "dnsmasq";
     enable-nftset = true;
   };
-  chinalist-smartdns = callPackage ./dnsmasq-china-list.nix {
-    format = "smartdns";
-    upstream-dns = "china";
+  chinalist-routedns = callPackage ./dnsmasq-china-list.nix {
+    format = "routedns";
   };
   gfwlist = callPackage ./gfwlist.nix { format = "raw"; };
   gfwlist-dnsmasq = callPackage ./gfwlist.nix {

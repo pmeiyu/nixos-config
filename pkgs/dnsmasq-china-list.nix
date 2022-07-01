@@ -3,7 +3,6 @@
 , fetchFromGitHub
 , format ? "raw"
 , upstream-dns ? "114.114.114.114"
-, enable-ipset ? false
 , enable-nftset ? false
 }:
 
@@ -20,24 +19,23 @@ stdenv.mkDerivation rec {
 
   buildPhase = ''
     mkdir -p build
-    make ${format} SERVER=${upstream-dns}
-    cp -v *.${format}.{conf,txt} build/
-  '' + (lib.optionalString enable-ipset ''
+
     case ${format} in
-    dnsmasq)
-      for i in accelerated-domains.china apple.china google.china; do
-          awk '{print "ipset=/" $0 "/china4,china6"}' $i.raw.txt \
-              >build/$i.${format}.ipset.conf
+    routedns)
+      make raw SERVER=${upstream-dns}
+      for i in accelerated-domains.china; do
+          awk '{print "." $0}' $i.raw.txt >build/$i.${format}.txt
+      done
+      for i in apple.china google.china; do
+          cp -v $i.raw.txt build/$i.${format}.txt
       done
       ;;
-    smartdns)
-      for i in accelerated-domains.china apple.china google.china; do
-          awk '{print "ipset /" $0 "/#4:china4,#6:china6"}' $i.raw.txt \
-              >build/$i.${format}.ipset.conf
-      done
+    *)
+      make ${format} SERVER=${upstream-dns}
+      cp -v *.${format}.{conf,txt} build/
       ;;
     esac
-  '') + (lib.optionalString enable-nftset ''
+  '' + (lib.optionalString enable-nftset ''
     case ${format} in
     dnsmasq)
       for i in accelerated-domains.china apple.china google.china; do
