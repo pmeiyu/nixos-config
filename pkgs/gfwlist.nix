@@ -3,7 +3,6 @@
 , fetchFromGitHub
 , format ? "raw"
 , upstream-dns ? "8.8.8.8"
-, enable-ipset ? false
 , enable-nftset ? false
 }:
 
@@ -32,35 +31,23 @@ stdenv.mkDerivation rec {
 
     case ${format} in
     raw)
-      cp gfwlist.txt gfwlist.domains.txt build/
+      cp -v gfwlist.txt gfwlist.domains.txt build/
       ;;
     dnsmasq)
       awk '{print "server=/" $0 "/${upstream-dns}"}' \
           gfwlist.domains.txt >build/gfwlist.dnsmasq.conf
       ;;
-    smartdns)
-      awk '{print "nameserver /" $0 "/gfwlist"}' \
-          gfwlist.domains.txt >build/gfwlist.smartdns.conf
+    routedns)
+      awk '{print "." $0}' gfwlist.domains.txt >build/gfwlist.routedns.txt
       ;;
     esac
-  '' + (lib.optionalString enable-ipset ''
+  '' + (lib.optionalString enable-nftset ''
     case ${format} in
     dnsmasq)
-      awk '{print "ipset=/" $0 "/gfwlist4,gfwlist6"}' \
-          gfwlist.domains.txt >build/gfwlist.dnsmasq.ipset.conf
+      awk '{print "nftset=/" $0 "/4#inet#filter#gfwlist4";
+            print "nftset=/" $0 "/6#inet#filter#gfwlist6"}' \
+          gfwlist.domains.txt >build/gfwlist.dnsmasq.nftset.conf
       ;;
-    smartdns)
-      awk '{print "ipset /" $0 "/#4:gfwlist4,#6:gfwlist6"}' \
-          gfwlist.domains.txt >build/gfwlist.smartdns.ipset.conf
-      ;;
-    esac
-  '') + (lib.optionalString enable-nftset ''
-       case ${format} in
-       dnsmasq)
-         awk '{print "nftset=/" $0 "/4#inet#filter#gfwlist4";
-               print "nftset=/" $0 "/6#inet#filter#gfwlist6"}' \
-             gfwlist.domains.txt >build/gfwlist.dnsmasq.nftset.conf
-         ;;
     esac
   '');
 

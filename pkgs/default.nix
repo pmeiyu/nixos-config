@@ -18,8 +18,8 @@ with pkgs; {
     format = "dnsmasq";
     enable-nftset = true;
   };
-  gfwlist-smartdns = callPackage ./gfwlist.nix {
-    format = "smartdns";
+  gfwlist-routedns = callPackage ./gfwlist.nix {
+    format = "routedns";
   };
   hosts = callPackage ./hosts.nix { };
   kcptun = callPackage ./kcptun.nix { };
