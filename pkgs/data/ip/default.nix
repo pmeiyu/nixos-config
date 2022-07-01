@@ -6,6 +6,20 @@ let
   readLines = file: filter isValidData (splitString "\n" (readFile file));
 in
 rec {
+  v4.private = [
+    "10.0.0.0/8"
+    "127.0.0.0/8"
+    "169.254.0.0/16"
+    "172.16.0.0/12"
+    "192.168.0.0/16"
+  ];
+
+  v6.private = [
+    "::1/128"
+    "fc00::/7"
+    "fe80::/10"
+  ];
+
   v4.china = readLines ./china.v4.txt;
 
   v4.non-china = readLines ./non-china.v4.txt;
