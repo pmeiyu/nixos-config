@@ -1,14 +1,31 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.my.dns;
+let
+  cfg = config.my.dns;
+  enable-garbage-blocker = any id (attrValues cfg.block);
+  processors = [
+    "main"
+  ]
+  ++ optionals enable-garbage-blocker [ "block-garbage" ]
+  ++ [
+    "block-dotless-domains"
+    "block-special-domains"
+    "block-private-ip-p"
+    "block-private-ip"
+  ]
+  ++ optionals cfg.chinalist.enable [ "chinalist" ]
+  ++ optionals cfg.gfwlist.enable [ "gfwlist" ]
+  ++ [ "default-resolvers" ];
+  nextProcessorMap = listToAttrs
+    (map (i: { name = elemAt processors i; value = elemAt processors (i + 1); })
+      (genList id ((length processors) - 1)));
+  nextProcessorOf = x: getAttr x nextProcessorMap;
 in
 {
   options = {
     my.dns = {
-      enable = mkEnableOption "Enable local DNS server.";
-      dnssec.enable = mkEnableOption "Enable DNSSEC.";
-      block.ipv6 = mkEnableOption "Do not resolve IPv6 record.";
+      enable = mkEnableOption "DNS server.";
       block.ad = mkEnableOption "Block ad.";
       block.fake-news = mkEnableOption "Block fake news.";
       block.gambling = mkEnableOption "Block gambling.";
@@ -16,7 +33,6 @@ in
       block.social = mkEnableOption "Block social networks.";
       chinalist.enable = mkEnableOption "Enable dnsmasq-china-list.";
       gfwlist.enable = mkEnableOption "Enable gfwlist.";
-      ipset.enable = mkEnableOption "Enable ipset.";
       log.enable = mkEnableOption "Enable log.";
     };
   };
@@ -27,164 +43,275 @@ in
 
     services.nginx.resolver.addresses = [ "[::1]" ];
 
-    services.unbound = {
+    services.routedns = {
       enable = true;
-      enableRootTrustAnchor = cfg.dnssec.enable;
       settings = {
-        forward-zone = [{
-          name = ".";
-          forward-addr = [ "::1@54" ];
-        }];
-        server = {
-          interface = [
-            "127.0.0.1@53"
-            "::1@53"
-          ];
-          access-control = [
-            "127.0.0.0/8 allow"
-            "::1/128 allow"
-          ];
+        listeners = {
+          local = {
+            address = "127.0.0.1:53";
+            protocol = "udp";
+            resolver = "main";
+          };
+          local-ipv6 = {
+            address = "[::1]:53";
+            protocol = "udp";
+            resolver = "main";
+          };
+        };
+        groups = {
+          main = {
+            type = "cache";
+            resolvers = [ (nextProcessorOf "main") ];
+          };
 
-          cache-min-ttl = 60;
-          cache-max-negative-ttl = 60;
-          serve-expired = true;
-          do-not-query-localhost = false;
+          block-garbage = mkIf enable-garbage-blocker {
+            type = "blocklist-v2";
+            resolvers = [ (nextProcessorOf "block-garbage") ];
+            blocklist-source = [
+            ] ++ (optionals cfg.block.ad [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/ad"; }
+            ]) ++ (optionals cfg.block.fake-news [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/fakenews"; }
+            ]) ++ (optionals cfg.block.gambling [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/gambling"; }
+            ]) ++ (optionals cfg.block.porn [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/porn"; }
+            ]) ++ (optionals cfg.block.social [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/social"; }
+            ]);
+          };
 
-          domain-insecure = [ "home" "lan" "tinc" ];
-          private-domain = [ "home" "lan" "tinc" "xqzp.net" ];
-          private-address = [
-            "10.0.0.0/8"
-            "169.254.0.0/16"
-            "172.16.0.0/12"
-            "192.168.0.0/16"
-            "fc00::/7"
-            "fe80::/10"
-          ];
+          block-dotless-domains = {
+            type = "blocklist-v2";
+            resolvers = [ (nextProcessorOf "block-dotless-domains") ];
+            blocklist = [ "^[^.]+$" ];
+          };
 
-          access-control-view = [
-          ] ++ (optionals cfg.block.ad [
-            "127.0.0.0/8 block-ad"
-            "::1 block-ad"
-          ]) ++ (optionals cfg.block.fake-news [
-            "127.0.0.0/8 block-fakenews"
-            "::1 block-fakenews"
-          ]) ++ (optionals cfg.block.gambling [
-            "127.0.0.0/8 block-gambling"
-            "::1 block-gambling"
-          ]) ++ (optionals cfg.block.porn [
-            "127.0.0.0/8 block-porn"
-            "::1 block-porn"
-          ]) ++ (optionals cfg.block.social [
-            "127.0.0.0/8 block-social"
-            "::1 block-social"
-          ]);
+          block-special-domains = {
+            type = "blocklist-v2";
+            resolvers = [ (nextProcessorOf "block-special-domains") ];
+            blocklist-format = "domain";
+            blocklist = map (x: "." + x)
+              (pkgs.data.domain.special-top-level-domains ++ pkgs.data.domain.local-dns-zones);
+          };
 
-          log-replies = cfg.log.enable;
-          log-local-actions = cfg.log.enable;
-          log-servfail = cfg.log.enable;
+          block-private-ip-p = {
+            type = "blocklist-v2";
+            resolvers = [ "block-private-ip" ];
+            allowlist-resolver = nextProcessorOf "block-private-ip";
+            allowlist-format = "domain";
+            allowlist = [
+              ".xqzp.net"
+            ];
+            blocklist-format = "domain";
+            blocklist = [
+              "*.home"
+              "*.lan"
+              "*.local"
+            ];
+          };
+
+          block-private-ip = {
+            type = "response-blocklist-ip";
+            resolvers = [ (nextProcessorOf "block-private-ip") ];
+            blocklist = pkgs.data.ip.v4.private ++ pkgs.data.ip.v6.private;
+          };
+
+          chinalist = mkIf cfg.chinalist.enable {
+            type = "blocklist-v2";
+            resolvers = [ (nextProcessorOf "chinalist") ];
+            allowlist-resolver = "china-resolvers";
+            allowlist-source = [
+              { format = "domain"; source = "${pkgs.chinalist-routedns}/accelerated-domains.china.routedns.txt"; }
+              { format = "domain"; source = "${pkgs.chinalist-routedns}/apple.china.routedns.txt"; }
+            ];
+            blocklist-resolver = "114";
+            blocklist-source = [
+              { format = "domain"; source = "${pkgs.chinalist-routedns}/google.china.routedns.txt"; }
+            ];
+          };
+
+          gfwlist = mkIf cfg.gfwlist.enable {
+            type = "blocklist-v2";
+            resolvers = [ (nextProcessorOf "gfwlist") ];
+            blocklist-resolver = "global-resolvers";
+            blocklist-source = optionals cfg.gfwlist.enable [
+              { format = "domain"; source = "${pkgs.gfwlist-routedns}/gfwlist.routedns.txt"; }
+            ];
+          };
+
+          drop = {
+            type = "drop";
+          };
+
+          default-resolvers = {
+            type = "random";
+            resolvers = [
+              "dnscrypt-proxy"
+
+              "cloudflare-http"
+              "cloudflare-tls"
+              "cloudflare-tls-ipv6"
+              "dns-sb-tls"
+              "dns-sb-tls-ipv6"
+              "opendns-http"
+              "opendns-tls"
+              "quad9-tls"
+              "quad9-tls-2"
+              "quad9-tls-ipv6"
+            ];
+          };
+
+          china-resolvers = {
+            type = "random";
+            resolvers = [
+              "alidns"
+              "alidns-tls"
+              "baidu"
+              "dns-pub-ipv6"
+              "dns-pub-http"
+              "dns-pub-tls"
+              "tsinghua"
+              "tsinghua-http"
+            ];
+          };
+
+          global-resolvers = {
+            type = "random";
+            resolvers = [
+              "dnscrypt-proxy"
+
+              "cloudflare-http"
+              "cloudflare-tls"
+              "cloudflare-tls-ipv6"
+              "dns-sb-tls"
+              "dns-sb-tls-ipv6"
+              "opendns-http"
+              "opendns-tls"
+              "quad9-tls"
+              "quad9-tls-2"
+              "quad9-tls-ipv6"
+            ];
+          };
         };
 
-        include = [
-          "${pkgs.hosts}/unbound/block-ad.conf"
-          "${pkgs.hosts}/unbound/block-fakenews.conf"
-          "${pkgs.hosts}/unbound/block-gambling.conf"
-          "${pkgs.hosts}/unbound/block-porn.conf"
-          "${pkgs.hosts}/unbound/block-social.conf"
-        ];
+        resolvers = {
+          dnscrypt-proxy = {
+            address = "[::1]:54";
+            protocol = "udp";
+          };
+
+          cloudflare-http = {
+            address = "https://cloudflare-dns.com/dns-query";
+            protocol = "doh";
+            transport = "quic";
+          };
+          cloudflare-tls = {
+            address = "1.1.1.1:853";
+            protocol = "dot";
+          };
+          cloudflare-tls-ipv6 = {
+            address = "[2606:4700:4700::1111]:853";
+            protocol = "dot";
+          };
+
+          dns-sb-tls = {
+            address = "dot.sb:853";
+            bootstrap-address = "185.222.222.222";
+            protocol = "dot";
+          };
+          dns-sb-tls-ipv6 = {
+            address = "dot.sb:853";
+            bootstrap-address = "[2a09::]";
+            protocol = "dot";
+          };
+
+          google = {
+            address = "8.8.8.8:53";
+            protocol = "udp";
+          };
+          google-http = {
+            address = "https://dns.google/dns-query";
+            bootstrap-address = "8.8.8.8";
+            protocol = "doh";
+          };
+          google-tls = {
+            address = "dns.google:853";
+            bootstrap-address = "8.8.8.8";
+            protocol = "dot";
+          };
+
+          opendns-http = {
+            address = "https://doh.opendns.com/dns-query";
+            protocol = "doh";
+          };
+          opendns-tls = {
+            address = "208.67.222.222:853";
+            protocol = "dot";
+          };
+
+          quad9-tls = {
+            address = "9.9.9.9:853";
+            protocol = "dot";
+          };
+          quad9-tls-2 = {
+            address = "149.112.112.112:853";
+            protocol = "dot";
+          };
+          quad9-tls-ipv6 = {
+            address = "[2620:fe::fe]:853";
+            protocol = "dot";
+          };
+
+
+          "114" = {
+            address = "114.114.114.114:53";
+            protocol = "udp";
+          };
+
+          alidns = {
+            address = "223.5.5.5:53";
+            protocol = "udp";
+          };
+          alidns-tls = {
+            address = "dns.alidns.com:853";
+            protocol = "dot";
+          };
+
+          baidu = {
+            address = "180.76.76.76:53";
+            protocol = "udp";
+          };
+
+          dns-pub-ipv6 = {
+            address = "[2402:4e00::]:53";
+            protocol = "udp";
+          };
+          dns-pub-http = {
+            address = "https://doh.pub/dns-query";
+            protocol = "doh";
+          };
+          dns-pub-tls = {
+            address = "1.12.12.12:853";
+            protocol = "dot";
+          };
+
+          tsinghua = {
+            address = "101.6.6.6:5353";
+            protocol = "udp";
+          };
+          tsinghua-http = {
+            address = "https://dns.tuna.tsinghua.edu.cn:8443/resolve";
+            protocol = "doh";
+          };
+        };
       };
-    };
-
-    services.smartdns = {
-      enable = true;
-      settings = {
-        bind = [ "[::1]:54" ];
-        server = [
-          "[::1]:55 -group global gfwlist"
-
-          # dns.sb
-          "185.222.222.222 -group global -exclude-default-group"
-          "[2a09::] -group global -exclude-default-group"
-
-          # Tsinghua
-          "101.6.6.6:5353 -group china -exclude-default-group"
-
-          # USTC
-          "202.38.93.153:5353 -group china -exclude-default-group"
-          "202.141.162.123:5353 -group china -exclude-default-group"
-          "202.141.178.13:5353 -group china -exclude-default-group"
-        ];
-        server-tls = [
-          # cloudflare-dns.com
-          "1.1.1.1:853 -group global gfwlist"
-          "[2606:4700:4700::1111]:853 -group global gfwlist"
-
-          # quad9.net
-          "9.9.9.9:853 -group global gfwlist"
-          "149.112.112.112:853 -group global gfwlist"
-          "[2620:fe::fe]:853 -group global gfwlist"
-
-          # dns.sb
-          "185.222.222.222:853 -group global gfwlist"
-          "[2a09::]:853 -group global gfwlist"
-
-          # alidns.com
-          "223.5.5.5:853 -group china -exclude-default-group"
-
-          # dns.pub
-          "119.29.29.29:853 -group china -exclude-default-group"
-        ];
-        server-https = [
-          "https://cloudflare-dns.com/dns-query -group global gfwlist"
-          "https://doh.opendns.com/dns-query -group global gfwlist"
-          "https://dns.tuna.tsinghua.edu.cn:8443/resolve -group china -exclude-default-group"
-        ];
-        cache-size = 0;
-        cache-persist = false;
-        speed-check-mode = mkDefault "none";
-        prefetch-domain = mkDefault false;
-        serve-expired = mkDefault true;
-        force-AAAA-SOA = cfg.block.ipv6;
-        dualstack-ip-selection = mkDefault false;
-        log-level = mkDefault "warn";
-        nameserver = [
-          "/xqzp.net/china"
-        ];
-        conf-file = optionals cfg.chinalist.enable [
-          "${pkgs.chinalist-smartdns}/accelerated-domains.china.smartdns.conf"
-          "${pkgs.chinalist-smartdns}/apple.china.smartdns.conf"
-          "${pkgs.chinalist-smartdns}/google.china.smartdns.conf"
-        ] ++ optionals (cfg.chinalist.enable && cfg.ipset.enable) [
-          "${pkgs.chinalist-smartdns}/accelerated-domains.china.smartdns.ipset.conf"
-          "${pkgs.chinalist-smartdns}/apple.china.smartdns.ipset.conf"
-          "${pkgs.chinalist-smartdns}/google.china.smartdns.ipset.conf"
-        ] ++ optionals cfg.gfwlist.enable [
-          "${pkgs.gfwlist-smartdns}/gfwlist.smartdns.conf"
-        ] ++ optionals (cfg.gfwlist.enable && cfg.ipset.enable) [
-          "${pkgs.gfwlist-smartdns}/gfwlist.smartdns.ipset.conf"
-        ];
-      };
-    };
-
-    systemd.services.smartdns = mkIf cfg.ipset.enable {
-      path = [ pkgs.ipset ];
-      preStart = ''
-        ipset create -exist china4 hash:ip family inet
-        ipset create -exist china6 hash:ip family inet6
-        ipset create -exist gfwlist4 hash:ip family inet
-        ipset create -exist gfwlist6 hash:ip family inet6
-      '';
-      postStop = ''
-        ipset flush china4
-        ipset flush china6
-        ipset flush gfwlist4
-        ipset flush gfwlist6
-      '';
     };
 
     services.dnscrypt-proxy2 = {
       enable = true;
       settings = {
-        listen_addresses = [ "[::1]:55" ];
+        listen_addresses = [ "[::1]:54" ];
         fallback_resolvers = [
           "1.1.1.1:53"
           "8.8.8.8:53"

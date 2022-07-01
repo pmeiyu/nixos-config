@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.my.hotspot;
+let
+  cfg = config.my.hotspot;
 in
 {
   options = {
@@ -140,33 +141,40 @@ in
       }];
     };
 
-    services.unbound.settings = {
-      server = {
-        interface = [
-          "10.10.0.1"
-          "fd00:10::1"
-        ];
-        access-control = [
-          "10.10.0.0/16 allow"
-          "fd00:10::/64 allow"
-        ];
-        access-control-view = [
-        ] ++ (optionals cfg.block.ad [
-          "10.10.0.0/16 block-ad"
-          "fd00:10::/64 block-ad"
-        ]) ++ (optionals cfg.block.fake-news [
-          "10.10.0.0/16 block-fakenews"
-          "fd00:10::/64 block-fakenews"
-        ]) ++ (optionals cfg.block.gambling [
-          "10.10.0.0/16 block-gambling"
-          "fd00:10::/64 block-gambling"
-        ]) ++ (optionals cfg.block.porn [
-          "10.10.0.0/16 block-porn"
-          "fd00:10::/64 block-porn"
-        ]) ++ (optionals cfg.block.social [
-          "10.10.0.0/16 block-social"
-          "fd00:10::/64 block-social"
-        ]);
+    services.routedns = {
+      settings = {
+        listeners.hotspot = {
+          address = "10.10.0.1:53";
+          protocol = "udp";
+          resolver = "hotspot";
+        };
+        listeners.hotspot-ipv6 = {
+          address = "[fd00:10::1]:53";
+          protocol = "udp";
+          resolver = "hotspot";
+        };
+        groups = {
+          hotspot = {
+            type = "cache";
+            resolvers = [ "hotspot-block-garbage" ];
+          };
+          hotspot-block-garbage = {
+            type = "blocklist-v2";
+            resolvers = [ "block-dotless-domains" ];
+            blocklist-source = [
+            ] ++ (optionals cfg.block.ad [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/ad"; }
+            ]) ++ (optionals cfg.block.fake-news [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/fakenews"; }
+            ]) ++ (optionals cfg.block.gambling [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/gambling"; }
+            ]) ++ (optionals cfg.block.porn [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/porn"; }
+            ]) ++ (optionals cfg.block.social [
+              { format = "domain"; source = "${pkgs.hosts}/routedns/social"; }
+            ]);
+          };
+        };
       };
     };
 
