@@ -36,7 +36,7 @@ in
     };
 
     nix.settings = {
-      substituters = [
+      substituters = mkBefore [
         "https://mirrors.ustc.edu.cn/nix-channels/store"
         "https://mirror.sjtu.edu.cn/nix-channels/store"
         "https://mirrors.bfsu.edu.cn/nix-channels/store/"
