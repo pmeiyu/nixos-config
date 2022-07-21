@@ -307,6 +307,9 @@ in
         };
       };
     };
+    systemd.services.routedns = {
+      wantedBy = [ "network-online.target" ];
+    };
 
     services.dnscrypt-proxy2 = {
       enable = true;
