@@ -132,7 +132,7 @@ in
 
     networking.firewall = {
       enable = true;
-      extraPackages = with pkgs; [ iproute nftables ];
+      extraPackages = with pkgs; [ iproute2 nftables ];
       allowPing = true;
       allowedTCPPorts = [ 80 443 ];
       allowedUDPPorts = [ 443 ];

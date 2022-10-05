@@ -132,7 +132,7 @@ in
       fortune
       fuse
       gnumake
-      imagemagick7
+      imagemagick
       inetutils
       iw
       libnotify
@@ -158,7 +158,7 @@ in
       tpm2-tools
       unzip
       xdg-user-dirs
-      xdg_utils
+      xdg-utils
 
       # Hardware
       dmidecode

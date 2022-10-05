@@ -54,7 +54,7 @@ in
     systemd.services.tun2socks = {
       description = "tun2socks";
       wantedBy = [ "multi-user.target" ];
-      path = with pkgs; [ iproute nftables ];
+      path = with pkgs; [ iproute2 nftables ];
       preStart = ''
         ip tuntap del dev ${cfg.interface} mode tun
         ip tuntap add dev ${cfg.interface} mode tun

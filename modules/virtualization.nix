@@ -9,7 +9,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ qemu virtmanager ];
+    environment.systemPackages = with pkgs; [ qemu virt-manager ];
 
     virtualisation.libvirtd.enable = true;
     virtualisation.spiceUSBRedirection.enable = true;
