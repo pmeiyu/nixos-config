@@ -6,6 +6,7 @@ let
   enable-garbage-blocker = any id (attrValues cfg.block);
   processors = [
     "main"
+    "router"
   ]
   ++ optionals enable-garbage-blocker [ "block-garbage" ]
   ++ [
@@ -14,6 +15,7 @@ let
     "block-private-ip-p"
     "block-private-ip"
   ]
+  ++ optionals cfg.probe.enable [ "tcp-probe" ]
   ++ optionals cfg.chinalist.enable [ "chinalist" ]
   ++ optionals cfg.gfwlist.enable [ "gfwlist" ]
   ++ [ "default-resolvers" ];
@@ -31,6 +33,13 @@ in
       block.gambling = mkEnableOption "Block gambling.";
       block.porn = mkEnableOption "Block porn.";
       block.social = mkEnableOption "Block social networks.";
+      block.ipv6 = mkEnableOption "Block IPv6 (AAAA) records";
+      probe.enable = mkEnableOption "Probe A/AAAA records and return record for the fastest response";
+      probe.port = mkOption {
+        type = types.int;
+        default = 443;
+        description = "TCP port";
+      };
       chinalist.enable = mkEnableOption "Enable dnsmasq-china-list.";
       gfwlist.enable = mkEnableOption "Enable gfwlist.";
       log.enable = mkEnableOption "Enable log.";
@@ -117,6 +126,13 @@ in
             blocklist = pkgs.data.ip.v4.private ++ pkgs.data.ip.v6.private;
           };
 
+          tcp-probe = mkIf cfg.probe.enable {
+            type = "fastest-tcp";
+            port = cfg.probe.port;
+            success-ttl-min = 3600;
+            resolvers = [ (nextProcessorOf "tcp-probe") ];
+          };
+
           chinalist = mkIf cfg.chinalist.enable {
             type = "blocklist-v2";
             resolvers = [ (nextProcessorOf "chinalist") ];
@@ -138,10 +154,6 @@ in
             blocklist-source = optionals cfg.gfwlist.enable [
               { format = "domain"; source = "${pkgs.gfwlist-routedns}/gfwlist.routedns.txt"; }
             ];
-          };
-
-          drop = {
-            type = "drop";
           };
 
           default-resolvers = {
@@ -193,6 +205,27 @@ in
               "quad9-tls-ipv6"
             ];
           };
+
+          block = {
+            type = "static-responder";
+            rcode = 0;
+          };
+
+          refuse = {
+            type = "static-responder";
+            rcode = 5;
+          };
+
+          drop = {
+            type = "drop";
+          };
+        };
+
+        routers = {
+          router = {
+            routes = mkAfter ((optional cfg.block.ipv6 { types = [ "AAAA" ]; resolver = "block"; })
+              ++ [{ resolver = (nextProcessorOf "router"); }]);
+          };
         };
 
         resolvers = {
@@ -222,7 +255,7 @@ in
           };
           dns-sb-tls-ipv6 = {
             address = "dot.sb:853";
-            bootstrap-address = "[2a09::]";
+            bootstrap-address = "2a09::";
             protocol = "dot";
           };
 
