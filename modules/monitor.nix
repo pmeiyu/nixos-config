@@ -31,32 +31,36 @@ in
 
     services.grafana = mkIf cfg.server.enable {
       enable = true;
-      port = 8300;
-      domain = "localhost";
-      protocol = "http";
-      rootUrl = "%(protocol)s://%(domain)s/grafana/";
+      settings = {
+        analytics.reporting_enabled = false;
 
-      extraOptions = {
-        SERVER_SERVE_FROM_SUB_PATH = "true";
+        server = {
+          http_addr = "localhost";
+          http_port = 8300;
+          root_url = "%(protocol)s://%(domain)s/grafana/";
+          serve_from_sub_path = true;
+        };
+
+        smtp = {
+          enable = true;
+          host = "localhost:25";
+          user = "bot";
+          password = "";
+          fromAddress = "${config.networking.hostName}+grafana@xqzp.net";
+        };
       };
 
-      analytics.reporting.enable = false;
       provision = {
         enable = true;
-        datasources = [{
-          name = "influxdb";
-          type = "influxdb";
-          url = "http://localhost:8086";
-          database = "telegraf";
-          isDefault = true;
-        }];
-      };
-      smtp = {
-        enable = true;
-        host = "localhost:25";
-        user = "bot";
-        password = "";
-        fromAddress = "${config.networking.hostName}+grafana@xqzp.net";
+        datasources.settings = {
+          datasources = [{
+            name = "influxdb";
+            type = "influxdb";
+            url = "http://localhost:8086";
+            database = "telegraf";
+            isDefault = true;
+          }];
+        };
       };
     };
 
@@ -72,11 +76,10 @@ in
     };
 
     services.nginx = mkIf cfg.server.enable {
-      enable = true;
       virtualHosts.localhost.locations = {
         "/grafana/" = {
           proxyPass =
-            "http://localhost:${toString config.services.grafana.port}";
+            "http://localhost:${toString config.services.grafana.settings.server.http_port}";
         };
         "/influxdb/" = {
           extraConfig = ''
