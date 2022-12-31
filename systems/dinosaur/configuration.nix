@@ -118,17 +118,8 @@
     enable = true;
     allowedTCPPorts = [ 8443 ];
     interfaces.wlan0.allowedTCPPorts = [ 445 3389 ];
-    interfaces."tinc+".allowedTCPPorts = [ 445 3389 ];
+    interfaces."tinc*".allowedTCPPorts = [ 445 3389 ];
     interfaces.virbr0.allowedTCPPorts = [ 445 ];
-
-    extraCommands = ''
-      ip rule add fwmark 100 lookup main priority 100
-      ip -6 rule add fwmark 100 lookup main priority 100
-    '';
-    extraStopCommands = ''
-      ip rule delete fwmark 100 lookup main priority 100
-      ip -6 rule delete fwmark 100 lookup main priority 100
-    '';
   };
 
 

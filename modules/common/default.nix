@@ -132,10 +132,35 @@ in
 
     networking.firewall = {
       enable = true;
-      extraPackages = with pkgs; [ iproute2 nftables ];
+      extraPackages = with pkgs; [ iproute2 ];
       allowPing = true;
+      pingLimit = "2/second burst 2 packets";
       allowedTCPPorts = [ 80 443 ];
       allowedUDPPorts = [ 443 ];
+      filterForward = true;
+    };
+
+    networking.nftables = {
+      enable = true;
+      ruleset = ''
+        table inet filter {
+          chain output {
+            type filter hook output priority filter - 1; policy accept;
+
+            # Accept loopback traffic
+            oif lo accept
+
+            # Count HTTP traffic
+            tcp sport 80 counter accept
+            tcp sport 443 counter accept
+            tcp dport 80 counter accept
+            tcp dport 443 counter accept
+
+            # Count output traffic
+            counter accept comment "accepted output traffic"
+          }
+        }
+      '';
     };
 
 
@@ -181,7 +206,6 @@ in
       jq
       lsof
       lzip
-      nftables
       nmap
       openssl
       psmisc

@@ -14,14 +14,14 @@ in
       };
       socks-proxy = mkOption {
         type = types.str;
-        default = "127.0.0.1:1080";
+        default = "[::1]:1080";
         description = "SOCKS proxy";
       };
       udp = {
         enable = mkEnableOption "Enable UDP";
         gateway = mkOption {
           type = types.str;
-          default = "127.0.0.1:7300";
+          default = "[::1]:7300";
           description = "badvpn-udpgw address";
         };
       };
@@ -51,10 +51,26 @@ in
   config = mkIf cfg.enable {
     networking.firewall.checkReversePath = "loose";
 
+    networking.nftables = {
+      ruleset = ''
+        table inet route {
+            chain prerouting {
+                type nat hook prerouting priority dstnat; policy accept;
+
+                ip daddr @${cfg.ipset4} mark set 111 counter
+                ip6 daddr @${cfg.ipset6} mark set 111 counter
+            }
+
+            set ${cfg.ipset4} { type ipv4_addr; }
+            set ${cfg.ipset6} { type ipv6_addr; }
+        }
+      '';
+    };
+
     systemd.services.tun2socks = {
       description = "tun2socks";
       wantedBy = [ "multi-user.target" ];
-      path = with pkgs; [ iproute2 nftables ];
+      path = with pkgs; [ iproute2 ];
       preStart = ''
         ip tuntap del dev ${cfg.interface} mode tun
         ip tuntap add dev ${cfg.interface} mode tun
@@ -89,15 +105,7 @@ in
         done
 
 
-        ## IPSET
-
-        ipset create -exist ${cfg.ipset4} hash:ip family inet
-        ipset create -exist ${cfg.ipset6} hash:ip family inet6
-
-        iptables -t mangle -I PREROUTING -m set --match-set ${cfg.ipset4} dst -j MARK --set-mark 111
-        ip6tables -t mangle -I PREROUTING -m set --match-set ${cfg.ipset6} dst -j MARK --set-mark 111
-        iptables -t mangle -I OUTPUT -m set --match-set ${cfg.ipset4} dst -j MARK --set-mark 111
-        ip6tables -t mangle -I OUTPUT -m set --match-set ${cfg.ipset6} dst -j MARK --set-mark 111
+        ## nftables set
 
         ip rule add fwmark 111 lookup 111 priority 111
         ip -6 rule add fwmark 111 lookup 111 priority 111
@@ -108,11 +116,6 @@ in
       postStop = ''
         ip rule delete from all lookup 110 priority 110 || true
         ip -6 rule delete from all lookup 110 priority 110 || true
-
-        iptables -t mangle -D PREROUTING -m set --match-set ${cfg.ipset4} dst -j MARK --set-mark 111 || true
-        ip6tables -t mangle -D PREROUTING -m set --match-set ${cfg.ipset6} dst -j MARK --set-mark 111 || true
-        iptables -t mangle -D OUTPUT -m set --match-set ${cfg.ipset4} dst -j MARK --set-mark 111
-        ip6tables -t mangle -D OUTPUT -m set --match-set ${cfg.ipset6} dst -j MARK --set-mark 111
 
         ip rule delete fwmark 111 lookup 111 priority 111 || true
         ip -6 rule delete fwmark 111 lookup 111 priority 111 || true

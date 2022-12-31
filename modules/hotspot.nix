@@ -183,22 +183,29 @@ in
         allowedTCPPorts = [ 53 ];
         allowedUDPPorts = [ 53 ];
       };
-      extraCommands = ''
-        # Hijack DNS requests.
-        iptables -w -t nat -A PREROUTING -s 10.10.0.0/24 ! -d 10.10.0.1 -p udp --dport 53 -j DNAT --to 127.0.0.1:53
-        iptables -w -t nat -A PREROUTING -s 10.10.0.0/24 ! -d 10.10.0.1 -p tcp --dport 53 -j DNAT --to 127.0.0.1:53
+    };
 
-        iptables -w -t nat -A POSTROUTING -s 10.10.0.0/24 -j MASQUERADE
-        iptables -w -A FORWARD -i ${cfg.interface} -s 10.10.0.0/24 -j ACCEPT
-        iptables -w -A FORWARD -o ${cfg.interface} -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-      '';
-      extraStopCommands = ''
-        iptables -w -t nat -D PREROUTING -s 10.10.0.0/24 ! -d 10.10.0.1 -p udp --dport 53 -j DNAT --to 127.0.0.1:53
-        iptables -w -t nat -D PREROUTING -s 10.10.0.0/24 ! -d 10.10.0.1 -p tcp --dport 53 -j DNAT --to 127.0.0.1:53
+    networking.nat = {
+      enable = true;
+      enableIPv6 = true;
+      internalIPs = [ "10.10.0.0/24" ];
+      internalIPv6s = [ "fd00:10::0/64" ];
+    };
 
-        iptables -w -t nat -D POSTROUTING -s 10.10.0.0/24 -j MASQUERADE
-        iptables -w -D FORWARD -i ${cfg.interface} -s 10.10.0.0/24 -j ACCEPT
-        iptables -w -D FORWARD -o ${cfg.interface} -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    # Hijack DNS requests.
+    networking.nftables = {
+      ruleset = ''
+        table inet nat {
+            chain prerouting {
+                type nat hook prerouting priority dstnat; policy accept;
+
+                ip saddr 10.10.0.0/24 ip daddr != 10.10.0.1 udp dport 53 counter dnat 127.0.0.1:53
+                ip saddr 10.10.0.0/24 ip daddr != 10.10.0.1 tcp dport 53 counter dnat 127.0.0.1:53
+
+                ip6 saddr fd00:10::/64 ip6 daddr != fd00:10::1 udp dport 53 counter dnat [fd00:10::1]:53
+                ip6 saddr fd00:10::/64 ip6 daddr != fd00:10::1 tcp dport 53 counter dnat [fd00:10::1]:53
+            }
+        }
       '';
     };
   };
