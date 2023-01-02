@@ -60,13 +60,13 @@
       INTERVAL=10
       DEVPATH=hwmon2=devices/platform/nct6775.656
       DEVNAME=hwmon2=nct6798
-      FCTEMPS=hwmon2/pwm2=hwmon2/temp2_input hwmon2/pwm1=hwmon2/temp7_input hwmon2/pwm7=hwmon2/temp7_input
-      FCFANS=hwmon2/pwm2=hwmon2/fan2_input hwmon2/pwm1=hwmon2/fan1_input hwmon2/pwm7=hwmon2/fan7_input
-      MINTEMP=hwmon2/pwm2=30 hwmonn2/pwm1=50 hwmon2/pwm7=50
-      MAXTEMP=hwmon2/pwm2=70 hwmon2/pwm1=60 hwmon2/pwm7=60
-      MINSTART=hwmon2/pwm2=20 hwmon2/pwm1=20 hwmon2/pwm7=20
-      MINSTOP=hwmon2/pwm2=0 hwmon2/pwm1=40 hwmon2/pwm7=40
-      MAXPWM=hwmon2/pwm2=150 hwmon2/pwm1=80 hwmon2/pwm7=80
+      FCTEMPS=hwmon2/pwm2=hwmon2/temp2_input
+      FCFANS=hwmon2/pwm2=hwmon2/fan2_input
+      MINTEMP=hwmon2/pwm2=30
+      MAXTEMP=hwmon2/pwm2=70
+      MINSTART=hwmon2/pwm2=20
+      MINSTOP=hwmon2/pwm2=0
+      MAXPWM=hwmon2/pwm2=150
     '';
   };
 
