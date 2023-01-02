@@ -14,11 +14,10 @@
   my.desktop.gui.enable = true;
 
   my.deluge.enable = true;
-  my.gotify.enable = true;
   my.hotspot = {
     enable = true;
     interface = "wlan0";
-    ssid = "Castle";
+    ssid = "Matrix-I";
     password = lib.mkDefault "12345678";
     version = 4;
     channel = 13;
@@ -172,7 +171,8 @@
         { addr = "[::]"; port = 8443; ssl = true; }
       ];
       forceSSL = true;
-      enableACME = true;
+      sslCertificate = "/etc/secrets/cert/earth.xqzp.net/cert.pem";
+      sslCertificateKey = "/etc/secrets/cert/earth.xqzp.net/key.pem";
       locations."/" = {
         proxyWebsockets = true;
         extraConfig = ''

@@ -22,7 +22,6 @@
     enable-home = true;
   };
   my.syncthing.enable = true;
-  my.virtualization.enable = true;
 
 
   ## Boot loader
