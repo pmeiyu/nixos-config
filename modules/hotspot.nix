@@ -98,24 +98,52 @@ in
       '') + (optionalString (cfg.version == 5) ''
         ieee80211ac=1
         ieee80211n=1
+
+        # Advertises country_code and the set of allowed channels and transmit power levels
+        ieee80211d=1
+        # Enables support for 5GHz DFS channels (requires ieee80211d=1)
+        ieee80211h=1
+
+        ht_capab=${cfg.ht_capab}
         vht_capab=${cfg.vht_capab}
       '') + (optionalString (cfg.version == 6) ''
         ieee80211ax=1
       '');
     };
 
-    services.dhcpd4 = {
+    services.kea.dhcp4 = {
       enable = true;
-      interfaces = [ cfg.interface ];
-      extraConfig = ''
-        option domain-name-servers 10.10.0.1;
-        option domain-name "lan";
-        option routers 10.10.0.1;
-        option subnet-mask 255.255.255.0;
-        subnet 10.10.0.0 netmask 255.255.255.0 {
-          range 10.10.0.10 10.10.0.100;
-        }
-      '';
+      settings = {
+        interfaces-config = {
+          interfaces = [ cfg.interface ];
+        };
+        valid-lifetime = 86400;
+        lease-database = {
+          type = "memfile";
+        };
+        option-data = [
+          {
+            name = "domain-name";
+            data = "lan";
+          }
+          {
+            name = "domain-search";
+            data = "lan, xqzp.net";
+          }
+          {
+            name = "domain-name-servers";
+            data = "10.10.0.1";
+          }
+          {
+            name = "routers";
+            data = "10.10.0.1";
+          }
+        ];
+        subnet4 = [ {
+          subnet = "10.10.0.0/24";
+          pools = [ { pool = "10.10.0.10 - 10.10.0.100"; } ];
+        } ];
+      };
     };
 
     services.radvd = {
