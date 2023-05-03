@@ -36,7 +36,7 @@ in
 
     ## Boot
 
-    boot.cleanTmpDir = true;
+    boot.tmp.cleanOnBoot = true;
 
 
     ## Kernel
