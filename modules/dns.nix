@@ -7,6 +7,7 @@ let
   processors = [
     "main"
     "router"
+    "hosts"
   ]
   ++ optionals enable-garbage-blocker [ "block-garbage" ]
   ++ [
@@ -73,6 +74,13 @@ in
             resolvers = [ (nextProcessorOf "main") ];
           };
 
+          hosts = {
+            type = "blocklist-v2";
+            resolvers = [ (nextProcessorOf "hosts") ];
+            blocklist-format = "hosts";
+            blocklist = [ ];
+          };
+
           block-garbage = mkIf enable-garbage-blocker {
             type = "blocklist-v2";
             resolvers = [ (nextProcessorOf "block-garbage") ];
@@ -93,6 +101,7 @@ in
           block-dotless-domains = {
             type = "blocklist-v2";
             resolvers = [ (nextProcessorOf "block-dotless-domains") ];
+            blocklist-format = "regexp";
             blocklist = [ "^[^.]+$" ];
           };
 
