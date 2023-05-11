@@ -136,6 +136,7 @@ in
       iw
       libnotify
       lolcat
+      lshw
       mkpasswd
       mpc_cli
       mpd
