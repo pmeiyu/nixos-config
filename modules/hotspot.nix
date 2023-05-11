@@ -120,6 +120,7 @@ in
         valid-lifetime = 86400;
         lease-database = {
           type = "memfile";
+          persist = false;
         };
         option-data = [
           {
