@@ -18,20 +18,16 @@ in
       cleanupInterval = "1d";
       configs = {
         home = mkIf cfg.enable-home {
-          subvolume = "/home";
-          extraConfig = ''
-            ALLOW_GROUPS="wheel"
-            TIMELINE_CREATE="yes"
-            TIMELINE_CLEANUP="yes"
-          '';
+          SUBVOLUME = "/home";
+          ALLOW_GROUPS = [ "wheel" ];
+          TIMELINE_CREATE = true;
+          TIMELINE_CLEANUP = true;
         };
         "srv-store" = mkIf cfg.enable-store {
-          subvolume = "/srv/store";
-          extraConfig = ''
-            ALLOW_GROUPS="wheel"
-            TIMELINE_CREATE="yes"
-            TIMELINE_CLEANUP="yes"
-          '';
+          SUBVOLUME = "/srv/store";
+          ALLOW_GROUPS = [ "wheel" ];
+          TIMELINE_CREATE = true;
+          TIMELINE_CLEANUP = true;
         };
       };
     };
@@ -41,7 +37,7 @@ in
         [ -e ${x}/.snapshots ] || \
             ${pkgs.btrfs-progs}/bin/btrfs subvolume create ${x}/.snapshots
       '')
-      (mapAttrsToList (name: value: value.subvolume)
+      (mapAttrsToList (name: value: value.SUBVOLUME)
         config.services.snapper.configs);
   };
 }
