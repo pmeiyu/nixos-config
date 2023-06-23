@@ -6,6 +6,7 @@
     ../../snippets/cpu/intel.nix
     ../../snippets/gpu/intel.nix
     ../../snippets/development.nix
+    ../../snippets/tpm.nix
     ./hardware-configuration.nix
     ./private.nix
   ];

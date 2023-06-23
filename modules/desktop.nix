@@ -77,12 +77,6 @@ in
       pulse.enable = true;
     };
 
-    security.tpm2 = {
-      enable = true;
-      abrmd.enable = true;
-      pkcs11.enable = true;
-    };
-
 
     ## Environment
 
@@ -155,7 +149,6 @@ in
       sshfs-fuse
       stow
       strace
-      tpm2-tools
       unzip
       xdg-user-dirs
       xdg-utils
