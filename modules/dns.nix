@@ -183,6 +183,18 @@ in
             ];
           };
 
+          udp-resolvers = {
+            type = "random";
+            resolvers = [
+              "quad9-udp"
+              "114"
+              "alidns"
+              "baidu"
+              "dns-pub-ipv6"
+              "tsinghua"
+            ];
+          };
+
           china-resolvers = {
             type = "random";
             resolvers = [
@@ -233,7 +245,10 @@ in
         routers = {
           router = {
             routes = mkAfter ((optional cfg.block.ipv6 { types = [ "AAAA" ]; resolver = "block"; })
-              ++ [{ resolver = (nextProcessorOf "router"); }]);
+              ++ [
+              { name = "\.ntp\.org\.$"; resolver = "udp-resolvers"; }
+              { resolver = (nextProcessorOf "router"); }
+            ]);
           };
         };
 
@@ -292,6 +307,10 @@ in
             protocol = "dot";
           };
 
+          quad9-udp = {
+            address = "9.9.9.9:53";
+            protocol = "udp";
+          };
           quad9-tls = {
             address = "9.9.9.9:853";
             protocol = "dot";
