@@ -123,7 +123,7 @@ in
     ## Certificates
 
     security.pki.certificateFiles = [ ./ca.pem ];
-    security.pki.caCertificateBlacklist = [ "CFCA EV ROOT" ];
+    security.pki.caCertificateBlacklist = [ ];
 
     environment.etc."pki/ca.pem".source = ./ca.pem;
 
