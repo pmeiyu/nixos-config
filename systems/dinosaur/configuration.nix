@@ -15,6 +15,9 @@
   my.desktop.gui.enable = true;
 
   my.deluge.enable = true;
+  my.dns.hosts = [
+    "10.1.0.1 pi.home"
+  ];
   my.hotspot = {
     enable = true;
     interface = "wlan0";

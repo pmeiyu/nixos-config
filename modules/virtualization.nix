@@ -11,6 +11,17 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ qemu virt-manager ];
 
+    my.dns.hosts = [
+      "192.168.122.1 host.lan"
+    ];
+
+    networking.firewall = {
+      interfaces."virbr0".allowedUDPPorts = [
+        53
+        4010 # Scream
+      ];
+    };
+
     virtualisation.libvirtd.enable = true;
     virtualisation.spiceUSBRedirection.enable = true;
   };

@@ -43,6 +43,11 @@ in
       };
       chinalist.enable = mkEnableOption "Enable dnsmasq-china-list.";
       gfwlist.enable = mkEnableOption "Enable gfwlist.";
+      hosts = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "hosts file";
+      };
       log.enable = mkEnableOption "Enable log.";
     };
   };
@@ -78,7 +83,7 @@ in
             type = "blocklist-v2";
             resolvers = [ (nextProcessorOf "hosts") ];
             blocklist-format = "hosts";
-            blocklist = [ ];
+            blocklist = cfg.hosts;
           };
 
           block-garbage = mkIf enable-garbage-blocker {
