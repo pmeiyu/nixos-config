@@ -19,12 +19,17 @@ in
       };
       password = mkOption {
         type = types.str;
-        description = "WPA password.";
+        description = "WiFi password.";
       };
       version = mkOption {
         type = types.enum [ 4 5 6 ];
         default = 4;
         description = "WiFi version.";
+      };
+      band = mkOption {
+        default = "2g";
+        type = types.enum [ "2g" "5g" "6g" "60g" ];
+        description = "Frequency band";
       };
       channel = mkOption {
         type = types.int;
@@ -35,16 +40,6 @@ in
         type = types.nullOr types.str;
         default = null;
         description = "ISO country code.";
-      };
-      ht_capab = mkOption {
-        type = types.str;
-        default = "";
-        example = "[HT40+][SHORT-GI-40]";
-      };
-      vht_capab = mkOption {
-        type = types.str;
-        default = "";
-        example = "[SHORT-GI-80][HTC-VHT]";
       };
       block.ad = mkEnableOption "Block ad.";
       block.fake-news = mkEnableOption "Block fake news.";
@@ -62,53 +57,29 @@ in
 
     services.hostapd = {
       enable = true;
-      interface = cfg.interface;
-      ssid = cfg.ssid;
-      hwMode = if cfg.version == 4 then "g" else "a";
-      channel = cfg.channel;
-      countryCode = cfg.countryCode;
-      wpaPassphrase = cfg.password;
-      noScan = true;
-      extraConfig = ''
-        utf8_ssid=1
-
-        # 1 = WPA, 2 = WEP, 3 = both
-        auth_algs=1
-
-        # WPA-PSK = WPA-Personal / WPA2-Personal
-        # SAE = WPA3-Personal
-        wpa_key_mgmt=SAE
-
-        # Enable management frame protection (MFP)
-        # 0 = disabled (default)
-        # 1 = optional
-        # 2 = required
-        ieee80211w=2
-
-        # CCMP = AES in Counter mode with CBC-MAC (CCMP-128)
-        # GCMP = Galois/counter mode protocol (GCMP-128)
-        rsn_pairwise=CCMP
-
-        # QoS
-        wmm_enabled=1
-
-      '' + (optionalString (cfg.version == 4) ''
-        ieee80211n=1
-        ht_capab=${cfg.ht_capab}
-      '') + (optionalString (cfg.version == 5) ''
-        ieee80211ac=1
-        ieee80211n=1
-
-        # Advertises country_code and the set of allowed channels and transmit power levels
-        ieee80211d=1
-        # Enables support for 5GHz DFS channels (requires ieee80211d=1)
-        ieee80211h=1
-
-        ht_capab=${cfg.ht_capab}
-        vht_capab=${cfg.vht_capab}
-      '') + (optionalString (cfg.version == 6) ''
-        ieee80211ax=1
-      '');
+      radios."${cfg.interface}" = {
+        band = cfg.band;
+        channel = cfg.channel;
+        countryCode = cfg.countryCode;
+        noScan = true;
+        settings = {
+        };
+        wifi4 = {
+          enable = cfg.version >= 4;
+        };
+        wifi5 = {
+          enable = cfg.version >= 5;
+        };
+        networks."${cfg.interface}" = {
+          ssid = cfg.ssid;
+          authentication = {
+            mode = "wpa2-sha256";
+            wpaPassword = cfg.password;
+          };
+          settings = {
+          };
+        };
+      };
     };
 
     services.kea.dhcp4 = {
@@ -140,10 +111,10 @@ in
             data = "10.10.0.1";
           }
         ];
-        subnet4 = [ {
+        subnet4 = [{
           subnet = "10.10.0.0/24";
-          pools = [ { pool = "10.10.0.10 - 10.10.0.100"; } ];
-        } ];
+          pools = [{ pool = "10.10.0.10 - 10.10.0.100"; }];
+        }];
       };
     };
 
