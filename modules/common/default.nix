@@ -17,7 +17,9 @@ in
 
     nix.settings = {
       substituters = [
-        "https://cache.nixos.org/"
+        "https://cache.nixos.org"
+      ];
+      trusted-substituters = [
         "https://nix-community.cachix.org"
         "https://pmy.cachix.org"
       ];
