@@ -32,7 +32,6 @@
   my.jellyfin.enable = true;
   my.mpd.enable = true;
   my.monitor.enable = true;
-  my.network.prefer-ipv4 = true;
   my.nginx.enable = true;
   my.overlay-networks.enable = true;
   my.samba.enable = true;
@@ -105,6 +104,9 @@
   ## User accounts
 
   users.users = {
+    meiyu = {
+      extraGroups = [ "deluge" ];
+    };
     mengyu = {
       isNormalUser = true;
       uid = 1001;
