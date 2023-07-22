@@ -6,19 +6,28 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "thunderbolt" "xhci_pci" ];
+  boot.initrd.availableKernelModules = [
+    "ahci"
+    "nvme"
+    "sd_mod"
+    "thunderbolt"
+    "uas"
+    "usb_storage"
+    "usbhid"
+    "xhci_pci"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/0607-689A";
+    device = "/dev/disk/by-uuid/16E4-0B08";
     fsType = "vfat";
   };
 
 
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/22bdf0a3-bedf-490b-bc22-651fc25dd9d5";
+    device = "/dev/disk/by-uuid/db446aab-ed54-4016-8d68-8eddd1701104";
     allowDiscards = true;
     fallbackToPassword = true;
   };
@@ -37,7 +46,7 @@
 
 
   boot.initrd.luks.devices."swap" = {
-    device = "/dev/disk/by-uuid/4d4814a8-5893-4cff-b201-73996a1b4c81";
+    device = "/dev/disk/by-uuid/56d11e41-82d8-4d30-a284-dd36bf814037";
     allowDiscards = true;
     fallbackToPassword = true;
   };

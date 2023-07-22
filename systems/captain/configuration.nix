@@ -3,7 +3,6 @@
 {
   imports = [
     ../..
-    ../../snippets/development.nix
     ../../snippets/thinkpad.nix
     ./hardware-configuration.nix
     ./private.nix
@@ -12,6 +11,9 @@
   my.desktop.enable = true;
   my.desktop.gui.enable = true;
 
+  my.dns.hosts = [
+    "10.1.0.1 pi.home"
+  ];
   my.hydroxide.enable = true;
   my.mpd.enable = true;
   my.network.prefer-ipv4 = true;
