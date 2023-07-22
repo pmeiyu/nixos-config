@@ -14,8 +14,6 @@
     libmbim
   ];
 
-  hardware.video.hidpi.enable = true;
-
   hardware.bluetooth.enable = true;
 
   hardware.trackpoint = {
