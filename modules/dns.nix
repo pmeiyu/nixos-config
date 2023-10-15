@@ -153,10 +153,10 @@ in
             allowlist-resolver = "china-resolvers";
             allowlist-source = [
               { format = "domain"; source = "${pkgs.chinalist-routedns}/accelerated-domains.china.routedns.txt"; }
-              { format = "domain"; source = "${pkgs.chinalist-routedns}/apple.china.routedns.txt"; }
             ];
             blocklist-resolver = "114";
             blocklist-source = [
+              { format = "domain"; source = "${pkgs.chinalist-routedns}/apple.china.routedns.txt"; }
               { format = "domain"; source = "${pkgs.chinalist-routedns}/google.china.routedns.txt"; }
             ];
           };
