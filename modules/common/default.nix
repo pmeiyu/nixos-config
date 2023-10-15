@@ -71,7 +71,7 @@ in
       root = {
         # Generate hashed password: `mkpasswd -m sha-512`
         hashedPassword = null;
-        passwordFile = "/etc/secrets/password";
+        hashedPasswordFile = "/etc/secrets/password";
 
         shell = pkgs.zsh;
         openssh.authorizedKeys.keys = authorizedKeys;
@@ -95,7 +95,7 @@ in
         ];
         password = config.users.users.root.password;
         hashedPassword = config.users.users.root.hashedPassword;
-        passwordFile = config.users.users.root.passwordFile;
+        hashedPasswordFile = config.users.users.root.hashedPasswordFile;
         shell = pkgs.zsh;
         openssh.authorizedKeys.keys = authorizedKeys;
       };
