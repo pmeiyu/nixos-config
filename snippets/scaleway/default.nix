@@ -16,7 +16,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    scaleway
+    scaleway-image-tools
   ];
 
   systemd.services.scw-net-ipv6 = {
@@ -32,6 +32,6 @@
       ip -6 addr add dev eth0 $IPV6_ADDRESS/$IPV6_NETMASK
       ip -6 route replace default via $IPV6_GATEWAY
     '';
-    path = with pkgs; [ iproute2 scaleway ];
+    path = with pkgs; [ iproute2 scaleway-image-tools ];
   };
 }

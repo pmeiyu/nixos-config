@@ -1,5 +1,5 @@
 self: super: with super; {
-  scaleway = stdenv.mkDerivation {
+  scaleway-image-tools = stdenv.mkDerivation {
     pname = "scaleway";
     version = "2019.04.30";
 
