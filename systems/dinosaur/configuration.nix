@@ -5,6 +5,7 @@
     ../..
     ../../snippets/cpu/intel.nix
     ../../snippets/gpu/intel.nix
+    ../../snippets/gpu/nvidia.nix
     ../../snippets/development.nix
     ../../snippets/tpm.nix
     ./hardware-configuration.nix
@@ -33,7 +34,6 @@
   my.mpd.enable = true;
   my.monitor.enable = true;
   my.nginx.enable = true;
-  my.overlay-networks.enable = true;
   my.samba.enable = true;
   my.snapper = {
     enable = true;
@@ -58,16 +58,16 @@
   hardware.fancontrol = {
     enable = true;
     config = ''
-      INTERVAL=10
-      DEVPATH=hwmon2=devices/platform/nct6775.656
-      DEVNAME=hwmon2=nct6798
-      FCTEMPS=hwmon2/pwm2=hwmon2/temp2_input
-      FCFANS=hwmon2/pwm2=hwmon2/fan2_input
-      MINTEMP=hwmon2/pwm2=30
-      MAXTEMP=hwmon2/pwm2=70
-      MINSTART=hwmon2/pwm2=20
-      MINSTOP=hwmon2/pwm2=0
-      MAXPWM=hwmon2/pwm2=150
+      INTERVAL=20
+      DEVPATH=hwmon4=devices/platform/nct6775.656
+      DEVNAME=hwmon4=nct6798
+      FCTEMPS=hwmon4/pwm1=hwmon4/temp7_input hwmon4/pwm2=hwmon4/temp2_input hwmon4/pwm7=hwmon4/temp7_input
+      FCFANS=hwmon4/pwm1=hwmon4/fan1_input   hwmon4/pwm2=hwmon4/fan2_input  hwmon4/pwm7=hwmon4/fan7_input
+      MINTEMP= hwmon4/pwm1=40  hwmon4/pwm2=45  hwmon4/pwm7=45
+      MAXTEMP= hwmon4/pwm1=60  hwmon4/pwm2=70  hwmon4/pwm7=70
+      MINSTART=hwmon4/pwm1=20  hwmon4/pwm2=0   hwmon4/pwm7=0
+      MINSTOP= hwmon4/pwm1=15  hwmon4/pwm2=0   hwmon4/pwm7=0
+      MAXPWM=  hwmon4/pwm1=80  hwmon4/pwm2=1   hwmon4/pwm7=100
     '';
   };
 
