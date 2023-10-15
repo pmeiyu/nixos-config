@@ -73,6 +73,10 @@ in
       settings = {
         reporting-disabled = true;
       };
+      provision = {
+        initialSetup.passwordFile = "/etc/secrets/influxdb";
+        initialSetup.tokenFile = "/etc/secrets/influxdb-token";
+      };
     };
 
     services.nginx = mkIf cfg.server.enable {
