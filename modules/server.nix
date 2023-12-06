@@ -10,6 +10,8 @@ in
 
   config = mkIf cfg.enable {
     my.common.enable = true;
+    my.emacs.enable = true;
+    my.emacs.package = mkDefault pkgs.emacs-nox;
 
     # Limit number of entries in boot menu.
     boot.loader.grub.configurationLimit = mkDefault 10;

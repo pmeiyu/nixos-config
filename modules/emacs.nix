@@ -5,7 +5,17 @@ let cfg = config.my.emacs;
 in
 {
   options = {
-    my.emacs.enable = mkEnableOption "Enable emacs.";
+    my.emacs = {
+      enable = mkEnableOption "Enable emacs.";
+      package = mkOption {
+        type = types.package;
+        default = pkgs.emacs;
+        defaultText = literalExpression "pkgs.emacs";
+        description = lib.mdDoc ''
+          Emacs package to use.
+        '';
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -19,7 +29,8 @@ in
       aspellDicts.en
       aspellDicts.en-computers
       aspellDicts.en-science
-      emacs
+
+      cfg.package
     ];
   };
 }
