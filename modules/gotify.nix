@@ -21,6 +21,11 @@ in
       port = cfg.port;
     };
 
+    systemd.services.gotify-server.environment = {
+      GOTIFY_SERVER_CORS_ALLOWORIGINS="- .*";
+      GOTIFY_SERVER_STREAM_ALLOWEDORIGINS="- .*";
+    };
+
     services.nginx = {
       virtualHosts.localhost.locations."/gotify/" = {
         proxyPass = "http://localhost:${toString cfg.port}";
