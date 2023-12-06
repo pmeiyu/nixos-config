@@ -17,6 +17,8 @@ in
     boot.loader.grub.configurationLimit = mkDefault 10;
     boot.loader.systemd-boot.configurationLimit = mkDefault 10;
 
+    boot.loader.grub.efiInstallAsRemovable = true;
+
     # This will cause too many packages to be built.
     # environment.noXlibs = true;
 
