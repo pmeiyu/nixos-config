@@ -203,8 +203,11 @@ in
     programs.tmux.extraConfig = readFile ./tmux.conf;
 
     environment.systemPackages = with pkgs; [
+      btrfs-progs
       curl
       dnsutils
+      dosfstools
+      efibootmgr
       fd
       fzf
       git

@@ -114,11 +114,8 @@ in
     environment.systemPackages = with pkgs; [
       _7zz
       binutils
-      btrfs-progs
       compsize
       cryptsetup
-      dosfstools
-      efibootmgr
       espeak
       ffmpeg
       file
