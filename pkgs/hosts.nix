@@ -1,22 +1,15 @@
-{ lib, stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchFromGitHub, stevenblack-blocklist }:
 
 stdenv.mkDerivation rec {
   pname = "hosts";
-  version = "2022.01.04";
+  version = "2023.11.18";
 
   srcs = [
     (fetchFromGitHub {
-      owner = "StevenBlack";
-      repo = "hosts";
-      rev = "3.9.33";
-      hash = "sha256-1IZGeVQPcF+9MwtJBHsaniNBgiGaZO2dfCy+Zom0ADE=";
-      name = "stevenblack-hosts";
-    })
-    (fetchFromGitHub {
       owner = "VeleSila";
       repo = "yhosts";
-      rev = "a7d448d1799d5144742fc630fe15a166e7338b82";
-      hash = "sha256-2VCoLZ8arXCsFia+5RuLw8uXjy43/5jN9BXQQ/U6Lng=";
+      rev = "765d0136241fb26f027f7843441992f80985486b";
+      hash = "sha256-nNeVNCqZy3KTL22mXpfmuEevWOxWbgqqza2A5IG67ho=";
       name = "yhosts";
     })
   ];
@@ -26,7 +19,7 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     mkdir -p build
 
-    for i in stevenblack-hosts/hosts yhosts/hosts.txt; do
+    for i in ${stevenblack-blocklist}/hosts yhosts/hosts.txt; do
         awk -e '/^#/ { print; next; }' \
             -e '/^@/ { print "#" $0; next; }' \
             -e '/^ *$/ { printf "\n"; next; }' \
@@ -37,7 +30,7 @@ stdenv.mkDerivation rec {
     done
 
     for i in fakenews gambling porn social; do
-        find stevenblack-hosts/extensions/$i -name hosts -exec \
+        find ${stevenblack-blocklist}/extensions/$i -name hosts -exec \
         awk -e '/^#/ { print; next; }' \
             -e '/^ *$/ { printf "\n"; next; }' \
             -e '$1 ~ /0\.0\.0\.0|127\.0\.0\.1/ && $2 !~ /0\.0\.0\.0$|.*local[^.]*$/ {
