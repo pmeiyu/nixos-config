@@ -74,18 +74,17 @@
   networking.networkmanager.unmanaged = [ "interface-name:wlan0" ];
 
   # Hijack DNS requests.
-  networking.nftables = {
-    ruleset = ''
-      table inet nat {
-          chain prerouting {
-              type nat hook prerouting priority dstnat; policy accept;
+  networking.nftables.tables.nat = {
+    family = "inet";
+    content = ''
+      chain prerouting {
+          type nat hook prerouting priority dstnat; policy accept;
 
-              ip saddr 10.1.0.0/24 ip daddr != 10.1.0.1 udp dport 53 counter dnat 127.0.0.1:53
-              ip saddr 10.1.0.0/24 ip daddr != 10.1.0.1 tcp dport 53 counter dnat 127.0.0.1:53
+          ip saddr 10.1.0.0/24 ip daddr != 10.1.0.1 udp dport 53 counter dnat 127.0.0.1:53
+          ip saddr 10.1.0.0/24 ip daddr != 10.1.0.1 tcp dport 53 counter dnat 127.0.0.1:53
 
-              ip6 saddr fd00:1::/64 ip6 daddr != fd00:1::1 udp dport 53 counter dnat [fd00:1::1]:53
-              ip6 saddr fd00:1::/64 ip6 daddr != fd00:1::1 tcp dport 53 counter dnat [fd00:1::1]:53
-          }
+          ip6 saddr fd00:1::/64 ip6 daddr != fd00:1::1 udp dport 53 counter dnat [fd00:1::1]:53
+          ip6 saddr fd00:1::/64 ip6 daddr != fd00:1::1 tcp dport 53 counter dnat [fd00:1::1]:53
       }
     '';
   };

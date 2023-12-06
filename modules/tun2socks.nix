@@ -51,19 +51,18 @@ in
   config = mkIf cfg.enable {
     networking.firewall.checkReversePath = "loose";
 
-    networking.nftables = {
-      ruleset = ''
-        table inet route {
-            chain prerouting {
-                type nat hook prerouting priority dstnat; policy accept;
+    networking.nftables.tables.route = {
+      family = "inet";
+      content = ''
+        chain prerouting {
+            type nat hook prerouting priority dstnat; policy accept;
 
-                ip daddr @${cfg.ipset4} mark set 111 counter
-                ip6 daddr @${cfg.ipset6} mark set 111 counter
-            }
-
-            set ${cfg.ipset4} { type ipv4_addr; }
-            set ${cfg.ipset6} { type ipv6_addr; }
+            ip daddr @${cfg.ipset4} mark set 111 counter
+            ip6 daddr @${cfg.ipset6} mark set 111 counter
         }
+
+        set ${cfg.ipset4} { type ipv4_addr; }
+        set ${cfg.ipset6} { type ipv6_addr; }
       '';
     };
 

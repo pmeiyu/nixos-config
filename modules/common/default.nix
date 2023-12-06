@@ -144,25 +144,28 @@ in
 
     networking.nftables = {
       enable = true;
-      ruleset = ''
-        table inet filter {
-          chain output {
-            type filter hook output priority filter - 1; policy accept;
+      tables = {
+        filter = {
+          family = "inet";
+          content = ''
+            chain output {
+              type filter hook output priority filter - 1; policy accept;
 
-            # Accept loopback traffic
-            oif lo accept
+              # Accept loopback traffic
+              oif lo accept
 
-            # Count HTTP traffic
-            tcp sport 80 counter accept
-            tcp sport 443 counter accept
-            tcp dport 80 counter accept
-            tcp dport 443 counter accept
+              # Count HTTP traffic
+              tcp sport 80 counter accept
+              tcp sport 443 counter accept
+              tcp dport 80 counter accept
+              tcp dport 443 counter accept
 
-            # Count output traffic
-            counter accept comment "accepted output traffic"
-          }
-        }
-      '';
+              # Count output traffic
+              counter accept comment "accepted output traffic"
+            }
+          '';
+        };
+      };
     };
 
 
