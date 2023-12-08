@@ -14,6 +14,7 @@
   my.dns.hosts = [
     "10.1.0.1 pi.home"
   ];
+  my.guix.enable = true;
   my.hydroxide.enable = true;
   my.mpd.enable = true;
   my.network.prefer-ipv4 = true;
@@ -64,5 +65,4 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   services.blueman.enable = true;
-  services.guix.enable = true;
 }

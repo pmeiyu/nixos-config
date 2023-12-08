@@ -19,6 +19,7 @@
   my.dns.hosts = [
     "10.1.0.1 pi.home"
   ];
+  my.guix.enable = true;
   my.hotspot = {
     enable = true;
     interface = "wlan0";
@@ -153,8 +154,6 @@
     daemon.enable = false;
     updater.enable = true;
   };
-
-  services.guix.enable = true;
 
   services.nginx = {
     virtualHosts."earth.xqzp.net" = {

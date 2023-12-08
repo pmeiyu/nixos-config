@@ -14,6 +14,7 @@
   my.desktop.gui.enable = true;
 
   my.deluge.enable = true;
+  my.guix.enable = true;
   my.monitor.enable = true;
   my.mpd.enable = true;
   my.network.prefer-ipv4 = true;
@@ -119,7 +120,6 @@
 
   services.blueman.enable = true;
   services.dictd.enable = true;
-  services.guix.enable = true;
   services.printing.enable = true;
 
   services.clamav = {

@@ -10,7 +10,7 @@
     ./emacs.nix
     ./gnome-flashback.nix
     ./gotify.nix
-    ./guix
+    ./guix.nix
     ./hotspot.nix
     ./hydroxide.nix
     ./jellyfin.nix
