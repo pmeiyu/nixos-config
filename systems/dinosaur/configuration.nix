@@ -33,7 +33,7 @@
   my.hydroxide.enable = true;
   my.jellyfin.enable = true;
   my.mpd.enable = true;
-  my.monitor.enable = true;
+  my.monitor.server.enable = true;
   my.nginx.enable = true;
   my.samba.enable = true;
   my.snapper = {
